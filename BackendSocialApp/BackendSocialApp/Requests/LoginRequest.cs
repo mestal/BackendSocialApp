@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Resources
+namespace BackendSocialApp.Requests
 {
-    public class LoginResource
+    public class LoginRequest
     {
         public string UserName { get; set; }
 

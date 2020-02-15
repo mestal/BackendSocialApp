@@ -17,6 +17,8 @@ namespace BackendSocialApp.Persistence.Contexts
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<CoffeeFortuneTelling> CoffeeFortuneTellings { get; set; }
+        public DbSet<CoffeeFortuneTellingPicture> CoffeeFortuneTellingPictures { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

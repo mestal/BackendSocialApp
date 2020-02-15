@@ -94,6 +94,8 @@ namespace BackendSocialApp
             //services.AddScoped<IVendorService, VendorService>();
             //services.AddScoped<IVendorRepository, VendorRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICoffeeFortuneTellingService, CoffeeFortuneTellingService>();
+            services.AddScoped<ICoffeeFortuneTellingRepository, CoffeeFortuneTellingRepository>();
 
             services.AddAutoMapper(typeof(Startup));
         }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WebApi.Resources;
+using BackendSocialApp.Requests;
 
 namespace BackendSocialApp.Controllers
 {
@@ -33,11 +33,11 @@ namespace BackendSocialApp.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult> Login(LoginResource loginResource)
+        public async Task<ActionResult> Login(LoginRequest request)
         {
-            var user = await _userManager.FindByNameAsync(loginResource.UserName);
+            var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginResource.Password))
+            if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 var role = await _userManager.GetRolesAsync(user);
                 var tokenDescriptor = new SecurityTokenDescriptor
