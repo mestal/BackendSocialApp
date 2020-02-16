@@ -9,9 +9,9 @@ namespace BackendSocialApp.Domain.Models
     {
         public Guid Id { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public ConsumerUser User { get; set; }
 
-        public ApplicationUser FortuneTeller { get; set; }
+        public FortuneTellerUser FortuneTeller { get; set; }
 
         public CoffeeFortuneTellingStatus Status { get; set; }
 
@@ -26,6 +26,8 @@ namespace BackendSocialApp.Domain.Models
         public DateTime? SubmitByFortuneTellerDateUtc { get; set; }
 
         public DateTime? ReadDateUtc { get; set; }
+
+        public int Point { get; set; }
     }
 
     public class CoffeeFortuneTellingPicture

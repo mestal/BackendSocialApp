@@ -4,14 +4,16 @@ using BackendSocialApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200215141419_UserTypes2")]
+    partial class UserTypes2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,8 +84,6 @@ namespace BackendSocialApp.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<int>("Status");
-
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -112,8 +112,6 @@ namespace BackendSocialApp.Migrations
                     b.Property<string>("FortuneTellerComment");
 
                     b.Property<Guid?>("FortuneTellerId");
-
-                    b.Property<int>("Point");
 
                     b.Property<DateTime?>("ReadDateUtc");
 
@@ -150,113 +148,6 @@ namespace BackendSocialApp.Migrations
                     b.HasIndex("CoffeeFortuneTellingId");
 
                     b.ToTable("CoffeeFortuneTellingPictures");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.ListNewsItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Information");
-
-                    b.Property<Guid?>("ListNewsId");
-
-                    b.Property<string>("PicturePath");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ListNewsId");
-
-                    b.ToTable("ListNewsItems");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.MainFeed", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Info");
-
-                    b.Property<string>("MainPhoto");
-
-                    b.Property<DateTime>("PublishedDateUtc");
-
-                    b.Property<int>("Status");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MainFeeds");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("MainFeed");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("MaxSelectableAnswerNumber");
-
-                    b.Property<int>("Order");
-
-                    b.Property<string>("PicturePath");
-
-                    b.Property<string>("Question");
-
-                    b.Property<int>("QuestionWeight");
-
-                    b.Property<Guid?>("SurveyId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SurveyId");
-
-                    b.ToTable("SurveyItems");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItemAnswer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Answer");
-
-                    b.Property<int>("AnswerWeight");
-
-                    b.Property<int>("Order");
-
-                    b.Property<string>("PicturePath");
-
-                    b.Property<Guid?>("SurveyItemId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SurveyItemId");
-
-                    b.ToTable("SurveyItemAnswers");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyResultItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("PicturePath");
-
-                    b.Property<int>("Point");
-
-                    b.Property<string>("ResultInformation");
-
-                    b.Property<Guid?>("SurveyId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SurveyId");
-
-                    b.ToTable("SurveyResultItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -353,8 +244,6 @@ namespace BackendSocialApp.Migrations
                 {
                     b.HasBaseType("BackendSocialApp.Domain.Models.ApplicationUser");
 
-                    b.Property<int>("Point");
-
                     b.HasDiscriminator().HasValue("ConsumerUser");
                 });
 
@@ -362,45 +251,16 @@ namespace BackendSocialApp.Migrations
                 {
                     b.HasBaseType("BackendSocialApp.Domain.Models.ApplicationUser");
 
-                    b.Property<int>("CoffeePoint");
-
                     b.HasDiscriminator().HasValue("FortuneTellerUser");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.ListNews", b =>
-                {
-                    b.HasBaseType("BackendSocialApp.Domain.Models.MainFeed");
-
-                    b.HasDiscriminator().HasValue("ListNews");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.News", b =>
-                {
-                    b.HasBaseType("BackendSocialApp.Domain.Models.MainFeed");
-
-                    b.Property<string>("Information");
-
-                    b.Property<string>("PicturePath");
-
-                    b.HasDiscriminator().HasValue("News");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.Survey", b =>
-                {
-                    b.HasBaseType("BackendSocialApp.Domain.Models.MainFeed");
-
-                    b.Property<int>("SurveyType");
-
-                    b.HasDiscriminator().HasValue("Survey");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.CoffeeFortuneTelling", b =>
                 {
-                    b.HasOne("BackendSocialApp.Domain.Models.FortuneTellerUser", "FortuneTeller")
+                    b.HasOne("BackendSocialApp.Domain.Models.ApplicationUser", "FortuneTeller")
                         .WithMany()
                         .HasForeignKey("FortuneTellerId");
 
-                    b.HasOne("BackendSocialApp.Domain.Models.ConsumerUser", "User")
+                    b.HasOne("BackendSocialApp.Domain.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
@@ -410,34 +270,6 @@ namespace BackendSocialApp.Migrations
                     b.HasOne("BackendSocialApp.Domain.Models.CoffeeFortuneTelling", "CoffeeFortuneTelling")
                         .WithMany("Pictures")
                         .HasForeignKey("CoffeeFortuneTellingId");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.ListNewsItem", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.ListNews", "ListNews")
-                        .WithMany("Items")
-                        .HasForeignKey("ListNewsId");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItem", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.Survey", "Survey")
-                        .WithMany("Items")
-                        .HasForeignKey("SurveyId");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItemAnswer", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.SurveyItem", "SurveyItem")
-                        .WithMany("Answers")
-                        .HasForeignKey("SurveyItemId");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyResultItem", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.Survey")
-                        .WithMany("Results")
-                        .HasForeignKey("SurveyId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

@@ -11,5 +11,21 @@ namespace BackendSocialApp.Domain.Models
     {
         [Column(TypeName = "nvarchar(150)")]
         public string FullName { get; set; }
+
+        public  UserStatus Status { get; set; }
+    }
+
+    public class AdminUser : ApplicationUser
+    {
+    }
+
+    public class ConsumerUser : ApplicationUser
+    {
+        public int Point { get; set; }
+    }
+
+    public class FortuneTellerUser : ApplicationUser
+    {
+        public int CoffeePoint { get; set; }
     }
 }

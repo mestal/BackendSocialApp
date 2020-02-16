@@ -6,6 +6,7 @@ using BackendSocialApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,14 @@ namespace BackendSocialApp.Controllers
         private readonly ICoffeeFortuneTellingService _service;
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _environment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FortuneTellingController(ICoffeeFortuneTellingService service, IMapper mapper, IHostingEnvironment environment)
+        public FortuneTellingController(ICoffeeFortuneTellingService service, IMapper mapper, IHostingEnvironment environment, UserManager<ApplicationUser> userManager)
         {
             _service = service;
             _mapper = mapper;
             _environment = environment;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -36,11 +39,16 @@ namespace BackendSocialApp.Controllers
         {
             var newCoffeeFortuneTelling = _mapper.Map<CreateCoffeeFortuneTellingRequest, CoffeeFortuneTelling>(request);
 
-            newCoffeeFortuneTelling.SubmitDateUtc = DateTime.UtcNow;
+            var user = (ConsumerUser)await _userManager.FindByIdAsync(request.UserId.ToString());
+
+            newCoffeeFortuneTelling.User = user ?? throw new Exception("User Not Found");
+
+            var fortuneTeller = (FortuneTellerUser)await _userManager.FindByIdAsync(request.FortuneTellerId.ToString());
+            newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new Exception("User Not Found");
 
             if (request.Pictures.Count == 0)
             {
-                throw new Exception();
+                throw new Exception("Pictures must be send.");
             }
 
             var folderPath = _environment.ContentRootPath + "\\Upload\\";

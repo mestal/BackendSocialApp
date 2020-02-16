@@ -27,4 +27,10 @@ namespace BackendSocialApp.Domain.Models
         [Description("Aşk")]
         Love = 3
     }
+
+    public enum UserStatus
+    {
+        Deactive = 0,
+        Active = 1
+    }
 }

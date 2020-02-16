@@ -46,7 +46,7 @@ namespace BackendSocialApp.Persistence.Contexts
         {
             if (userManager.FindByNameAsync("admin").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new AdminUser();
                 user.UserName = "admin";
                 user.Email = "admin@falci.com";
                 user.FullName = "Admin User";
@@ -61,7 +61,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("falci1").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new FortuneTellerUser();
                 user.UserName = "falci1";
                 user.Email = "falci1@falci.com";
                 user.FullName = "Falcı User 1";
@@ -76,7 +76,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("falci2").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new FortuneTellerUser();
                 user.UserName = "falci2";
                 user.Email = "falci1@falci.com";
                 user.FullName = "Falcı User 2";
@@ -91,7 +91,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("falci3").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new FortuneTellerUser();
                 user.UserName = "falci3";
                 user.Email = "falci1@falci.com";
                 user.FullName = "Falcı User 3";
@@ -106,7 +106,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("user1").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new ConsumerUser();
                 user.UserName = "user1";
                 user.Email = "user1@yahoo.com";
                 user.FullName = "User 1";
@@ -121,7 +121,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("user2").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new ConsumerUser();
                 user.UserName = "user2";
                 user.Email = "user2@yahoo.com";
                 user.FullName = "User 2";
@@ -136,7 +136,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("user3").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user = new ConsumerUser();
                 user.UserName = "user3";
                 user.Email = "user3@yahoo.com";
                 user.FullName = "User 3";
