@@ -101,7 +101,7 @@ namespace BackendSocialApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, AppDbContext context)
         {
             app.UseCors("CorsPolicy");
 
@@ -125,7 +125,7 @@ namespace BackendSocialApp
 
             app.UseAuthentication();
 
-            IdentityDataInitializer.SeedData(userManager, roleManager);
+            IdentityDataInitializer.SeedData(userManager, roleManager, context);
             app.UseMvc();
         }
     }

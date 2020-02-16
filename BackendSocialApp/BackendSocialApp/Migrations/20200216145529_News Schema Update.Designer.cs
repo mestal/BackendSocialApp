@@ -4,14 +4,16 @@ using BackendSocialApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200216145529_News Schema Update")]
+    partial class NewsSchemaUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -439,7 +441,7 @@ namespace BackendSocialApp.Migrations
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyResultItem", b =>
                 {
-                    b.HasOne("BackendSocialApp.Domain.Models.Survey", "Survey")
+                    b.HasOne("BackendSocialApp.Domain.Models.Survey")
                         .WithMany("Results")
                         .HasForeignKey("SurveyId");
                 });

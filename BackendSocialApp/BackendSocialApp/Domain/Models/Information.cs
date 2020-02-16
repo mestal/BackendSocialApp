@@ -8,16 +8,17 @@ namespace BackendSocialApp.Domain.Models
     public class MainFeed
     {
         public Guid Id { get; set; }
+        public string Title { get; set; }
         public string MainPhoto { get; set; }
 
         public string Info { get; set; }
 
         public DateTime PublishedDateUtc { get; set; }
 
-        public InformationStatus Status { get; set; }
+        public MainFeedStatus Status { get; set; }
     }
 
-    public enum InformationStatus
+    public enum MainFeedStatus
     {
         Active = 0,
         Deactive = 1
@@ -46,6 +47,7 @@ namespace BackendSocialApp.Domain.Models
         public string PicturePath { get; set; }
 
         public string ResultInformation { get; set; }
+        public Survey Survey { get; set; }
     }
 
     public class SurveyItem
@@ -94,12 +96,14 @@ namespace BackendSocialApp.Domain.Models
         public string PicturePath { get; set; }
 
         public string Information { get; set; }
+
+        public int Order { get; set; }
     }
 
     public class News : MainFeed
     {
         public string PicturePath { get; set; }
 
-        public string Information { get; set; }
+        public string DetailInformation { get; set; }
     }
 }
