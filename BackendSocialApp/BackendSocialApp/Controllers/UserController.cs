@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BackendSocialApp.Requests;
+using BackendSocialApp.Tools;
 
 namespace BackendSocialApp.Controllers
 {
@@ -23,12 +24,15 @@ namespace BackendSocialApp.Controllers
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<ApplicationRole> _roleManager;
         private readonly ApplicationSettings _appSettings;
+        private readonly IEmailHelper _emailHelper;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IOptions<ApplicationSettings> appSettings)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IOptions<ApplicationSettings> appSettings,
+                IEmailHelper emailHelper)
         {
             _userManager = userManager;
             _appSettings = appSettings.Value;
             _roleManager = roleManager;
+            _emailHelper = emailHelper;
         }
 
         [HttpPost]
@@ -87,6 +91,120 @@ namespace BackendSocialApp.Controllers
 
             await _userManager.CreateAsync(newUser, request.Password);
             await _userManager.AddToRoleAsync(newUser, "Consumer");
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var emailConfirmationLink = Url.Action("EmailConfirmation", "User", new { email = request.Email, token }, Request.Scheme);
+
+            _emailHelper.Send(
+                new EmailModel
+                {
+                    To = request.Email,
+                    Subject = "Falcı - Email Confirmation",
+                    IsBodyHtml = false,
+                    Message = emailConfirmationLink
+                }
+            );
+
+            return Ok();
+        }
+
+        public async Task<ActionResult> EmailConfirmation(EmailConfirmationRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new { message = "Empty Email." });
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "User not found." });
+            }
+
+            await _userManager.ConfirmEmailAsync(user, request.Token);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordRequest request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "User not found." });
+            }
+
+            if (await _userManager.CheckPasswordAsync(user, request.CurrentPassword))
+            {
+                return BadRequest(new { message = "Current password is wrong." });
+            }
+
+            if (request.NewPassword != request.NewPassword2)
+            {
+                return BadRequest(new { message = "Passwords not equal." });
+            }
+
+            await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            return Ok();
+        }
+
+        public async Task<ActionResult> ForgetPassword(ForgetPasswordRequest request)
+        {
+            if(string.IsNullOrWhiteSpace(request.Email))  
+            {
+                return BadRequest(new { message = "Enter Email." });
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "User not found." });
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var passwordResetLink = Url.Action("ResetPassword", "User", new { email = request.Email, token }, Request.Scheme);
+
+            _emailHelper.Send(
+                new EmailModel
+                {
+                    To = request.Email,
+                    Subject = "Falcı - Reset Password",
+                    IsBodyHtml = false,
+                    Message = passwordResetLink
+                }
+            );
+
+            return Ok();
+        }
+
+        public async Task<ActionResult> ResetPassword(ResetPasswordRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new { message = "Empty Email." });
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "User not found." });
+            }
+
+            if (request.NewPassword != request.NewPassword2)
+            {
+                return BadRequest(new { message = "Passwords not equal." });
+            }
+
+            await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
 
             return Ok();
         }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using AutoMapper;
-using System.Threading.Tasks;
 using BackendSocialApp.Domain.Models;
 using BackendSocialApp.Domain.Repositories;
 using BackendSocialApp.Persistence.Contexts;
@@ -18,9 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using BackendSocialApp.Tools;
 
 namespace BackendSocialApp
 {
@@ -96,6 +91,7 @@ namespace BackendSocialApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICoffeeFortuneTellingService, CoffeeFortuneTellingService>();
             services.AddScoped<ICoffeeFortuneTellingRepository, CoffeeFortuneTellingRepository>();
+            services.AddSingleton<IEmailHelper, MockEmailHelper>();
 
             services.AddAutoMapper(typeof(Startup));
         }
