@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -7,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using BackendSocialApp.Domain.Models;
 using BackendSocialApp.Resources;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BackendSocialApp.Requests;
 using BackendSocialApp.Tools;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace BackendSocialApp.Controllers
 {
@@ -25,14 +25,16 @@ namespace BackendSocialApp.Controllers
         private RoleManager<ApplicationRole> _roleManager;
         private readonly ApplicationSettings _appSettings;
         private readonly IEmailHelper _emailHelper;
+        private readonly IHostingEnvironment _environment;
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IOptions<ApplicationSettings> appSettings,
-                IEmailHelper emailHelper)
+                IEmailHelper emailHelper, IHostingEnvironment environment)
         {
             _userManager = userManager;
             _appSettings = appSettings.Value;
             _roleManager = roleManager;
             _emailHelper = emailHelper;
+            _environment = environment;
         }
 
         [HttpPost]
@@ -154,6 +156,8 @@ namespace BackendSocialApp.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("ForgetPassword")]
         public async Task<ActionResult> ForgetPassword(ForgetPasswordRequest request)
         {
             if(string.IsNullOrWhiteSpace(request.Email))  
@@ -185,6 +189,8 @@ namespace BackendSocialApp.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("ResetPassword")]
         public async Task<ActionResult> ResetPassword(ResetPasswordRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Email))
@@ -205,6 +211,36 @@ namespace BackendSocialApp.Controllers
             }
 
             await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("UpdateProfilePhoto")]
+        public async Task<ActionResult> UpdateProfilePhoto(UpdateProfilePhotoRequest request)
+        {
+            var userId = User.Claims.First(a => a.Type == "UserID").Value;
+            var folderPath = _environment.ContentRootPath + "\\ProfilePhotos\\";
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+       
+            if (request.Photo.ContentType.Length > 30)
+            {
+                throw new Exception("Wrong Content-Type");
+            }
+            var fileName = Guid.NewGuid() + "." + request.Photo.ContentType.Replace('/', '.');
+            var fileFullPath = folderPath + fileName;
+            using (FileStream fileStream = System.IO.File.Create(fileFullPath))
+            {
+                request.Photo.CopyTo(fileStream);
+                fileStream.Flush();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.PicturePath = fileFullPath;
+            await _userManager.UpdateAsync(user);
 
             return Ok();
         }
