@@ -45,7 +45,7 @@ namespace BackendSocialApp.Controllers
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                         new Claim("UserID", user.Id.ToString()),
-                        new Claim(ClaimTypes.Role, role[0])
+                        new Claim("Role", role[0])
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(30),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
@@ -60,6 +60,35 @@ namespace BackendSocialApp.Controllers
             {
                 return BadRequest(new { message = "UserName or password is incorrect." });
             }
+        }
+
+        [HttpPost]
+        [Route("RegisterNewUser")]
+        public async Task<ActionResult> RegisterNewUser(RegisterNewUserRequest request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if (user != null)
+            {
+                return BadRequest(new { message = "UserName already exists." });
+            }
+
+            if (request.Password != request.Password2)
+            {
+                return BadRequest(new { message = "Passwords not equal." });
+            }
+
+            var newUser = new ConsumerUser
+            {
+                UserName = request.UserName,
+                Email = request.Email,
+                FullName = request.Name + " " + request.Surname
+            };
+
+            await _userManager.CreateAsync(newUser, request.Password);
+            await _userManager.AddToRoleAsync(newUser, "Consumer");
+
+            return Ok();
         }
     }
 }

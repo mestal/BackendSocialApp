@@ -13,6 +13,8 @@ namespace BackendSocialApp.Domain.Models
         public string FullName { get; set; }
 
         public  UserStatus Status { get; set; }
+
+        public string PicturePath { get; set; }
     }
 
     public class AdminUser : ApplicationUser
@@ -27,5 +29,9 @@ namespace BackendSocialApp.Domain.Models
     public class FortuneTellerUser : ApplicationUser
     {
         public int CoffeePoint { get; set; }
+
+        public int CoffeFortuneTellingCount { get; set; }
+
+        public float CoffeeFortuneTellingPoint { get; set; }
     }
 }

@@ -25,4 +25,21 @@ namespace BackendSocialApp.Domain.Services.Communication
             Resource = default;
         }
     }
+
+    public abstract class BaseResponse
+    {
+        public bool Success { get; private set; }
+        public string Message { get; private set; }
+
+        protected BaseResponse()
+        {
+            Success = true;
+        }
+
+        protected BaseResponse(string message)
+        {
+            Success = false;
+            Message = message;
+        }
+    }
 }

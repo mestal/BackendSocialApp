@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BackendSocialApp.Domain.Models;
 using BackendSocialApp.Domain.Services.Communication;
+using BackendSocialApp.Paging;
 using BackendSocialApp.Requests;
 using BackendSocialApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BackendSocialApp.Controllers
@@ -35,9 +37,16 @@ namespace BackendSocialApp.Controllers
         [HttpPost]
         [Authorize(Roles = "Consumer")]
         [Route("CreateCoffeeFortuneTelling")]
-        public async Task<ActionResult> CreateCoffeeFortuneTelling([FromForm]CreateCoffeeFortuneTellingRequest request)//List<IFormFile> Pictures, [FromForm]CoffeeFortuneTellingStatus Typee) //(CreateCoffeeFortuneTellingRequest request)
+        public async Task<ActionResult> CreateCoffeeFortuneTelling([FromForm]CreateCoffeeFortuneTellingRequest request)
         {
             var newCoffeeFortuneTelling = _mapper.Map<CreateCoffeeFortuneTellingRequest, CoffeeFortuneTelling>(request);
+            var userId = User.Claims.First(a => a.Type == "UserID").Value;
+            var userRole = User.Claims.First(a => a.Type == "Role").Value;
+
+            if (userId != request.UserId.ToString() && userRole != "Admin")
+            {
+                throw new Exception("You can not create for another user.");
+            }
 
             var user = (ConsumerUser)await _userManager.FindByIdAsync(request.UserId.ToString());
 
@@ -81,33 +90,42 @@ namespace BackendSocialApp.Controllers
         [HttpPost]
         [Authorize(Roles = "Falci")]
         [Route("SubmitByFortuneTeller")]
-        public async Task<ActionResult> SubmitByFortuneTeller(SubmitByFortuneTellerRequest loginResource)
+        public async Task<ActionResult> SubmitByFortuneTeller(SubmitByFortuneTellerRequest request)
         {
+            var fortuneTellerId = new Guid(User.Claims.First(a => a.Type == "UserID").Value);
+            await _service.SubmitFortuneTellingByFortuneTeller(fortuneTellerId, request.CoffeeFortuneTellingId, request.Comment);
             return Ok();
         }
 
         [HttpPost]
         [Authorize(Roles = "Consumer")]
         [Route("GetUserItems")]
-        public async Task<GetUserItemsResponse> GetUserItems(GetUserItemsRequest request)
+        public async Task<ActionResult<IPagedList<CoffeeFortuneTelling>>> GetUserItems(SearchPageRequest request)
         {
-            return new GetUserItemsResponse();
+            var userId = new Guid(User.Claims.First(a => a.Type == "UserID").Value);
+            return Ok(_service.GetUserItems(request.Args, userId));
         }
 
         [HttpPost]
         [Authorize(Roles = "Falci")]
         [Route("GetFortuneTellerItems")]
-        public async Task<GetFortuneTellerItemsResponse> GetFortuneTellerItems(GetFortuneTellerItemsRequest request)
+        public async Task<ActionResult<IPagedList<CoffeeFortuneTelling>>> GetFortuneTellerItems(SearchPageRequest request)
         {
-            return new GetFortuneTellerItemsResponse();
+            var userId = new Guid(User.Claims.First(a => a.Type == "UserID").Value);
+            return Ok(_service.GetFortuneTellerItems(request.Args, userId));
         }
 
         [HttpGet]
         [Authorize]
         [Route("GetFortuneTellingById")]
-        public async Task<GetFortuneTellingByIdResponse> GetFortuneTellingById(Guid id)
+        public GetFortuneTellingByIdResponse GetFortuneTellingById(Guid id)
         {
-            return new GetFortuneTellingByIdResponse();
+            var userId = new Guid(User.Claims.First(a => a.Type == "UserID").Value);
+            var userRole = User.Claims.First(a => a.Type == "Role").Value;
+
+            var result = _service.GetCoffeeFortuneTelling(id, userId, userRole);
+
+            return new GetFortuneTellingByIdResponse { CoffeeFortuneTelling = result };
         }
     }
 }

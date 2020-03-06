@@ -7,5 +7,8 @@ namespace BackendSocialApp.Requests
 {
     public class SubmitByFortuneTellerRequest
     {
+        public string Comment { get; set; }
+
+        public Guid CoffeeFortuneTellingId { get; set; }
     }
 }
