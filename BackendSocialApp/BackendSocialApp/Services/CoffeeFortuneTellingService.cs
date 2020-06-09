@@ -39,7 +39,7 @@ namespace BackendSocialApp.Services
 
             coffeeFortuneTelling.SubmitDateUtc = DateTime.UtcNow;
 
-            if (coffeeFortuneTelling.User.Point < coffeeFortuneTelling.FortuneTeller.CoffeePoint)
+            if (coffeeFortuneTelling.User.Point < coffeeFortuneTelling.FortuneTeller.CoffeePointPrice)
             {
                 throw new Exception("UserDoesntHaveEnoughPoint");
             }

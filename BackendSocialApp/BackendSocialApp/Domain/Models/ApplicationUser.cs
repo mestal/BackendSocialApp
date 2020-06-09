@@ -28,10 +28,9 @@ namespace BackendSocialApp.Domain.Models
 
     public class FortuneTellerUser : ApplicationUser
     {
-        public int CoffeePoint { get; set; }
+        public int CoffeePointPrice { get; set; }
 
         public int CoffeFortuneTellingCount { get; set; }
 
-        public float CoffeeFortuneTellingPoint { get; set; }
     }
 }

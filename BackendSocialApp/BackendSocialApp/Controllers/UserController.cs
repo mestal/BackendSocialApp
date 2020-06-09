@@ -59,8 +59,23 @@ namespace BackendSocialApp.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { Token = token, Role = role[0] });
 
+                if(role[0] == "Admin")
+                {
+                    //var adminUser = (AdminUser)user;
+                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0] });
+                }
+                else if (role[0] == "Falci")
+                {
+                    var fortuneTellerUser = (FortuneTellerUser)user;
+                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount });
+                }
+                else
+                {
+                    var consumerUser = (ConsumerUser)user;
+                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], consumerUser.Point });
+                }
+                
             }
             else
             {
