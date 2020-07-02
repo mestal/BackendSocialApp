@@ -149,5 +149,10 @@ namespace BackendSocialApp.Services
 
             return coffeeFortuneTelling;
         }
+
+        public List<FortuneTellerUser> GetFortuneTellers()
+        {
+            return _coffeeFortuneTellingRepository.GetFortuneTellers();
+        }
     }
 }

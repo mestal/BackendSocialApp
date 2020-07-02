@@ -19,5 +19,7 @@ namespace BackendSocialApp.Services
         Task<IPagedList<CoffeeFortuneTelling>> GetFortuneTellerItems(PageSearchArgs args, Guid userId);
 
         CoffeeFortuneTelling GetCoffeeFortuneTelling(Guid id, Guid userId, string role);
+
+        List<FortuneTellerUser> GetFortuneTellers();
     }
 }

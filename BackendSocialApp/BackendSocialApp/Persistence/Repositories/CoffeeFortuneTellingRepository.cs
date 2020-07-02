@@ -29,6 +29,11 @@ namespace BackendSocialApp.Persistence.Repositories
             return _context.CoffeeFortuneTellings.FirstOrDefault(a => a.Id == id);
         }
 
+        public List<FortuneTellerUser> GetFortuneTellers()
+        {
+            return _context.FortuneTellerUsers.ToList();
+        }
+
         public void UpdateCoffeeFortuneTelling(CoffeeFortuneTelling coffeeFortuneTelling)
         {
             _context.CoffeeFortuneTellings.Update(coffeeFortuneTelling);

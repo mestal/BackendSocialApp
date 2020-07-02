@@ -127,5 +127,13 @@ namespace BackendSocialApp.Controllers
 
             return new GetFortuneTellingByIdResponse { CoffeeFortuneTelling = result };
         }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetFortuneTellers")]
+        public object GetFortuneTellers()
+        {
+            return _service.GetFortuneTellers();
+        }
     }
 }
