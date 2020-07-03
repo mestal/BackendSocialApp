@@ -98,7 +98,7 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Consumer")]
+        [Authorize (Roles = "Consumer")]
         [Route("GetUserItems")]
         public async Task<ActionResult<IPagedList<CoffeeFortuneTelling>>> GetUserItems(SearchPageRequest request)
         {
@@ -107,7 +107,7 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Falci")]
+        [Authorize (Roles = "Falci")]
         [Route("GetFortuneTellerItems")]
         public async Task<ActionResult<IPagedList<CoffeeFortuneTelling>>> GetFortuneTellerItems(SearchPageRequest request)
         {

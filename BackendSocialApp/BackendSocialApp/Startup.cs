@@ -48,7 +48,9 @@ namespace BackendSocialApp
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
             //services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddDefaultIdentity<ApplicationUser>()
+                        .AddRoles<ApplicationRole>()
+                        .AddRoleManager<RoleManager<ApplicationRole>>()
                         .AddEntityFrameworkStores<AppDbContext>()
                         .AddDefaultTokenProviders();
 
@@ -69,11 +71,11 @@ namespace BackendSocialApp
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                //x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;
-                options.SaveToken = false;
+                options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
@@ -86,8 +88,6 @@ namespace BackendSocialApp
              );
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddScoped<IVendorService, VendorService>();
-            //services.AddScoped<IVendorRepository, VendorRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICoffeeFortuneTellingService, CoffeeFortuneTellingService>();
             services.AddScoped<ICoffeeFortuneTellingRepository, CoffeeFortuneTellingRepository>();

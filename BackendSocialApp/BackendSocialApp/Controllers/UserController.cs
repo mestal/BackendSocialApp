@@ -46,21 +46,25 @@ namespace BackendSocialApp.Controllers
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 var role = await _userManager.GetRolesAsync(user);
+
+                // authentication successful so generate jwt token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.JWT_Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserID", user.Id.ToString()),
-                        new Claim("Role", role[0])
+                        new Claim(ClaimTypes.Name, user.Id.ToString()),
+                        new Claim(ClaimTypes.Role, role[0])
                     }),
-                    Expires = DateTime.UtcNow.AddMinutes(30),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
-                var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+
                 var token = tokenHandler.WriteToken(securityToken);
 
-                if(role[0] == "Admin")
+                if (role[0] == "Admin")
                 {
                     //var adminUser = (AdminUser)user;
                     return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0] });
@@ -75,7 +79,6 @@ namespace BackendSocialApp.Controllers
                     var consumerUser = (ConsumerUser)user;
                     return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], consumerUser.Point });
                 }
-                
             }
             else
             {

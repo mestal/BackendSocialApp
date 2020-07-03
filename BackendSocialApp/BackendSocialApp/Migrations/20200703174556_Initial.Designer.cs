@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200306064432_user new fiedls")]
-    partial class usernewfiedls
+    [Migration("20200703174556_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -307,9 +307,11 @@ namespace BackendSocialApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -339,9 +341,11 @@ namespace BackendSocialApp.Migrations
                 {
                     b.Property<Guid>("UserId");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value");
 
@@ -372,9 +376,7 @@ namespace BackendSocialApp.Migrations
 
                     b.Property<int>("CoffeFortuneTellingCount");
 
-                    b.Property<float>("CoffeeFortuneTellingPoint");
-
-                    b.Property<int>("CoffeePoint");
+                    b.Property<int>("CoffeePointPrice");
 
                     b.HasDiscriminator().HasValue("FortuneTellerUser");
                 });

@@ -66,6 +66,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "falci1";
                 user.Email = "falci1@falci.com";
                 user.FullName = "Falcı User 1";
+                user.PicturePath = "cheetah.jpg";
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -81,6 +82,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "falci2";
                 user.Email = "falci2@falci.com";
                 user.FullName = "Falcı User 2";
+                user.PicturePath = "eagle.jpg";
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -96,6 +98,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "falci3";
                 user.Email = "falci3@falci.com";
                 user.FullName = "Falcı User 3";
+                user.PicturePath = "duck.jpg";
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
