@@ -8,23 +8,16 @@ namespace BackendSocialApp.Domain.Models
 {
     public enum CoffeeFortuneTellingStatus
     {
-        [Description("Yeni")]
         Draft = 0,
-        [Description("Gönderildi")]
         SubmittedByUser = 1,
-        [Description("Bakıldı")]
         SubmittedByFortuneTeller = 2
     }
 
     public enum CoffeeFortuneTellingType
     {
-        [Description("Genel")]
         General = 0,
-        [Description("Para")]
         Money = 1,
-        [Description("İş")]
         Business = 2,
-        [Description("Aşk")]
         Love = 3
     }
 

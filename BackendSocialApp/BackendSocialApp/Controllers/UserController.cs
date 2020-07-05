@@ -54,7 +54,7 @@ namespace BackendSocialApp.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, user.Id.ToString()),
+                        new Claim(Constants.ClaimUserId, user.Id.ToString()),
                         new Claim(ClaimTypes.Role, role[0])
                     }),
                     Expires = DateTime.UtcNow.AddDays(7),

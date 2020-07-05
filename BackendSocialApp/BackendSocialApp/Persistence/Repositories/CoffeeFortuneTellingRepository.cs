@@ -2,6 +2,7 @@
 using BackendSocialApp.Domain.Repositories;
 using BackendSocialApp.Paging;
 using BackendSocialApp.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,9 @@ namespace BackendSocialApp.Persistence.Repositories
 
         public Task<IPagedList<CoffeeFortuneTelling>> GetUserItemsAsync(PageSearchArgs args, Guid userId)
         {
-            IQueryable<CoffeeFortuneTelling> query = _context.CoffeeFortuneTellings;
+            IQueryable<CoffeeFortuneTelling> query = _context.CoffeeFortuneTellings
+                .Include(a => a.FortuneTeller)
+                .Include(b => b.User);
 
             var orderByList = new List<Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>>();
 

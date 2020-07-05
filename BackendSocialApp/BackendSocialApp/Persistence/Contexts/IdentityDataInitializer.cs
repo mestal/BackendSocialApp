@@ -14,6 +14,7 @@ namespace BackendSocialApp.Persistence.Contexts
             SeedRoles(roleManager);
             SeedUsers(userManager);
             SeedNews(context);
+            SeedFortuneTellings(context);
         }
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
@@ -460,6 +461,198 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 context.ListNewsItems.Add(surveyItem);
             }
+
+            context.SaveChanges();
+        }
+
+        public static void SeedFortuneTellings(AppDbContext context)
+        {
+            if(context.CoffeeFortuneTellings.Count() > 0)
+            {
+                return;
+            }
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 1 ",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 2",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-3),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-7),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-5),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 10,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 3",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 4",
+                ReadDateUtc = null,
+                Status = CoffeeFortuneTellingStatus.SubmittedByUser,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = null,
+                Type = CoffeeFortuneTellingType.Money,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 5",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.Love,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 6",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.Business,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 7",
+                ReadDateUtc = null,
+                Status = CoffeeFortuneTellingStatus.Draft,
+                SubmitDateUtc = null,
+                SubmitByFortuneTellerDateUtc = null,
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 8",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 9",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 10",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 11",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 12",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
+
+            context.CoffeeFortuneTellings.Add(new CoffeeFortuneTelling
+            {
+                Id = Guid.NewGuid(),
+                Point = 5,
+                FortuneTeller = context.FortuneTellerUsers.First(),
+                FortuneTellerComment = "Deneme 13",
+                ReadDateUtc = DateTime.UtcNow.AddDays(-1),
+                Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller,
+                SubmitDateUtc = DateTime.UtcNow.AddDays(-5),
+                SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
+                Type = CoffeeFortuneTellingType.General,
+                User = context.ConsumerUsers.First()
+            });
 
             context.SaveChanges();
         }

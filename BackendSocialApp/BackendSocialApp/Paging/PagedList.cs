@@ -76,12 +76,12 @@ namespace BackendSocialApp.Paging
         /// <summary>
         /// Has previous page
         /// </summary>
-        public bool HasPreviousPage => PageIndex > 0;
+        public bool HasPreviousPage => PageIndex > 1;
 
         /// <summary>
         /// Has next page
         /// </summary>
-        public bool HasNextPage => PageIndex + 1 < TotalPages;
+        public bool HasNextPage => PageIndex < TotalPages;
 
         /// <summary>
         /// Items

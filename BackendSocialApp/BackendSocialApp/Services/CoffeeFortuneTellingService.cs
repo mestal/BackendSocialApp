@@ -2,6 +2,7 @@
 using BackendSocialApp.Domain.Repositories;
 using BackendSocialApp.Domain.Services.Communication;
 using BackendSocialApp.Paging;
+using BackendSocialApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,11 @@ namespace BackendSocialApp.Services
 
         public ICoffeeFortuneTellingRepository _coffeeFortuneTellingRepository;
         public IUnitOfWork _unitOfWork;
-        private readonly UserManager<ApplicationUser> _userManager;
 
         public CoffeeFortuneTellingService(ICoffeeFortuneTellingRepository coffeeFortuneTellingRepository, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             _coffeeFortuneTellingRepository = coffeeFortuneTellingRepository;
             _unitOfWork = unitOfWork;
-            _userManager = userManager;
         }
 
         public async Task<CreateCoffeeFortuneTellingResponse> CreateCoffeeFortuneTellingAsync(CoffeeFortuneTelling coffeeFortuneTelling, List<string> picturePaths)

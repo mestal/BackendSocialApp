@@ -15,7 +15,14 @@ namespace BackendSocialApp.Mapping
             CreateMap<ConnectionStatus, string>().ConvertUsing(src => Enum.GetName(typeof(ConnectionStatus), src));
             CreateMap<FortuneTellerViewModel, FortuneTellerUser>();
             CreateMap<FortuneTellerUser, FortuneTellerViewModel>();
-            
+
+            CreateMap<CoffeeFortuneTellingStatus, string>().ConvertUsing(src => Enum.GetName(typeof(CoffeeFortuneTellingStatus), src));
+
+            CreateMap<CoffeeFortuneTelling, CoffeeFortuneTellingViewModel>();
+            CreateMap<CoffeeFortuneTellingViewModel, CoffeeFortuneTelling>();
+            CreateMap<FortuneTellerUser, UserViewModel>();
+            CreateMap<ConsumerUser, UserViewModel>();
+
         }
     }
 }
