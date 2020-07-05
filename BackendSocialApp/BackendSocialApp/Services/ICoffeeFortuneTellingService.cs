@@ -21,5 +21,7 @@ namespace BackendSocialApp.Services
         CoffeeFortuneTelling GetCoffeeFortuneTelling(Guid id, Guid userId, string role);
 
         List<FortuneTellerUser> GetFortuneTellers();
+
+        List<FortuneTellerUser> GetActiveFortuneTellers();
     }
 }

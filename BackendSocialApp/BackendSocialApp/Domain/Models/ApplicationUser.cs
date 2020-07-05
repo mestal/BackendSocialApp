@@ -12,6 +12,8 @@ namespace BackendSocialApp.Domain.Models
         public  UserStatus Status { get; set; }
 
         public string PicturePath { get; set; }
+
+        public ConnectionStatus ConnectionStatus { get; set; }
     }
 
     public class AdminUser : ApplicationUser

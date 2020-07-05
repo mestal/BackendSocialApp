@@ -4,9 +4,9 @@ using BackendSocialApp.Domain.Services.Communication;
 using BackendSocialApp.Paging;
 using BackendSocialApp.Requests;
 using BackendSocialApp.Services;
+using BackendSocialApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -129,11 +129,19 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [Route("GetFortuneTellers")]
         public object GetFortuneTellers()
         {
             return _service.GetFortuneTellers();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetActiveFortuneTellers")]
+        public object GetActiveFortuneTellers()
+        {
+            return _mapper.Map<List<FortuneTellerUser>, List<FortuneTellerViewModel>>(_service.GetActiveFortuneTellers());
         }
     }
 }

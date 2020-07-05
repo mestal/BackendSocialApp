@@ -17,6 +17,8 @@ namespace BackendSocialApp.Domain.Repositories
 
         List<FortuneTellerUser> GetFortuneTellers();
 
+        List<FortuneTellerUser> GetActiveFortuneTellers();
+
         void UpdateCoffeeFortuneTelling(CoffeeFortuneTelling coffeeFortuneTelling);
 
         Task<IPagedList<CoffeeFortuneTelling>> GetUserItemsAsync(PageSearchArgs args, Guid userId);

@@ -51,6 +51,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "admin";
                 user.Email = "admin@falci.com";
                 user.FullName = "Admin User";
+                user.Status = UserStatus.Active;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -67,6 +68,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.Email = "falci1@falci.com";
                 user.FullName = "Falcı User 1";
                 user.PicturePath = "cheetah.jpg";
+                user.Status = UserStatus.Active;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -83,6 +85,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.Email = "falci2@falci.com";
                 user.FullName = "Falcı User 2";
                 user.PicturePath = "eagle.jpg";
+                user.Status = UserStatus.Active;
+                user.ConnectionStatus = ConnectionStatus.Online;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -99,6 +103,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.Email = "falci3@falci.com";
                 user.FullName = "Falcı User 3";
                 user.PicturePath = "duck.jpg";
+                user.Status = UserStatus.Active;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -114,6 +119,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "user1";
                 user.Email = "user1@yahoo.com";
                 user.FullName = "User 1";
+                user.Status = UserStatus.Active;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -129,6 +135,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "user2";
                 user.Email = "user2@yahoo.com";
                 user.FullName = "User 2";
+                user.Status = UserStatus.Active;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -144,6 +151,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.UserName = "user3";
                 user.Email = "user3@yahoo.com";
                 user.FullName = "User 3";
+                user.Status = UserStatus.Active;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 

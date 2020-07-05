@@ -34,6 +34,11 @@ namespace BackendSocialApp.Persistence.Repositories
             return _context.FortuneTellerUsers.ToList();
         }
 
+        public List<FortuneTellerUser> GetActiveFortuneTellers()
+        {
+            return _context.FortuneTellerUsers.Where(a => a.Status == UserStatus.Active).ToList();
+        }
+
         public void UpdateCoffeeFortuneTelling(CoffeeFortuneTelling coffeeFortuneTelling)
         {
             _context.CoffeeFortuneTellings.Update(coffeeFortuneTelling);

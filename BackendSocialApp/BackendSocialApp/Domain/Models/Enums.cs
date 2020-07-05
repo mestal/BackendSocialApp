@@ -33,4 +33,10 @@ namespace BackendSocialApp.Domain.Models
         Deactive = 0,
         Active = 1
     }
+
+    public enum ConnectionStatus
+    {
+        Offline = 0,
+        Online = 1
+    }
 }
