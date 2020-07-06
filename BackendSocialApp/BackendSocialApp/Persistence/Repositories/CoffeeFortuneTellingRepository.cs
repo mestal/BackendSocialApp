@@ -53,25 +53,22 @@ namespace BackendSocialApp.Persistence.Repositories
 
             var orderByList = new List<Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>>();
 
-            if (args.SortingOptions != null)
-            {
-                foreach (var sortingOption in args.SortingOptions)
-                {
-                    switch (sortingOption.Field)
-                    {
-                        case "SubmitDate":
-                            orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(sortingOption, c => c.SubmitDateUtc));
-                            break;
-                        case "SubmitDateByFortuneTeller":
-                            orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(sortingOption, c => c.SubmitByFortuneTellerDateUtc));
-                            break;
-                    }
-                }
-            }
+            //if (args.SortingOptions != null)
+            //{
+            //    foreach (var sortingOption in args.SortingOptions)
+            //    {
+            //        switch (sortingOption.Field)
+            //        {
+            //            case "submitDateUtc":
+            //                orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(sortingOption, c => c.SubmitDateUtc));
+            //                break;
+            //        }
+            //    }
+            //}
 
             if (orderByList.Count == 0)
             {
-                orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(new SortingOption { Direction = SortingOption.SortingDirection.ASC }, c => c.Id));
+                orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(new SortingOption { Direction = SortingOption.SortingDirection.DESC }, c => c.SubmitDateUtc));
             }
 
             var filterList = new List<Tuple<FilteringOption, Expression<Func<CoffeeFortuneTelling, bool>>>>();

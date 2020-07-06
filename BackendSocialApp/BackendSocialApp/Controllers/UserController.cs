@@ -64,7 +64,7 @@ namespace BackendSocialApp.Controllers
 
                 var token = tokenHandler.WriteToken(securityToken);
 
-                if (role[0] == "Admin")
+                if (role[0] == Constants.RoleAdmin)
                 {
                     //var adminUser = (AdminUser)user;
                     return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0] });

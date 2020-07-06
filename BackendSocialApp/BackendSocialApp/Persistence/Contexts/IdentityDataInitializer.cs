@@ -19,27 +19,27 @@ namespace BackendSocialApp.Persistence.Contexts
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
         {
-            var result = roleManager.RoleExistsAsync("Admin").Result;
+            var result = roleManager.RoleExistsAsync(Constants.RoleAdmin).Result;
             if (!result)
             {
                 ApplicationRole role = new ApplicationRole();
-                role.Name = "Admin";
+                role.Name = Constants.RoleAdmin;
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
 
-            result = roleManager.RoleExistsAsync("Falci").Result;
+            result = roleManager.RoleExistsAsync(Constants.RoleFalci).Result;
             if (!result)
             {
                 ApplicationRole role = new ApplicationRole();
-                role.Name = "Falci";
+                role.Name = Constants.RoleFalci;
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
 
-            result = roleManager.RoleExistsAsync("Consumer").Result;
+            result = roleManager.RoleExistsAsync(Constants.RoleConsumer).Result;
             if (!result)
             {
                 ApplicationRole role = new ApplicationRole();
-                role.Name = "Consumer";
+                role.Name = Constants.RoleConsumer;
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
         }
@@ -58,7 +58,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Admin").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleAdmin).Wait();
                 }
             }
 
@@ -75,7 +75,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Falci").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleFalci).Wait();
                 }
             }
 
@@ -93,7 +93,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Falci").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleFalci).Wait();
                 }
             }
 
@@ -110,7 +110,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Falci").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleFalci).Wait();
                 }
             }
 
@@ -126,7 +126,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Consumer").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
                 }
             }
 
@@ -142,7 +142,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Consumer").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
                 }
             }
 
@@ -158,7 +158,7 @@ namespace BackendSocialApp.Persistence.Contexts
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Consumer").Wait();
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
                 }
             }
         }

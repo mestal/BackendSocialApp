@@ -44,7 +44,7 @@ namespace BackendSocialApp.Controllers
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
 
-            if (userId != request.UserId.ToString() && userRole != "Admin")
+            if (userId != request.UserId.ToString() && userRole != Constants.RoleAdmin)
             {
                 throw new Exception("You can not create for another user.");
             }
