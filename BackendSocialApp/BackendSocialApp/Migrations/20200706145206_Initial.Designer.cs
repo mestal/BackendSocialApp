@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200703183918_ConnectionStatusAdded")]
-    partial class ConnectionStatusAdded
+    [Migration("20200706145206_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,30 +158,12 @@ namespace BackendSocialApp.Migrations
                     b.ToTable("CoffeeFortuneTellingPictures");
                 });
 
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.ListNewsItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Information");
-
-                    b.Property<Guid?>("ListNewsId");
-
-                    b.Property<int>("Order");
-
-                    b.Property<string>("PicturePath");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ListNewsId");
-
-                    b.ToTable("ListNewsItems");
-                });
-
             modelBuilder.Entity("BackendSocialApp.Domain.Models.MainFeed", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DetailedInfo");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
@@ -201,6 +183,26 @@ namespace BackendSocialApp.Migrations
                     b.ToTable("MainFeeds");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("MainFeed");
+                });
+
+            modelBuilder.Entity("BackendSocialApp.Domain.Models.NewsItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Information");
+
+                    b.Property<Guid?>("NewsId");
+
+                    b.Property<int>("Order");
+
+                    b.Property<string>("PicturePath");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NewsId");
+
+                    b.ToTable("NewsItems");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItem", b =>
@@ -383,20 +385,9 @@ namespace BackendSocialApp.Migrations
                     b.HasDiscriminator().HasValue("FortuneTellerUser");
                 });
 
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.ListNews", b =>
-                {
-                    b.HasBaseType("BackendSocialApp.Domain.Models.MainFeed");
-
-                    b.HasDiscriminator().HasValue("ListNews");
-                });
-
             modelBuilder.Entity("BackendSocialApp.Domain.Models.News", b =>
                 {
                     b.HasBaseType("BackendSocialApp.Domain.Models.MainFeed");
-
-                    b.Property<string>("DetailInformation");
-
-                    b.Property<string>("PicturePath");
 
                     b.HasDiscriminator().HasValue("News");
                 });
@@ -428,11 +419,11 @@ namespace BackendSocialApp.Migrations
                         .HasForeignKey("CoffeeFortuneTellingId");
                 });
 
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.ListNewsItem", b =>
+            modelBuilder.Entity("BackendSocialApp.Domain.Models.NewsItem", b =>
                 {
-                    b.HasOne("BackendSocialApp.Domain.Models.ListNews", "ListNews")
+                    b.HasOne("BackendSocialApp.Domain.Models.News", "News")
                         .WithMany("Items")
-                        .HasForeignKey("ListNewsId");
+                        .HasForeignKey("NewsId");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItem", b =>

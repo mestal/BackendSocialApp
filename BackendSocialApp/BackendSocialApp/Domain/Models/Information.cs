@@ -11,7 +11,9 @@ namespace BackendSocialApp.Domain.Models
         public string Title { get; set; }
         public string MainPhoto { get; set; }
 
-        public string Info { get; set; }
+        public string InfoHtml { get; set; }
+
+        public string DetailedInfo { get; set; }
 
         public DateTime PublishedDateUtc { get; set; }
 
@@ -83,15 +85,10 @@ namespace BackendSocialApp.Domain.Models
         public int Order { get; set; }
     }
 
-    public class ListNews : MainFeed
-    {
-        public List<ListNewsItem> Items { get; set; }
-    }
-
-    public class ListNewsItem
+    public class NewsItem
     {
         public Guid Id { get; set; }
-        public ListNews ListNews { get; set; }
+        public News News { get; set; }
 
         public string PicturePath { get; set; }
 
@@ -102,8 +99,6 @@ namespace BackendSocialApp.Domain.Models
 
     public class News : MainFeed
     {
-        public string PicturePath { get; set; }
-
-        public string DetailInformation { get; set; }
+        public List<NewsItem> Items { get; set; }
     }
 }

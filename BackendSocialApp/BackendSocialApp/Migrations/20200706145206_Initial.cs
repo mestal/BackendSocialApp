@@ -44,6 +44,7 @@ namespace BackendSocialApp.Migrations
                     FullName = table.Column<string>(type: "nvarchar(150)", nullable: true),
                     Status = table.Column<int>(nullable: false),
                     PicturePath = table.Column<string>(nullable: true),
+                    ConnectionStatus = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     Point = table.Column<int>(nullable: true),
                     CoffeePointPrice = table.Column<int>(nullable: true),
@@ -62,11 +63,10 @@ namespace BackendSocialApp.Migrations
                     Title = table.Column<string>(nullable: true),
                     MainPhoto = table.Column<string>(nullable: true),
                     Info = table.Column<string>(nullable: true),
+                    DetailedInfo = table.Column<string>(nullable: true),
                     PublishedDateUtc = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    PicturePath = table.Column<string>(nullable: true),
-                    DetailInformation = table.Column<string>(nullable: true),
                     SurveyType = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -213,21 +213,21 @@ namespace BackendSocialApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ListNewsItems",
+                name: "NewsItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    ListNewsId = table.Column<Guid>(nullable: true),
+                    NewsId = table.Column<Guid>(nullable: true),
                     PicturePath = table.Column<string>(nullable: true),
                     Information = table.Column<string>(nullable: true),
                     Order = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ListNewsItems", x => x.Id);
+                    table.PrimaryKey("PK_NewsItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ListNewsItems_MainFeeds_ListNewsId",
-                        column: x => x.ListNewsId,
+                        name: "FK_NewsItems_MainFeeds_NewsId",
+                        column: x => x.NewsId,
                         principalTable: "MainFeeds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -373,9 +373,9 @@ namespace BackendSocialApp.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListNewsItems_ListNewsId",
-                table: "ListNewsItems",
-                column: "ListNewsId");
+                name: "IX_NewsItems_NewsId",
+                table: "NewsItems",
+                column: "NewsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyItemAnswers_SurveyItemId",
@@ -414,7 +414,7 @@ namespace BackendSocialApp.Migrations
                 name: "CoffeeFortuneTellingPictures");
 
             migrationBuilder.DropTable(
-                name: "ListNewsItems");
+                name: "NewsItems");
 
             migrationBuilder.DropTable(
                 name: "SurveyItemAnswers");

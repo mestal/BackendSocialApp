@@ -16,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using BackendSocialApp.Tools;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace BackendSocialApp
 {
@@ -91,6 +93,8 @@ namespace BackendSocialApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICoffeeFortuneTellingService, CoffeeFortuneTellingService>();
             services.AddScoped<ICoffeeFortuneTellingRepository, CoffeeFortuneTellingRepository>();
+            services.AddScoped<IFeedService, FeedService>();
+            services.AddScoped<IFeedRepository, FeedRepository>();
             services.AddSingleton<IEmailHelper, MockEmailHelper>();
 
             services.AddAutoMapper(typeof(Startup));
@@ -123,6 +127,13 @@ namespace BackendSocialApp
 
             IdentityDataInitializer.SeedData(userManager, roleManager, context);
             app.UseMvc();
+
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Assets")),
+                RequestPath = "/Assets",
+                EnableDirectoryBrowsing = false
+            });
         }
     }
 }

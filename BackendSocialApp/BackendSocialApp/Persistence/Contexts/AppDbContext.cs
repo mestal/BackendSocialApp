@@ -34,11 +34,9 @@ namespace BackendSocialApp.Persistence.Contexts
 
         public DbSet<SurveyItemAnswer> SurveyItemAnswers { get; set; }
 
-        public DbSet<ListNews> ListOfListNews { get; set; }
+        public DbSet<NewsItem> NewsItems { get; set; }
 
-        public DbSet<ListNewsItem> ListNewsItems { get; set; }
-
-        public DbSet<News> ListOfNews { get; set; }
+        public DbSet<News> NewsList { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
