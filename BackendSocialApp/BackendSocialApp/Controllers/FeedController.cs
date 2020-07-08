@@ -37,7 +37,7 @@ namespace BackendSocialApp.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetSurvey")]
         public async Task<ActionResult<SurveyViewModel>> GetSurvey(Guid surveyId)
         {

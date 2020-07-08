@@ -45,7 +45,13 @@ namespace BackendSocialApp
 
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                //içiçe objelerde sonsuz döngüye giriyorsa ikinci seferden sonra boş döndürmek istiyorsan alttakini aç
+                //.AddJsonOptions(option =>
+                //{
+                //    option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                //});
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
             //services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();

@@ -37,8 +37,6 @@ namespace BackendSocialApp.ViewModels
     {
         public Guid Id { get; set; }
 
-        public SurveyItem SurveyItem { get; set; }
-
         public string PicturePath { get; set; }
 
         public string Answer { get; set; }
