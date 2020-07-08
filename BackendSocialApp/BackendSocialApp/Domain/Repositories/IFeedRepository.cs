@@ -11,5 +11,7 @@ namespace BackendSocialApp.Domain.Repositories
     public interface IFeedRepository
     {
         Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args);
+
+        Task<Survey> GetSurveyAsync(Guid surveyId);
     }
 }

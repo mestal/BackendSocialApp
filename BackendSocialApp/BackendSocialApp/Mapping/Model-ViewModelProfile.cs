@@ -23,9 +23,10 @@ namespace BackendSocialApp.Mapping
             CreateMap<FortuneTellerUser, UserViewModel>();
             CreateMap<ConsumerUser, UserViewModel>();
             CreateMap<MainFeed, FeedViewModel>().ForMember(dest => dest.FeedType, opt => opt.MapFrom(src => src.GetType().ToString()));
-
-            
-
+            CreateMap<Survey, SurveyViewModel>();
+            CreateMap<SurveyItem, SurveyItemViewModel>();
+            CreateMap<SurveyItemAnswer, SurveyItemAnswerViewModel>();
+            CreateMap<SurveyResultItem, SurveyResultItemViewModel>();
         }
     }
 }

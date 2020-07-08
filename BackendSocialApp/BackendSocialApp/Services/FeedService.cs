@@ -36,5 +36,10 @@ namespace BackendSocialApp.Services
 
             return result;
         }
+
+        public async Task<Survey> GetSurvey(Guid surveyId)
+        {
+            return await _feedRepository.GetSurveyAsync(surveyId);
+        }
     }
 }

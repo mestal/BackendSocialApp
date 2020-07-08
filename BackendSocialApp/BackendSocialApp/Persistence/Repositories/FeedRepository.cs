@@ -30,5 +30,17 @@ namespace BackendSocialApp.Persistence.Repositories
 
             return Task.FromResult<IPagedList<MainFeed>>(pagedList);
         }
+
+        public Task<Survey> GetSurveyAsync(Guid surveyId)
+        {
+            return Task.FromResult(
+                _context.Surveys
+                    .Include(a => a.Items) //.SelectMany(d => d.Answers)
+                    .ThenInclude(x => x.Answers)
+                    .Include(b => b.Results)
+                    .Where(c => c.Id == surveyId)
+                    .FirstOrDefault()
+            );
+        }
     }
 }
