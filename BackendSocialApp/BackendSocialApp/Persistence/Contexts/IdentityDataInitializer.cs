@@ -199,7 +199,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Öncelikle, hangi cinsiyetten HOŞLANDIĞINI öğrenelim?",
                     Order = 1,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -243,7 +244,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Burcun ne peki?",
                     Order = 2,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -374,7 +376,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Doğduğun yılın son rakamını sorsak?",
                     Order = 3,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -485,7 +488,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Doğduğun gün tek mi yoksa çift sayı mı?",
                     Order = 4,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -516,7 +520,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Haftanın hangi günü doğdun?",
                     Order =5,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -597,7 +602,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Bu fotoğraflardan birini seçmeni istesek?",
                     Order = 6,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -675,7 +681,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Şu anda gözlerini kapat ve güneşi düşün. Hayalinde hangi renk yoğunlukta?",
                     Order = 7,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -730,7 +737,8 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Question = "Peki son olarak, güneşin batışını nerede izlemek isterdin?",
                     Order = 8,
-                    Survey = survey
+                    Survey = survey,
+                    MaxSelectableAnswerNumber = 1
                 };
 
                 context.SurveyItems.Add(surveyItem);
@@ -785,21 +793,21 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Survey = survey,
                     Point = 8,
-                    ResultInformation = "Result 1"
+                    ResultInformation = "Abdülrezzak"
                 });
 
                 context.SurveyResultItems.Add(new SurveyResultItem
                 {
                     Survey = survey,
                     Point = 10,
-                    ResultInformation = "Result 2"
+                    ResultInformation = "Zübeyde"
                 });
 
                 context.SurveyResultItems.Add(new SurveyResultItem
                 {
                     Survey = survey,
                     Point = 15,
-                    ResultInformation = "Result 3"
+                    ResultInformation = "Abdülmuttalip"
                 });
             }
 
