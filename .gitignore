@@ -7,3 +7,7 @@
 /BackendSocialApp/BackendSocialApp/obj
 /BackendSocialApp/BackendSocialApp/Upload
 /BackendSocialApp/BackendSocialApp/Assets
+/BackendSocialApp/BackendSocialApp/bin/Release/netcoreapp2.2
+/BackendSocialApp/BackendSocialApp/Properties/PublishProfiles
+/BackendSocialApp/BackendSocialApp/appsettingsReal.json
+/BackendSocialApp/BackendSocialApp/appsettingsReal.Development.json
