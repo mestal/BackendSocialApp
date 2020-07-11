@@ -143,7 +143,6 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("GetActiveFortuneTellers")]
         public object GetActiveFortuneTellers()
         {
