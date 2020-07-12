@@ -94,6 +94,8 @@ namespace BackendSocialApp.Domain.Models
 
         public string Information { get; set; }
 
+        public string Title { get; set; }
+
         public int Order { get; set; }
     }
 

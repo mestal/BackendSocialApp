@@ -41,5 +41,10 @@ namespace BackendSocialApp.Services
         {
             return await _feedRepository.GetSurveyAsync(surveyId);
         }
+
+        public async Task<News> GetNews(Guid newsId)
+        {
+            return await _feedRepository.GetNewsAsync(newsId);
+        }
     }
 }

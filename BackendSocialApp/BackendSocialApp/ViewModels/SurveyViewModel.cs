@@ -55,4 +55,22 @@ namespace BackendSocialApp.ViewModels
 
         public string ResultInformation { get; set; }
     }
+
+    public class NewsViewModel : FeedViewModel
+    {
+        public List<NewsItemViewModel> Items { get; set; }
+    }
+
+    public class NewsItemViewModel
+    {
+        public Guid Id { get; set; }
+
+        public string PicturePath { get; set; }
+
+        public string Information { get; set; }
+
+        public string Title { get; set; }
+
+        public int Order { get; set; }
+    }
 }

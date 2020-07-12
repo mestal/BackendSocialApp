@@ -42,5 +42,15 @@ namespace BackendSocialApp.Persistence.Repositories
                     .FirstOrDefault()
             );
         }
+
+        public Task<News> GetNewsAsync(Guid newsId)
+        {
+            return Task.FromResult(
+                _context.NewsList
+                    .Include(a => a.Items)
+                    .Where(c => c.Id == newsId)
+                    .FirstOrDefault()
+            );
+        }
     }
 }

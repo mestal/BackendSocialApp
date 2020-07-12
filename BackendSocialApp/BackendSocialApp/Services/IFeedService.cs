@@ -14,5 +14,7 @@ namespace BackendSocialApp.Services
         Task<IPagedList<MainFeed>> GetFeeds(PageSearchArgs args);
 
         Task<Survey> GetSurvey(Guid surveyId);
+
+        Task<News> GetNews(Guid newsId);
     }
 }

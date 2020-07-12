@@ -13,5 +13,7 @@ namespace BackendSocialApp.Domain.Repositories
         Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args);
 
         Task<Survey> GetSurveyAsync(Guid surveyId);
+
+        Task<News> GetNewsAsync(Guid newsId);
     }
 }

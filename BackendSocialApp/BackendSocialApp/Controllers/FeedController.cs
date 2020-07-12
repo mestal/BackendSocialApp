@@ -51,5 +51,20 @@ namespace BackendSocialApp.Controllers
 
             return Ok(viewModel);
         }
+
+        [HttpGet]
+        [Route("GetNews")]
+        public async Task<ActionResult<NewsViewModel>> GetNews(Guid newsId)
+        {
+            var news = _service.GetNews(newsId).Result;
+            if (news == null)
+            {
+                throw new Exception("News not found");
+            }
+
+            var viewModel = _mapper.Map<News, NewsViewModel>(news);
+
+            return Ok(viewModel);
+        }
     }
 }

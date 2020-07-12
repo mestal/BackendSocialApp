@@ -27,6 +27,8 @@ namespace BackendSocialApp.Mapping
             CreateMap<SurveyItem, SurveyItemViewModel>();
             CreateMap<SurveyItemAnswer, SurveyItemAnswerViewModel>();
             CreateMap<SurveyResultItem, SurveyResultItemViewModel>();
+            CreateMap<News, NewsViewModel>();
+            CreateMap<NewsItem, NewsItemViewModel>();
         }
     }
 }
