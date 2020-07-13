@@ -22,6 +22,8 @@ namespace BackendSocialApp.ViewModels
 
         public string PicturePath { get; set; }
 
+        public string VideoPath { get; set; }
+
         public string Question { get; set; }
 
         public List<SurveyItemAnswerViewModel> Answers { get; set; }
@@ -66,6 +68,8 @@ namespace BackendSocialApp.ViewModels
         public Guid Id { get; set; }
 
         public string PicturePath { get; set; }
+
+        public string VideoPath { get; set; }
 
         public string Information { get; set; }
 

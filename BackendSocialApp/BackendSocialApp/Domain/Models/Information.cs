@@ -59,6 +59,8 @@ namespace BackendSocialApp.Domain.Models
 
         public string PicturePath { get; set; }
 
+        public string VideoPath { get; set; }
+
         public string Question { get; set; }
 
         public List<SurveyItemAnswer> Answers { get; set; }
@@ -91,6 +93,8 @@ namespace BackendSocialApp.Domain.Models
         public News News { get; set; }
 
         public string PicturePath { get; set; }
+
+        public string VideoPath { get; set; }
 
         public string Information { get; set; }
 

@@ -1464,7 +1464,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Order = 9,
                     Survey = survey,
                     MaxSelectableAnswerNumber = 1,
-                    PicturePath = "s-91ee2a24b7bff8b499b1b589bf5c8d0b62478b81.webm",
+                    VideoPath = "s-91ee2a24b7bff8b499b1b589bf5c8d0b62478b81.webm",
                     QuestionWeight = 1
                 };
 
@@ -1537,7 +1537,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "1. Yılan",
                     Information = "Kahve falınızda eğer yılan görüyorsanız, bu pek iyiye işaret değildir. Etrafınızda birtakım düşmanlarınızın olduğuna işaret eder. Yakın zamanda hayatınızda bir karışıklık olacaktır. Yakın arkadaşlarınıza ve akrabalarınıza dikkat etmelisiniz. Çünkü ne geliyorsa yakınınızdan geliyor. O yüzden temkinli olmanızda ve etrafınızdaki kişilere çok güvenmemenizde fayda vardır.",
                     Order = 1,
-                    PicturePath = "s-c82173a3d7e8b35cac934a3a5471de6d9e21aeec.webm",
+                    VideoPath = "s-c82173a3d7e8b35cac934a3a5471de6d9e21aeec.webm",
                     News = news1
                 };
 
@@ -1548,7 +1548,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "2. Ray",
                     Information = "Aman dikkat, eğer falınızda raya benzer bir sembol görüyorsanız sağlığınıza dikkat etmelisiniz. Çünkü yakın zamanda yorgun düşebilir, sağlığınızla ilgili problemler yaşayabilirsiniz. Bundan dolayı hem beslenmenize hem de uyku düzeninize önem vermelisiniz. Aksi takdirde bir hastalığa kapılabilirsiniz. Bizden söylemesi.",
                     Order = 2,
-                    PicturePath = "s-48996164c8f1dc3b10f0dbdbede68dd36ca2076b.webm",
+                    VideoPath = "s-48996164c8f1dc3b10f0dbdbede68dd36ca2076b.webm",
                     News = news1
                 };
 
@@ -1559,7 +1559,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "3. Kedi",
                     Information = "Eğer ki falınızda kedi görüyorsanız bu sizin yakınınızdaki insanlara dikkat etmeniz gerektiğini gösterir. Çünkü fincanda beliren kedi sembolü, sizin etrafınızdaki kişilerden bir zarar göreceğinize işaret eder. Sırlarınızı arkadaşlarınıza veya akrabalarınıza anlatmamaya dikkat edin. Çünkü sizi nasıl bir tehlikenin beklediğini bilemezsiniz.",
                     Order = 3,
-                    PicturePath = "s-a137193e8b3393a80eec886adedc08355845229f.webm",
+                    VideoPath = "s-a137193e8b3393a80eec886adedc08355845229f.webm",
                     News = news1
                 };
 
@@ -1570,7 +1570,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "4. Geyik",
                     Information = "Açıkçası kahve falınızda geyik sembolü görüyorsanız, bu kötü bir haber alacağınıza işaret eder. Bu ya birdenbire oluşacak bir hastalık ya da cebinizden gidecek bir para olabilir. Etrafınızdaki kişilerin sağlık problemleri ile karşılaşabilirsiniz. Ya da yatırım yaptığınız bir işin altından kayıplarla çıkabilirsiniz.",
                     Order = 4,
-                    PicturePath = "s-640dd2e61bba80033c91c95034e4b7c91e104b43.webm",
+                    VideoPath = "s-640dd2e61bba80033c91c95034e4b7c91e104b43.webm",
                     News = news1
                 };
 
@@ -1581,7 +1581,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "5. Ahtapot",
                     Information = "Kahve falınızda ahtapot görmek, sizin için bir uyarı niteliği taşır. Herhangi bir iş için tehlike altında olduğunuza işarettir. Ve bu tehlike sizi yıpratacak derecede de olabilir. Eğer birine çok fazla güveniyorsanız, bir girişimde bulunduysanız dikkat etmelisiniz. Yakın birinin sizin kötülüğünüzü istemesi ve üzerinizde de bunun gölgesini hissetmeniz muhtemeldir. O yüzden bu uyarıyı dikkate almalısınız. Bizden söylemesi.",
                     Order = 5,
-                    PicturePath = "s-cde78cc71ae52d07750e3c08c30337e488c1c98f.webm",
+                    VideoPath = "s-cde78cc71ae52d07750e3c08c30337e488c1c98f.webm",
                     News = news1
                 };
 
@@ -1592,7 +1592,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "6. Ağ",
                     Information = "Eğer kahve falınızda bir ağ görüyorsanız yakın çevrenize dikkat etmelisiniz. Çünkü etrafınızdaki birtakım insanlar sizin başarısız olmanızı isteyecektir. Ve bunun için de elinden geleni yapacaktır. O yüzden attığınız her adıma dikkat etmeli, sizi kandırmaya çalışan bu insanlara karşı tedbirli olmalısınız.",
                     Order = 6,
-                    PicturePath = "s-0b01f842b6ade922509bd04d77eec67028c01040.webm",
+                    VideoPath = "s-0b01f842b6ade922509bd04d77eec67028c01040.webm",
                     News = news1
                 };
 
@@ -1602,7 +1602,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "7. Akrep",
                     Information = "Herkesin korkutucu bulduğu akrep, kahve falında da kötü bir anlam ifade ediyor. Eğer ki falınızda akrep sembolünü görüyorsanız, etrafınızdaki insanlardan kendinizi korumalısınız. Çünkü çok büyük bir tehlikenin eşiğinde olabilirsiniz. Başınıza kötü bir şeyin gelmesi an meselesidir. O yüzden her şeye ve herkese karşı dikkatli olmalısınız.",
                     Order = 7,
-                    PicturePath = "s-3964e2fafc24ca3a3ca3e3e6217beb7d9cfbd22c.webm",
+                    VideoPath = "s-3964e2fafc24ca3a3ca3e3e6217beb7d9cfbd22c.webm",
                     News = news1
                 };
 
@@ -1613,7 +1613,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "8. Baykuş",
                     Information = "Baykuş sembolü, senin yakın arkadaşlarının negatif olduğuna ve hayatına da olumsuz etki ettiğine işaret eder. Eğer böyle bir arkadaşınız varsa size müdahale etmesine izin vermemeli ve kararlarınızda etkili olmamalıdır. Bir an önce bu arkadaşlıklardan kurtulmanız gerekmektedir. Aksi takdirde hayatınızda sürekli sorun çıkaran bir arkadaşınız olacaktır. Ve bu da sizi epey zorlayacaktır.",
                     Order = 8,
-                    PicturePath = "s-8d0a64257984ac5fae489666fa05594abc677361.webm",
+                    VideoPath = "s-8d0a64257984ac5fae489666fa05594abc677361.webm",
                     News = news1
                 };
 
@@ -1623,7 +1623,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "9. Çorap",
                     Information = "Genellikle kahve falınızda çorap görmek, sizin mal varlığınızın büyük bir tehlike altında olduğuna işaret eder. Bu durumda mal varlığınız ile ilgili konuları takip etmeli ve gereksiz harcamalarda bulunmamalısınız. Aksi takdirde büyük bir kayıp yaşayabilirsiniz.",
                     Order = 9,
-                    PicturePath = "s-c957b0369cf85241f06d99922c99496b30cc2ed4.webm",
+                    VideoPath = "s-c957b0369cf85241f06d99922c99496b30cc2ed4.webm",
                     News = news1
                 };
 
@@ -1633,7 +1633,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "10. Cetvel",
                     Information = "Eğer kahve falınızda cetvel görüyorsanız iş hayatınızda çeşitli problem yaşayacağınızı söylememiz gerekir. İşinize gereken özeni göstermeli ve sizi aşağıya çekmek isteyenlere karşı dikkatli olmalısınız. Aksi takdirde işinizle alakalı ciddi problemler sizi bekliyor olabilir.",
                     Order = 10,
-                    PicturePath = "s-632e084ca0c48cb821fa5710dd875a7707c67086.webm",
+                    VideoPath = "s-632e084ca0c48cb821fa5710dd875a7707c67086.webm",
                     News = news1
                 };
 
@@ -1644,7 +1644,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "11. İskelet",
                     Information = "Eğer kahve falınızda iskelet öylece görünüyorsa, kesinlikle dikkatli olmanız gerekir. Çünkü iskelet görmek, sizin büyük bir olayla karşı karşıya kalacağınızı ve bunun sonucunda da fazlasıyla üzüleceğinizi simgeler. Bu uzaktan gelen bir haber de ya da çevrenizdekilerin sizi üzeceği bir durum da olabilir. Ama sonucunda her şekilde sizi üzecek bir durum söz konusudur.",
                     Order = 11,
-                    PicturePath = "s-63f6c31df566bb8a69d580b402de043dca9e6bad.webm",
+                    VideoPath = "s-63f6c31df566bb8a69d580b402de043dca9e6bad.webm",
                     News = news1
                 };
 
@@ -1655,7 +1655,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "12. Kazan",
                     Information = "Belki de görüp görebileceğiniz en kötü sembol olabilir. Kazan sembolü yakın zamanda bir ölüm haberi alacağınızı ve bu haberle birlikte yıkılacağınızı temsil eder. O yüzden kazan sembolünü görürseniz kesinlikle bu duruma kendinizi hazırlamalısınız.",
                     Order = 12,
-                    PicturePath = "s-50b83a8a1e108e8d360438e1e59c60336b3266e4.webm",
+                    VideoPath = "s-50b83a8a1e108e8d360438e1e59c60336b3266e4.webm",
                     News = news1
                 };
 
@@ -1665,7 +1665,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "13. Tilki",
                     Information = "Eğer kahve falınızda tilki sembolü gördüyseniz kesinlikle dostlarınızı gözden geçirmelisiniz. Çünkü etrafınızda sizin yüzünüze gülen fakat arkanızdan kuyunuzu kazan bir dostunuzun olduğunu söylemeliyiz. O yüzden sizin iyi niyetinizi suistimal eden insanlardan uzak durmalısınız.",
                     Order = 13,
-                    PicturePath = "s-ef9619f388f5f415f31e19ec21f1364b754bc08b.webm",
+                    VideoPath = "s-ef9619f388f5f415f31e19ec21f1364b754bc08b.webm",
                     News = news1
                 };
 
@@ -1676,7 +1676,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "14. Ustura",
                     Information = "Kahve falınızda ustura görmek, çevrenizdeki insanlar tarafından büyük bir haksızlığa uğrayacağınızı işaret eder. O yüzden yaptığınız her işi, büyük bir titizlikle yapmalısınız. Aksi takdirde, yapmadığınız bir şeyin sizin üstünüze kalması an meselesidir.",
                     Order = 14,
-                    PicturePath = "s-da664afdcd717896a7995ced49435169cfe7f055.webm",
+                    VideoPath = "s-da664afdcd717896a7995ced49435169cfe7f055.webm",
                     News = news1
                 };
 
@@ -1686,7 +1686,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "15. Zürafa",
                     Information = "Kahve falınızda eğer zürafa görüyorsanız ve bir ilişkiniz varsa dikkat etmelisiniz. Bu sembol, önümüzdeki günlerde bu ilişkinin bozulacağına ve ayrılığa kadar gideceğine işarettir. O yüzden ilişkinizi tekrar gözden geçirmeli ve aranızdaki sorunlar çok fazla birikmeden halletmelisiniz.",
                     Order = 15,
-                    PicturePath = "s-ce40fc87ef10397dfdcc64ba67b4bd31da9e7291.webm",
+                    VideoPath = "s-ce40fc87ef10397dfdcc64ba67b4bd31da9e7291.webm",
                     News = news1
                 };
 
@@ -1696,7 +1696,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "16. Uçurtma",
                     Information = "Eğer kahve falınızda uçurtma görüyorsanız, etrafınızdaki kişiler sizin hayallerinize ulaşmakta engel çıkaracaktır. Sizi bir şekilde istediğiniz şeylerden uzaklaştırmak için ellerinden geleni yapmaya çalışacaklardır. O yüzden kafanızdaki planları herkesle paylaşmadan önce düşünmelisiniz.",
                     Order = 16,
-                    PicturePath = "s-486b7d16c80dddf6615db386b09d51428eeee6a1.webm",
+                    VideoPath = "s-486b7d16c80dddf6615db386b09d51428eeee6a1.webm",
                     News = news1
                 };
 
@@ -1707,7 +1707,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "17. Timsah",
                     Information = "Kendinizi hazırlasanız iyi edersiniz, çünkü kahve falında timsah görmek kötü bir haberi simgeler. Alacağınız kötü bir haberle üzüleceğinize ve sizi uzun bir süre yıpratacağı anlamına gelir. O yüzden kendinizi bu duruma alıştırmalısınız. Ani tepkiler vermemelisiniz.",
                     Order = 17,
-                    PicturePath = "s-7323d0e6cd83a38b199552a99bc74788ce452a30.webm",
+                    VideoPath = "s-7323d0e6cd83a38b199552a99bc74788ce452a30.webm",
                     News = news1
                 };
 
@@ -1755,7 +1755,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "Aradan biraz zaman geçmiş. Sandalcı bu kez de teknenin tahtalarından birini kaldırıp aradan afyon çıkarmış ve nargilesine atarak körüklemeye başlamış.",
                     Information = "Gönlü zengin adam, hemen müşterisine de ikram etmiş. Sultan yine kabul etmiş ama yasağı gene hatırlatmış. Sandalcı aynı şekilde, “Kim görecek ki bizi denizin ortasında?” demiş.",
                     Order = 3,
-                    PicturePath = "s-c7010af6e250d4a84c837fbf97d35bdf20053f54.webm",
+                    VideoPath = "s-c7010af6e250d4a84c837fbf97d35bdf20053f54.webm",
                     News = news1
                 };
 
@@ -1766,7 +1766,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "Biraz daha vakit geçmiş. Bizim sandalcı cebinden fal taşlarını çıkarmış. Hünkara, “Ver 5 akçe de falına bakayım.” demiş.",
                     Information = "Fal 4. Murat’ın en kızdığı şeymiş, ama “hadi biraz daha sabredeyim.” diye düşünüp, “Bak bari.” demiş.",
                     Order = 4,
-                    PicturePath = "s-2a25c5633c74df1a57f74073e9571f6710a6b34e.webm",
+                    VideoPath = "s-2a25c5633c74df1a57f74073e9571f6710a6b34e.webm",
                     News = news1
                 };
 
@@ -1777,7 +1777,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "Fal taşlarını elinde çalkalayıp atan sandalcı, “Efendi, sorunu sor bakalım.” demiş. 4. Murat, “Hünkar şu anda nerededir?” diye sormuş.",
                     Information = "Sandalcı taşlara bakıp “Hünkar şu an denizdedir.” demiş. 4. Murat güya endişelenmiş havalarına girip, “Sakın yakınımızda bi' yerde olmasın?” diye sormuş sandalcıya ve tekrar iyice bakmasını söylemiş. Sandalcı taşlara tekrar bakmış ve birden, 4. Murat’ın ayaklarına kapanıp, “Affet beni hünkarım!” diye yalvarmaya başlamış. Kıyıya dönene kadar da yalvarmaya devam etmiş.",
                     Order = 5,
-                    PicturePath = "s-4cddda2e789aade40f3f4bea4e4354ca78e3bd38.webm",
+                    VideoPath = "s-4cddda2e789aade40f3f4bea4e4354ca78e3bd38.webm",
                     News = news1
                 };
 
@@ -1798,7 +1798,7 @@ namespace BackendSocialApp.Persistence.Contexts
                     Title = "4. Murat kağıdı alır almaz, daha bakmadan, yanındaki fedaisine, “Hemen boynunu vur şu kafirin!” emrini vermiş. Sonra da, “Surlara yeni bir kapı açıla! İstanbul’a oradan gireceğim.” demiş çevresindekilere.",
                     Information = "Kapı 5-10 dakikada açılıp, padişah ve erkanı şehre girmiş. 4. Murat bir ara, sandalcının kağıda hangi kapıyı yazdığını merak etmiş. Kendinden çok eminmiş, laf olsun diye cebindeki kağıda bakmış. Ama okuyunca hayretler içinde kalmış. Sandalcı kağıda şunları yazmış: “Hünkarım, yeni kapınız vatana millete hayırlı uğurlu olsun.”",
                     Order = 7,
-                    PicturePath = "s-5bd7970b6c59dcbbc004e54a6c29544b7a7ff58c.webm",
+                    VideoPath = "s-5bd7970b6c59dcbbc004e54a6c29544b7a7ff58c.webm",
                     News = news1
                 };
 
