@@ -131,7 +131,11 @@ namespace BackendSocialApp
 
             app.UseAuthentication();
 
-            IdentityDataInitializer.SeedData(userManager, roleManager, context);
+            if(Configuration.GetValue<bool>("InitializeSampleData"))
+            {
+                IdentityDataInitializer.SeedData(userManager, roleManager, context);
+            }
+            
             app.UseMvc();
 
             app.UseFileServer(new FileServerOptions
