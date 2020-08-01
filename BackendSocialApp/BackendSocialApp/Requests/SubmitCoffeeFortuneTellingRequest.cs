@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 
 namespace BackendSocialApp.Requests
 {
-    public class CreateCoffeeFortuneTellingRequest
+    public class SubmitCoffeeFortuneTellingRequest
     {
-        public CoffeeFortuneTellingStatus Type { get; set; }
-
         public List<IFormFile> Pictures { get; set; }
-
-        public Guid UserId { get; set; }
 
         public Guid FortuneTellerId { get; set; }
     }

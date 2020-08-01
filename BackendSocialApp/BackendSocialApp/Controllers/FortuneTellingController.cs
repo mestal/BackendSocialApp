@@ -37,24 +37,19 @@ namespace BackendSocialApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = Constants.RoleConsumer)]
-        [Route("CreateCoffeeFortuneTelling")]
-        public async Task<ActionResult> CreateCoffeeFortuneTelling([FromForm]CreateCoffeeFortuneTellingRequest request)
+        [Route("SubmitCoffeeFortuneTelling")]
+        public async Task<ActionResult> SubmitCoffeeFortuneTelling([FromForm]SubmitCoffeeFortuneTellingRequest request)
         {
-            var newCoffeeFortuneTelling = _mapper.Map<CreateCoffeeFortuneTellingRequest, CoffeeFortuneTelling>(request);
+            var newCoffeeFortuneTelling = _mapper.Map<SubmitCoffeeFortuneTellingRequest, CoffeeFortuneTelling>(request);
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
 
-            if (userId != request.UserId.ToString() && userRole != Constants.RoleAdmin)
-            {
-                throw new Exception("You can not create for another user.");
-            }
-
-            var user = (ConsumerUser)await _userManager.FindByIdAsync(request.UserId.ToString());
+            var user = (ConsumerUser)await _userManager.FindByIdAsync(userId.ToString());
 
             newCoffeeFortuneTelling.User = user ?? throw new Exception("User Not Found");
 
             var fortuneTeller = (FortuneTellerUser)await _userManager.FindByIdAsync(request.FortuneTellerId.ToString());
-            newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new Exception("User Not Found");
+            newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new Exception("Fortune Teller Not Found");
 
             if (request.Pictures.Count == 0)
             {

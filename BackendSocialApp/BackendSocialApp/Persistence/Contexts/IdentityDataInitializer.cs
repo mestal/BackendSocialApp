@@ -64,12 +64,15 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("falci1").Result == null)
             {
-                ApplicationUser user = new FortuneTellerUser();
+                FortuneTellerUser user = new FortuneTellerUser();
                 user.UserName = "falci1";
-                user.Email = "falci1@falci.com";
+                user.Email = "falci1@falcim.xyz";
                 user.FullName = "Falcı User 1";
                 user.PicturePath = "cheetah.jpg";
                 user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.CoffeFortuneTellingCount = 5;
+                user.CoffeePointPrice = 100;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -81,13 +84,16 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("falci2").Result == null)
             {
-                ApplicationUser user = new FortuneTellerUser();
+                FortuneTellerUser user = new FortuneTellerUser();
                 user.UserName = "falci2";
                 user.Email = "falci2@falci.com";
                 user.FullName = "Falcı User 2";
                 user.PicturePath = "eagle.jpg";
                 user.Status = UserStatus.Active;
                 user.ConnectionStatus = ConnectionStatus.Online;
+                user.EmailConfirmed = true;
+                user.CoffeFortuneTellingCount = 8;
+                user.CoffeePointPrice = 125;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -99,12 +105,15 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("falci3").Result == null)
             {
-                ApplicationUser user = new FortuneTellerUser();
+                FortuneTellerUser user = new FortuneTellerUser();
                 user.UserName = "falci3";
                 user.Email = "falci3@falci.com";
                 user.FullName = "Falcı User 3";
                 user.PicturePath = "duck.jpg";
                 user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.CoffeFortuneTellingCount = 16;
+                user.CoffeePointPrice = 140;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -116,11 +125,13 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("user1").Result == null)
             {
-                ApplicationUser user = new ConsumerUser();
+                ConsumerUser user = new ConsumerUser();
                 user.UserName = "user1";
                 user.Email = "user1@yahoo.com";
                 user.FullName = "User 1";
                 user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 1000000;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -132,11 +143,13 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("user2").Result == null)
             {
-                ApplicationUser user = new ConsumerUser();
+                ConsumerUser user = new ConsumerUser();
                 user.UserName = "user2";
                 user.Email = "user2@yahoo.com";
                 user.FullName = "User 2";
                 user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 1000000;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -148,11 +161,13 @@ namespace BackendSocialApp.Persistence.Contexts
 
             if (userManager.FindByNameAsync("user3").Result == null)
             {
-                ApplicationUser user = new ConsumerUser();
+                ConsumerUser user = new ConsumerUser();
                 user.UserName = "user3";
                 user.Email = "user3@yahoo.com";
                 user.FullName = "User 3";
                 user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 1000000;
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 

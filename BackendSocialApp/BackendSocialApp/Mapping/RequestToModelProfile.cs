@@ -12,7 +12,7 @@ namespace BackendSocialApp.Mapping
     {
         public RequestToModelProfile()
         {
-            CreateMap<CreateCoffeeFortuneTellingRequest, CoffeeFortuneTelling>()
+            CreateMap<SubmitCoffeeFortuneTellingRequest, CoffeeFortuneTelling>()
                 .ForMember(c => c.Pictures, option => option.Ignore());
             ;
 
