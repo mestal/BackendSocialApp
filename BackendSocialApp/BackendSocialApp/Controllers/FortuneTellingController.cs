@@ -51,36 +51,49 @@ namespace BackendSocialApp.Controllers
             var fortuneTeller = (FortuneTellerUser)await _userManager.FindByIdAsync(request.FortuneTellerId.ToString());
             newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new Exception("Fortune Teller Not Found");
 
-            if (request.Pictures.Count == 0)
-            {
-                throw new Exception("Pictures must be send.");
-            }
+            //if (request.Pictures == null || request.Pictures.Count == 0)
+            //{
+            //    throw new Exception("Pictures must be send.");
+            //}
 
             var folderPath = _environment.ContentRootPath + "\\Upload\\";
+
+            //var folderPath = "C:\\websites\\falcim.xyz\\Upload\\";
+
+            var folderExists = true;
             if (!Directory.Exists(folderPath))
             {
+                folderExists = false;
                 Directory.CreateDirectory(folderPath);
             }
 
             var pictureUrls = new List<string>();
-            foreach (var file in request.Pictures)
+            var fileFullPaths = new List<string>();
+            if (request.Pictures != null)
             {
-                if(file.ContentType.Length > 30)
+                foreach (var file in request.Pictures)
                 {
-                    throw new Exception("Wrong Content-Type");
-                }
-                var fileName = Guid.NewGuid() + "." + file.ContentType.Replace('/', '.');
-                var fileFullPath = folderPath + fileName;
-                pictureUrls.Add(fileName);
-                using (FileStream fileStream = System.IO.File.Create(fileFullPath))
-                {
-                    file.CopyTo(fileStream);
-                    fileStream.Flush();
+                    if(file.ContentType.Length > 30)
+                    {
+                        throw new Exception("Wrong Content-Type");
+                    }
+                    var fileName = Guid.NewGuid() + "." + file.ContentType.Replace('/', '.');
+                    var fileFullPath = folderPath + fileName;
+                    pictureUrls.Add(fileName);
+                    fileFullPaths.Add(fileFullPath);
+
+                    using (var fileStream = new FileStream(fileFullPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
                 }
             }
 
             await _service.CreateCoffeeFortuneTellingAsync(newCoffeeFortuneTelling, pictureUrls);
-            return Ok();
+            return Ok(new {
+                folderExists,
+                fileFullPaths
+            });
         }
 
         [HttpPost]

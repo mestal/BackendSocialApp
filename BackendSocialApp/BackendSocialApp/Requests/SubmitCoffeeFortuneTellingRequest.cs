@@ -12,5 +12,7 @@ namespace BackendSocialApp.Requests
         public List<IFormFile> Pictures { get; set; }
 
         public Guid FortuneTellerId { get; set; }
+
+        public CoffeeFortuneTellingType Type { get; set; }
     }
 }

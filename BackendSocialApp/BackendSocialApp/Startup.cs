@@ -33,16 +33,6 @@ namespace BackendSocialApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder
-                    .SetIsOriginAllowed((host) => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
-
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddMvc()
@@ -109,7 +99,20 @@ namespace BackendSocialApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, AppDbContext context)
         {
-            app.UseCors("CorsPolicy");
+            app.UseCors(x => x
+            .WithOrigins("capacitor://localhost",
+              "ionic://localhost",
+              "http://localhost",
+              "http://localhost:8080",
+              "http://localhost:8100",
+              "https://falcim.xyz",
+              "http://falcim.xyz",
+              "https://www.falcim.xyz",
+              "http://www.falcim.xyz")
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
 
             //For 204 errors
             //app.Use(async (ctx, next) =>
@@ -135,7 +138,7 @@ namespace BackendSocialApp
             {
                 IdentityDataInitializer.SeedData(userManager, roleManager, context);
             }
-            
+
             app.UseMvc();
 
             app.UseFileServer(new FileServerOptions
