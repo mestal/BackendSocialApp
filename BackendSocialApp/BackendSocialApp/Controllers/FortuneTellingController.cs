@@ -45,6 +45,7 @@ namespace BackendSocialApp.Controllers
         [Route("SubmitCoffeeFortuneTelling")]
         public async Task<ActionResult> SubmitCoffeeFortuneTelling([FromForm]SubmitCoffeeFortuneTellingRequest request)
         {
+            //throw new BusinessException("ThisIsErrorCode","ThisIsMessage", new List<string> { "bir", "iki"});
             var newCoffeeFortuneTelling = _mapper.Map<SubmitCoffeeFortuneTellingRequest, CoffeeFortuneTelling>(request);
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;

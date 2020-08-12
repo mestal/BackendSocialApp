@@ -23,11 +23,23 @@ namespace BackendSocialApp.Extensions
                     {
                         logger.LogError($"Something went wrong: {contextFeature.Error}");
 
-                        await context.Response.WriteAsync(new ErrorDetails()
+                        if (contextFeature.Error is BusinessException)
                         {
-                            StatusCode = context.Response.StatusCode,
-                            Message = "Internal Server Error."
-                        }.ToString());
+                            var businessException = contextFeature.Error as BusinessException;
+                            await context.Response.WriteAsync(new ErrorDetails()
+                            {
+                                StatusCode = businessException.Code,
+                                Message = businessException.Message,
+                                ErrorParams = businessException.ErrorParams
+                            }.ToString());
+                        }
+                        else { 
+                            await context.Response.WriteAsync(new ErrorDetails()
+                            {
+                                StatusCode = context.Response.StatusCode.ToString(),
+                                Message = "Internal Server Error."
+                            }.ToString());
+                        }
                     }
                 });
             });
