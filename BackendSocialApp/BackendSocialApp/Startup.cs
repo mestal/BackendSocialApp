@@ -18,6 +18,8 @@ using Microsoft.IdentityModel.Tokens;
 using BackendSocialApp.Tools;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace BackendSocialApp
 {
@@ -97,8 +99,13 @@ namespace BackendSocialApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, AppDbContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, 
+            RoleManager<ApplicationRole> roleManager, AppDbContext context,
+            ILoggerFactory loggerFactory
+            )
         {
+            loggerFactory.AddLog4Net();
+
             app.UseCors(x => x
             .WithOrigins("capacitor://localhost",
               "ionic://localhost",
@@ -127,6 +134,17 @@ namespace BackendSocialApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async c =>
+                    {
+                        c.Response.StatusCode = 501;
+                        await c.Response.WriteAsync("Custom hata");
+                    });
+                });
             }
 
             //var url = Configuration["ApplicationSettings:JWT_Secret"].ToString();
