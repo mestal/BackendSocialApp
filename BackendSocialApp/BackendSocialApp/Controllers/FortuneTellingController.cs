@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,13 +27,17 @@ namespace BackendSocialApp.Controllers
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _environment;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<FortuneTellingController> _logger;
 
-        public FortuneTellingController(ICoffeeFortuneTellingService service, IMapper mapper, IHostingEnvironment environment, UserManager<ApplicationUser> userManager)
+        public FortuneTellingController(ICoffeeFortuneTellingService service, IMapper mapper, 
+            IHostingEnvironment environment, UserManager<ApplicationUser> userManager,
+            ILogger<FortuneTellingController> logger)
         {
             _service = service;
             _mapper = mapper;
             _environment = environment;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -40,7 +45,6 @@ namespace BackendSocialApp.Controllers
         [Route("SubmitCoffeeFortuneTelling")]
         public async Task<ActionResult> SubmitCoffeeFortuneTelling([FromForm]SubmitCoffeeFortuneTellingRequest request)
         {
-            Logger.Debug("Denemekkkkk");
             var newCoffeeFortuneTelling = _mapper.Map<SubmitCoffeeFortuneTellingRequest, CoffeeFortuneTelling>(request);
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
@@ -58,8 +62,6 @@ namespace BackendSocialApp.Controllers
             //}
 
             var folderPath = _environment.ContentRootPath + "\\Upload\\";
-
-            //var folderPath = "C:\\websites\\falcim.xyz\\Upload\\";
 
             var folderExists = true;
             if (!Directory.Exists(folderPath))

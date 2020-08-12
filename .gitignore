@@ -14,3 +14,6 @@
 /BackendSocialApp/Assets
 /BackendSocialApp/Upload
 /BackendSocialApp/BackendSocialApp/example.log
+/BackendSocialApp/BackendSocialApp/appsettings.Production.Development.json
+/BackendSocialApp/BackendSocialApp/Logs
+/BackendSocialApp/BackendSocialApp/appsettings.Production.json
