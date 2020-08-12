@@ -18,8 +18,8 @@ using Microsoft.IdentityModel.Tokens;
 using BackendSocialApp.Tools;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using BackendSocialApp.Extensions;
 
 namespace BackendSocialApp
 {
@@ -131,20 +131,10 @@ namespace BackendSocialApp
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler(appBuilder =>
-                {
-                    appBuilder.Run(async c =>
-                    {
-                        c.Response.StatusCode = 501;
-                        await c.Response.WriteAsync("Custom hata");
-                    });
-                });
-            }
+
+            app.ConfigureExceptionHandler(logger);
 
             //var url = Configuration["ApplicationSettings:JWT_Secret"].ToString();
-            //app.UseCors(builder => builder.WithOrigins(url).AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthentication();
 
