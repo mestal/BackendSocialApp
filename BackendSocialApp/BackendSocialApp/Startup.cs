@@ -93,7 +93,7 @@ namespace BackendSocialApp
             services.AddScoped<ICoffeeFortuneTellingRepository, CoffeeFortuneTellingRepository>();
             services.AddScoped<IFeedService, FeedService>();
             services.AddScoped<IFeedRepository, FeedRepository>();
-            services.AddSingleton<IEmailHelper, MockEmailHelper>();
+            services.AddSingleton<IEmailHelper, EmailHelper>();
 
             services.AddAutoMapper(typeof(Startup));
         }
