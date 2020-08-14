@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BackendSocialApp.Requests
 {
-    public class EmailConfirmationRequest
+    public class ConfirmNewUserRequest
     {
 
         public string Email { get; set; }

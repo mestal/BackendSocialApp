@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BackendSocialApp.Tools
 {
@@ -14,9 +15,11 @@ namespace BackendSocialApp.Tools
         private string _authUserName;
         private string _authUserPassword;
         private string _sendMail;
+        private ILogger<EmailHelper> _logger;
 
-        public EmailHelper(IConfiguration configuration)
+        public EmailHelper(IConfiguration configuration, ILogger<EmailHelper> logger)
         {
+            _logger = logger;
             var smtpSection = configuration.GetSection("SMTP");
             if (smtpSection != null)
             {
@@ -26,14 +29,16 @@ namespace BackendSocialApp.Tools
                 _alias = smtpSection.GetSection("Alias").Value;
                 _authUserName = smtpSection.GetSection("AuthUserName").Value;
                 _authUserPassword = smtpSection.GetSection("AuthUserPassword").Value;
-                _sendMail = smtpSection.GetSection("SendMail").Value;
             }
+
+            _sendMail = configuration.GetSection("SendMail").Value;
         }
 
         public void Send(EmailModel emailModel)
         {
             if(_sendMail == "0")
             {
+                _logger.LogInformation("To: " + emailModel.To + "Subject: " + emailModel.Subject + "Subject: " + emailModel.Message);
                 return;
             }
 

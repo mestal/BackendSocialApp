@@ -14,6 +14,7 @@ using BackendSocialApp.Requests;
 using BackendSocialApp.Tools;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using System.Net;
 
 namespace BackendSocialApp.Controllers
 {
@@ -106,15 +107,17 @@ namespace BackendSocialApp.Controllers
             {
                 UserName = request.UserName,
                 Email = request.Email,
-                FullName = request.Name + " " + request.Surname
+                FullName = request.FullName
             };
 
             await _userManager.CreateAsync(newUser, request.Password);
             await _userManager.AddToRoleAsync(newUser, "Consumer");
 
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
 
-            var emailConfirmationLink = Url.Action("EmailConfirmation", "User", new { email = request.Email, token }, Request.Scheme);
+            //var emailConfirmationLink = Url.Action("EmailConfirmation", "User", new { email = request.Email, token }, Request.Scheme);
+
+            var emailConfirmationLink = "http://localhost:8100/#/newUserConfirmation?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
 
             _emailHelper.Send(
                 new EmailModel
@@ -129,7 +132,9 @@ namespace BackendSocialApp.Controllers
             return Ok();
         }
 
-        public async Task<ActionResult> EmailConfirmation(EmailConfirmationRequest request)
+        [HttpPost]
+        [Route("ConfirmNewUser")]
+        public async Task<ActionResult> ConfirmNewUser(ConfirmNewUserRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Email))
             {
@@ -143,7 +148,7 @@ namespace BackendSocialApp.Controllers
                 return BadRequest(new { message = "User not found." });
             }
 
-            await _userManager.ConfirmEmailAsync(user, request.Token);
+            var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
             return Ok();
         }
