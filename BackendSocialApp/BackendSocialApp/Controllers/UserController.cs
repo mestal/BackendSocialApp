@@ -15,6 +15,8 @@ using BackendSocialApp.Tools;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Net;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BackendSocialApp.Controllers
 {
@@ -27,15 +29,20 @@ namespace BackendSocialApp.Controllers
         private readonly ApplicationSettings _appSettings;
         private readonly IEmailHelper _emailHelper;
         private readonly IHostingEnvironment _environment;
+        private readonly ILogger<UserController> _logger;
+
+        public IConfiguration _configuration { get; }
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IOptions<ApplicationSettings> appSettings,
-                IEmailHelper emailHelper, IHostingEnvironment environment)
+                IEmailHelper emailHelper, IHostingEnvironment environment, IConfiguration configuration, ILogger<UserController> logger)
         {
             _userManager = userManager;
             _appSettings = appSettings.Value;
             _roleManager = roleManager;
             _emailHelper = emailHelper;
             _environment = environment;
+            _configuration = configuration;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -83,7 +90,7 @@ namespace BackendSocialApp.Controllers
             }
             else
             {
-                return BadRequest(new { message = "UserName or password is incorrect." });
+                throw new BusinessException("WrongUserNameOrPassword", "Kullanıcı adı ya da şifre yanlış.");
             }
         }
 
@@ -91,39 +98,69 @@ namespace BackendSocialApp.Controllers
         [Route("RegisterNewUser")]
         public async Task<ActionResult> RegisterNewUser(RegisterNewUserRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.UserName);
+            request.UserName = request.UserName.Trim();
+            request.Email = request.Email.Trim();
 
-            if (user != null)
+            if (string.IsNullOrWhiteSpace(request.UserName))
             {
-                return BadRequest(new { message = "UserName already exists." });
+                throw new BusinessException("EmptyUserName", "Kullanıcı adı boş olamaz.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                throw new BusinessException("EmptyEmail", "Email boş olamaz.");
+            }
+
+            //TODO Regex for email.
+
+            if (string.IsNullOrWhiteSpace(request.FullName))
+            {
+                throw new BusinessException("EmptyFullname", "İsim boş olamaz.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Password))
+            {
+                throw new BusinessException("EmptyPassword", "Şifre boş olamaz.");
             }
 
             if (request.Password != request.Password2)
             {
-                return BadRequest(new { message = "Passwords not equal." });
+                throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
             }
 
-            var newUser = new ConsumerUser
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if (user != null)
+            {
+                throw new BusinessException("UserAlreadyExists", "Kullanıcı zaten mevcut.");
+            }
+
+            var userByMail = await _userManager.FindByEmailAsync(request.Email);
+
+            if (userByMail != null)
+            {
+                throw new BusinessException("EmailAlreadyExists", "Email zaten mevcut.");
+            }
+
+            user = new ConsumerUser
             {
                 UserName = request.UserName,
                 Email = request.Email,
                 FullName = request.FullName
             };
 
-            await _userManager.CreateAsync(newUser, request.Password);
-            await _userManager.AddToRoleAsync(newUser, "Consumer");
+            await _userManager.CreateAsync(user, request.Password);
+            await _userManager.AddToRoleAsync(user, "Consumer");
 
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-
-            //var emailConfirmationLink = Url.Action("EmailConfirmation", "User", new { email = request.Email, token }, Request.Scheme);
-
-            var emailConfirmationLink = "http://localhost:8100/#/newUserConfirmation?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var entryUrl = _configuration.GetValue<string>("EntryUrl");
+            var emailConfirmationLink = entryUrl + "/#/newUserConfirmation?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
 
             _emailHelper.Send(
                 new EmailModel
                 {
                     To = request.Email,
-                    Subject = "Falcı - Email Confirmation",
+                    Subject = "Falcım - Kullanıcı Onayı",
                     IsBodyHtml = false,
                     Message = emailConfirmationLink
                 }
@@ -136,21 +173,34 @@ namespace BackendSocialApp.Controllers
         [Route("ConfirmNewUser")]
         public async Task<ActionResult> ConfirmNewUser(ConfirmNewUserRequest request)
         {
+            request.Email = request.Email.Trim();
+
             if (string.IsNullOrWhiteSpace(request.Email))
             {
-                return BadRequest(new { message = "Empty Email." });
+                throw new BusinessException("EmptyEmail", "Email boş olamaz.");
             }
 
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return BadRequest(new { message = "User not found." });
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
-            return Ok();
+            if(result.Succeeded) { 
+                return Ok();
+            }
+            var errors = "";
+            foreach(var item in result.Errors)
+            {
+                errors = errors + item.Code + " - " + item.Description + ",";
+            }
+
+            _logger.LogError("ConfirmError: Email: " + request.Email + ", Errors: " + errors);
+            
+            throw new BusinessException("CanNotConfirm", "Onaylanamadı.");
         }
 
         [HttpPost]
@@ -161,17 +211,17 @@ namespace BackendSocialApp.Controllers
 
             if (user == null)
             {
-                return BadRequest(new { message = "User not found." });
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
             if (await _userManager.CheckPasswordAsync(user, request.CurrentPassword))
             {
-                return BadRequest(new { message = "Current password is wrong." });
+                throw new BusinessException("CurrentPasswordIsWrong", "Şifre yanlış");
             }
 
             if (request.NewPassword != request.NewPassword2)
             {
-                return BadRequest(new { message = "Passwords not equal." });
+                throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
             }
 
             await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
@@ -185,14 +235,14 @@ namespace BackendSocialApp.Controllers
         {
             if(string.IsNullOrWhiteSpace(request.Email))  
             {
-                return BadRequest(new { message = "Enter Email." });
+                throw new BusinessException("EmptyEmail", "Email boş olamaz.");
             }
 
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return BadRequest(new { message = "User not found." });
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -203,7 +253,7 @@ namespace BackendSocialApp.Controllers
                 new EmailModel
                 {
                     To = request.Email,
-                    Subject = "Falcı - Reset Password",
+                    Subject = "Falcım - Şifre yenileme",
                     IsBodyHtml = false,
                     Message = passwordResetLink
                 }
@@ -218,19 +268,19 @@ namespace BackendSocialApp.Controllers
         {
             if (string.IsNullOrWhiteSpace(request.Email))
             {
-                return BadRequest(new { message = "Empty Email." });
+                throw new BusinessException("EmptyEmail", "Email boş olamaz.");
             }
 
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return BadRequest(new { message = "User not found." });
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
             if (request.NewPassword != request.NewPassword2)
             {
-                return BadRequest(new { message = "Passwords not equal." });
+                throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
             }
 
             await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
