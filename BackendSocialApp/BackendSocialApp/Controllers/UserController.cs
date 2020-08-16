@@ -49,7 +49,13 @@ namespace BackendSocialApp.Controllers
         [Route("Login")]
         public async Task<ActionResult> Login(LoginRequest request)
         {
+            request.UserName = request.UserName.Trim();
             var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if(user == null)
+            {
+                user = await _userManager.FindByEmailAsync(request.UserName);
+            }
 
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
@@ -75,7 +81,7 @@ namespace BackendSocialApp.Controllers
                 if (role[0] == Constants.RoleAdmin)
                 {
                     //var adminUser = (AdminUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0] });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0] });
                 }
                 else if (role[0] == "Falci")
                 {
@@ -230,8 +236,8 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpPost]
-        [Route("ForgetPassword")]
-        public async Task<ActionResult> ForgetPassword(ForgetPasswordRequest request)
+        [Route("ForgatPassword")]
+        public async Task<ActionResult> ForgatPassword(ForgatPasswordRequest request)
         {
             //TODO emaili onaylanmamış bir user forgat password yaparsa ne olur.
             request.Email = request.Email.Trim();
@@ -265,7 +271,7 @@ namespace BackendSocialApp.Controllers
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             var entryUrl = _configuration.GetValue<string>("EntryUrl");
-            var passwordResetLink = entryUrl + "/#/ResetPassword?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
+            var passwordResetLink = entryUrl + "/#/resetPassword?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
 
             _emailHelper.Send(
                 new EmailModel

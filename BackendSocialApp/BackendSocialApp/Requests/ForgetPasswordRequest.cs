@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BackendSocialApp.Requests
 {
-    public class ForgetPasswordRequest
+    public class ForgatPasswordRequest
     {
 
         public string Email { get; set; }
