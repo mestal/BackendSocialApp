@@ -5,7 +5,7 @@ namespace BackendSocialApp.Domain.Models
 {
     public class ErrorDetails
     {
-        public string StatusCode { get; set; }
+        public string Code { get; set; }
         public string Message { get; set; }
 
         public List<string> ErrorParams { get; set; }

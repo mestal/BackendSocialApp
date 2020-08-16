@@ -233,12 +233,29 @@ namespace BackendSocialApp.Controllers
         [Route("ForgetPassword")]
         public async Task<ActionResult> ForgetPassword(ForgetPasswordRequest request)
         {
-            if(string.IsNullOrWhiteSpace(request.Email))  
+            //TODO emaili onaylanmamış bir user forgat password yaparsa ne olur.
+            request.Email = request.Email.Trim();
+            request.UserName = request.UserName.Trim();
+
+            if (string.IsNullOrWhiteSpace(request.Email) && string.IsNullOrWhiteSpace(request.UserName))  
             {
-                throw new BusinessException("EmptyEmail", "Email boş olamaz.");
+                throw new BusinessException("EmptyEmail", "Email veya Kullanıcı isimi dolu olmalı.");
             }
 
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (!string.IsNullOrWhiteSpace(request.Email) && !string.IsNullOrWhiteSpace(request.UserName))
+            {
+                throw new BusinessException("EmptyEmail", "Email veya Kullanıcı isimi dolu olmalı.");
+            }
+
+            ApplicationUser user = null;
+
+            if(!string.IsNullOrWhiteSpace(request.Email)) { 
+                user = await _userManager.FindByEmailAsync(request.Email);
+            }
+            else
+            {
+                user = await _userManager.FindByNameAsync(request.UserName);
+            }
 
             if (user == null)
             {
@@ -247,12 +264,13 @@ namespace BackendSocialApp.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var passwordResetLink = Url.Action("ResetPassword", "User", new { email = request.Email, token }, Request.Scheme);
+            var entryUrl = _configuration.GetValue<string>("EntryUrl");
+            var passwordResetLink = entryUrl + "/#/ResetPassword?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
 
             _emailHelper.Send(
                 new EmailModel
                 {
-                    To = request.Email,
+                    To = user.Email,
                     Subject = "Falcım - Şifre yenileme",
                     IsBodyHtml = false,
                     Message = passwordResetLink
@@ -266,6 +284,8 @@ namespace BackendSocialApp.Controllers
         [Route("ResetPassword")]
         public async Task<ActionResult> ResetPassword(ResetPasswordRequest request)
         {
+            request.Email = request.Email.Trim();
+
             if (string.IsNullOrWhiteSpace(request.Email))
             {
                 throw new BusinessException("EmptyEmail", "Email boş olamaz.");
@@ -283,9 +303,21 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
             }
 
-            await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
 
-            return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            var errors = "";
+            foreach (var item in result.Errors)
+            {
+                errors = errors + item.Code + " - " + item.Description + ",";
+            }
+
+            _logger.LogError("ResetError: Email: " + request.Email + ", Errors: " + errors);
+
+            throw new BusinessException("CanNotReset", "Şifre güncellenemedi.");
         }
 
         [HttpPost]

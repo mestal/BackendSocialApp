@@ -28,7 +28,7 @@ namespace BackendSocialApp.Extensions
                             var businessException = contextFeature.Error as BusinessException;
                             await context.Response.WriteAsync(new ErrorDetails()
                             {
-                                StatusCode = businessException.Code,
+                                Code = businessException.Code,
                                 Message = businessException.Message,
                                 ErrorParams = businessException.ErrorParams
                             }.ToString());
@@ -36,7 +36,7 @@ namespace BackendSocialApp.Extensions
                         else { 
                             await context.Response.WriteAsync(new ErrorDetails()
                             {
-                                StatusCode = context.Response.StatusCode.ToString(),
+                                Code = context.Response.StatusCode.ToString(),
                                 Message = "Internal Server Error."
                             }.ToString());
                         }
