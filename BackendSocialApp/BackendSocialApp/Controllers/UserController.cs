@@ -278,7 +278,7 @@ namespace BackendSocialApp.Controllers
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             var entryUrl = _configuration.GetValue<string>("EntryUrl");
-            var passwordResetLink = entryUrl + "/#/resetPassword?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
+            var passwordResetLink = entryUrl + "/#/resetPassword?email=" + user.Email + "&token=" + WebUtility.UrlEncode(token);
 
             _emailHelper.Send(
                 new EmailModel
