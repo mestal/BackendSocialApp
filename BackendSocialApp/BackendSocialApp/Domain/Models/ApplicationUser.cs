@@ -14,6 +14,10 @@ namespace BackendSocialApp.Domain.Models
         public string PicturePath { get; set; }
 
         public ConnectionStatus ConnectionStatus { get; set; }
+
+        public GenderType Gender { get; set; }
+
+        public DateTime BirthDate { get; set; }
     }
 
     public class AdminUser : ApplicationUser
@@ -23,6 +27,9 @@ namespace BackendSocialApp.Domain.Models
     public class ConsumerUser : ApplicationUser
     {
         public int Point { get; set; }
+
+        public DateTime BirthTime { get; set; }
+
     }
 
     public class FortuneTellerUser : ApplicationUser

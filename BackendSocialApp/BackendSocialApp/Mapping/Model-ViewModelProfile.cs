@@ -17,11 +17,13 @@ namespace BackendSocialApp.Mapping
             CreateMap<FortuneTellerUser, FortuneTellerViewModel>();
 
             CreateMap<CoffeeFortuneTellingStatus, string>().ConvertUsing(src => Enum.GetName(typeof(CoffeeFortuneTellingStatus), src));
+            CreateMap<GenderType, string>().ConvertUsing(src => Enum.GetName(typeof(GenderType), src));
 
             CreateMap<CoffeeFortuneTelling, CoffeeFortuneTellingViewModel>();
             CreateMap<CoffeeFortuneTellingViewModel, CoffeeFortuneTelling>();
             CreateMap<FortuneTellerUser, UserViewModel>();
             CreateMap<ConsumerUser, UserViewModel>();
+            CreateMap<ConsumerUser, UserInfoViewModel>();
             CreateMap<MainFeed, FeedViewModel>().ForMember(dest => dest.FeedType, opt => opt.MapFrom(src => src.GetType().ToString()));
             CreateMap<Survey, SurveyViewModel>();
             CreateMap<SurveyItem, SurveyItemViewModel>();

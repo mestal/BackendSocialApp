@@ -17,6 +17,8 @@ using System.IO;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using BackendSocialApp.ViewModels;
+using AutoMapper;
 
 namespace BackendSocialApp.Controllers
 {
@@ -30,11 +32,13 @@ namespace BackendSocialApp.Controllers
         private readonly IEmailHelper _emailHelper;
         private readonly IHostingEnvironment _environment;
         private readonly ILogger<UserController> _logger;
+        private readonly IMapper _mapper;
 
         public IConfiguration _configuration { get; }
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IOptions<ApplicationSettings> appSettings,
-                IEmailHelper emailHelper, IHostingEnvironment environment, IConfiguration configuration, ILogger<UserController> logger)
+                IEmailHelper emailHelper, IHostingEnvironment environment, IConfiguration configuration, ILogger<UserController> logger,
+                IMapper mapper)
         {
             _userManager = userManager;
             _appSettings = appSettings.Value;
@@ -43,6 +47,7 @@ namespace BackendSocialApp.Controllers
             _environment = environment;
             _configuration = configuration;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -52,7 +57,7 @@ namespace BackendSocialApp.Controllers
             request.UserName = request.UserName.Trim();
             var user = await _userManager.FindByNameAsync(request.UserName);
 
-            if(user == null)
+            if (user == null)
             {
                 user = await _userManager.FindByEmailAsync(request.UserName);
             }
@@ -195,17 +200,18 @@ namespace BackendSocialApp.Controllers
 
             var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
-            if(result.Succeeded) { 
+            if (result.Succeeded)
+            {
                 return Ok();
             }
             var errors = "";
-            foreach(var item in result.Errors)
+            foreach (var item in result.Errors)
             {
                 errors = errors + item.Code + " - " + item.Description + ",";
             }
 
             _logger.LogError("ConfirmError: Email: " + request.Email + ", Errors: " + errors);
-            
+
             throw new BusinessException("CanNotConfirm", "Onaylanamadı.");
         }
 
@@ -243,7 +249,7 @@ namespace BackendSocialApp.Controllers
             request.Email = request.Email.Trim();
             request.UserName = request.UserName.Trim();
 
-            if (string.IsNullOrWhiteSpace(request.Email) && string.IsNullOrWhiteSpace(request.UserName))  
+            if (string.IsNullOrWhiteSpace(request.Email) && string.IsNullOrWhiteSpace(request.UserName))
             {
                 throw new BusinessException("EmptyEmail", "Email veya Kullanıcı isimi dolu olmalı.");
             }
@@ -255,7 +261,8 @@ namespace BackendSocialApp.Controllers
 
             ApplicationUser user = null;
 
-            if(!string.IsNullOrWhiteSpace(request.Email)) { 
+            if (!string.IsNullOrWhiteSpace(request.Email))
+            {
                 user = await _userManager.FindByEmailAsync(request.Email);
             }
             else
@@ -336,7 +343,7 @@ namespace BackendSocialApp.Controllers
             {
                 Directory.CreateDirectory(folderPath);
             }
-       
+
             if (request.Photo.ContentType.Length > 30)
             {
                 throw new Exception("Wrong Content-Type");
@@ -354,6 +361,37 @@ namespace BackendSocialApp.Controllers
             await _userManager.UpdateAsync(user);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetConsumerUserInfo")]
+        public async Task<ActionResult<UserInfoViewModel>> GetConsumerUserInfo(string userName)
+        {
+            var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
+            var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
+
+            ApplicationUser user = null;
+            user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            var consumerUser = user as ConsumerUser;
+            if(consumerUser == null)
+            {
+                throw new BusinessException("NotConsumerUser", "Bu kayıt bir kullanıcı değil.");
+            }
+
+            if(user.Id.ToString() != userId && (userRole != Constants.RoleAdmin && userRole != Constants.RoleFalci))
+            {
+                throw new BusinessException("AuthError", "Bu kaydı görmeye yetkiniz bulunmuyor.");
+            }
+
+            var viewModel = _mapper.Map<ConsumerUser, UserInfoViewModel>(consumerUser);
+
+            return Ok(viewModel);
         }
     }
 }
