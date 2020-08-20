@@ -11,7 +11,7 @@ namespace BackendSocialApp.ViewModels
 
         public UserViewModel User { get; set; }
 
-        public UserViewModel FortuneTeller { get; set; }
+        public FortuneTellerViewModel FortuneTeller { get; set; }
 
         public string Status { get; set; }
 

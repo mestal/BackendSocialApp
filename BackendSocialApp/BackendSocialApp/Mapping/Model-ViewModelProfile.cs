@@ -21,7 +21,6 @@ namespace BackendSocialApp.Mapping
 
             CreateMap<CoffeeFortuneTelling, CoffeeFortuneTellingViewModel>();
             CreateMap<CoffeeFortuneTellingViewModel, CoffeeFortuneTelling>();
-            CreateMap<FortuneTellerUser, UserViewModel>();
             CreateMap<ConsumerUser, UserViewModel>();
             CreateMap<ConsumerUser, UserInfoViewModel>();
             CreateMap<MainFeed, FeedViewModel>().ForMember(dest => dest.FeedType, opt => opt.MapFrom(src => src.GetType().ToString()));

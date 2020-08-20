@@ -133,14 +133,15 @@ namespace BackendSocialApp.Controllers
         [HttpGet]
         [Authorize]
         [Route("GetFortuneTellingById")]
-        public GetFortuneTellingByIdResponse GetFortuneTellingById(Guid id)
+        public CoffeeFortuneTellingViewModel GetFortuneTellingById(Guid id)
         {
             var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
 
             var result = _service.GetCoffeeFortuneTelling(id, userId, userRole);
+            var viewModel = _mapper.Map<CoffeeFortuneTelling, CoffeeFortuneTellingViewModel>(result);
 
-            return new GetFortuneTellingByIdResponse { CoffeeFortuneTelling = result };
+            return viewModel;
         }
 
         [HttpGet]

@@ -54,7 +54,8 @@ namespace BackendSocialApp.Controllers
         [Route("Login")]
         public async Task<ActionResult> Login(LoginRequest request)
         {
-            request.UserName = request.UserName.Trim();
+            request.UserName = request.UserName != null ? request.UserName.Trim() : request.UserName;
+
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user == null)
@@ -109,8 +110,8 @@ namespace BackendSocialApp.Controllers
         [Route("RegisterNewUser")]
         public async Task<ActionResult> RegisterNewUser(RegisterNewUserRequest request)
         {
-            request.UserName = request.UserName.Trim();
-            request.Email = request.Email.Trim();
+            request.UserName = request.UserName != null ? request.UserName.Trim() : request.UserName;
+            request.Email = request.Email != null ? request.Email.Trim() : request.Email;
 
             if (string.IsNullOrWhiteSpace(request.UserName))
             {
@@ -184,7 +185,7 @@ namespace BackendSocialApp.Controllers
         [Route("ConfirmNewUser")]
         public async Task<ActionResult> ConfirmNewUser(ConfirmNewUserRequest request)
         {
-            request.Email = request.Email.Trim();
+            request.Email = request.Email != null ? request.Email.Trim() : request.Email;
 
             if (string.IsNullOrWhiteSpace(request.Email))
             {
@@ -219,7 +220,8 @@ namespace BackendSocialApp.Controllers
         [Route("ChangePassword")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.UserName);
+            var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -236,9 +238,21 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
             }
 
-            await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-            return Ok();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            var errors = "";
+            foreach (var item in result.Errors)
+            {
+                errors = errors + item.Code + " - " + item.Description + ",";
+            }
+
+            _logger.LogError("ChangePassword: Email: " + user.Email + ", Errors: " + errors);
+
+            throw new BusinessException("CanNotChange", "Şifre değiştirilemedi.");
         }
 
         [HttpPost]
@@ -246,8 +260,8 @@ namespace BackendSocialApp.Controllers
         public async Task<ActionResult> ForgatPassword(ForgatPasswordRequest request)
         {
             //TODO emaili onaylanmamış bir user forgat password yaparsa ne olur.
-            request.Email = request.Email.Trim();
-            request.UserName = request.UserName.Trim();
+            request.Email = request.Email != null ? request.Email.Trim() : request.Email;
+            request.UserName = request.UserName != null ? request.UserName.Trim() : request.UserName;
 
             if (string.IsNullOrWhiteSpace(request.Email) && string.IsNullOrWhiteSpace(request.UserName))
             {
@@ -297,7 +311,7 @@ namespace BackendSocialApp.Controllers
         [Route("ResetPassword")]
         public async Task<ActionResult> ResetPassword(ResetPasswordRequest request)
         {
-            request.Email = request.Email.Trim();
+            request.Email = request.Email != null ? request.Email.Trim() : request.Email;
 
             if (string.IsNullOrWhiteSpace(request.Email))
             {
