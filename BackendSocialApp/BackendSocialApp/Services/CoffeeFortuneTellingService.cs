@@ -2,11 +2,9 @@
 using BackendSocialApp.Domain.Repositories;
 using BackendSocialApp.Domain.Services.Communication;
 using BackendSocialApp.Paging;
-using BackendSocialApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BackendSocialApp.Services
@@ -149,6 +147,11 @@ namespace BackendSocialApp.Services
             return coffeeFortuneTelling;
         }
 
+        public FortuneTellerUser GetFortuneTeller(Guid id)
+        {
+            return _coffeeFortuneTellingRepository.GetFortuneTeller(id);
+        }
+        
         public List<FortuneTellerUser> GetFortuneTellers()
         {
             return _coffeeFortuneTellingRepository.GetFortuneTellers();

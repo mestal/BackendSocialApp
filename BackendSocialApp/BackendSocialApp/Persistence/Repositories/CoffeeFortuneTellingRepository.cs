@@ -27,7 +27,10 @@ namespace BackendSocialApp.Persistence.Repositories
 
         public CoffeeFortuneTelling GetCoffeeFortuneTelling(Guid id)
         {
-            return _context.CoffeeFortuneTellings.FirstOrDefault(a => a.Id == id);
+            return _context.CoffeeFortuneTellings
+                .Include(a => a.FortuneTeller)
+                .Include(b => b.User)
+                .FirstOrDefault(a => a.Id == id);
         }
 
         public List<FortuneTellerUser> GetFortuneTellers()
@@ -38,6 +41,10 @@ namespace BackendSocialApp.Persistence.Repositories
         public List<FortuneTellerUser> GetActiveFortuneTellers()
         {
             return _context.FortuneTellerUsers.Where(a => a.Status == UserStatus.Active).ToList();
+        }
+        public FortuneTellerUser GetFortuneTeller(Guid id)
+        {
+            return _context.FortuneTellerUsers.FirstOrDefault(a => a.Id == id);
         }
 
         public void UpdateCoffeeFortuneTelling(CoffeeFortuneTelling coffeeFortuneTelling)

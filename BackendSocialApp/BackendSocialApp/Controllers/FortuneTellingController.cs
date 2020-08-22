@@ -145,6 +145,21 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpGet]
+        [Route("GetFortuneTeller")]
+        public FortuneTellerDetailViewModel GetFortuneTeller(Guid id)
+        {
+            var result = _service.GetFortuneTeller(id);
+
+            if(result == null)
+            {
+                throw new BusinessException("RecordNotFound", "Kayıt bulunamadı.");
+            }
+            var viewModel = _mapper.Map<FortuneTellerUser, FortuneTellerDetailViewModel>(result);
+
+            return viewModel;
+        }
+
+        [HttpGet]
         [Authorize(Roles = Constants.RoleAdmin)]
         [Route("GetFortuneTellers")]
         public object GetFortuneTellers()

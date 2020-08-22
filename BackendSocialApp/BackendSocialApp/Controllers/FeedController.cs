@@ -44,7 +44,7 @@ namespace BackendSocialApp.Controllers
             var survey = _service.GetSurvey(surveyId).Result;
             if(survey == null)
             {
-                throw new Exception("Survey not found");
+                throw new BusinessException("SurveyNotFound", "Kayıt bulunamadı.");
             }
 
             var viewModel = _mapper.Map<Survey, SurveyViewModel>(survey);
@@ -59,7 +59,7 @@ namespace BackendSocialApp.Controllers
             var news = _service.GetNews(newsId).Result;
             if (news == null)
             {
-                throw new Exception("News not found");
+                throw new BusinessException("NewsNotFound", "Kayıt bulunamadı.");
             }
 
             var viewModel = _mapper.Map<News, NewsViewModel>(news);
