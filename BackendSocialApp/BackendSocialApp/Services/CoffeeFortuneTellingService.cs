@@ -116,7 +116,7 @@ namespace BackendSocialApp.Services
 
         public async Task<IPagedList<CoffeeFortuneTelling>> GetFortuneTellerItems(PageSearchArgs args, Guid userId)
         {
-            var itemsPagedList = await _coffeeFortuneTellingRepository.GetUserItemsAsync(args, userId);
+            var itemsPagedList = await _coffeeFortuneTellingRepository.GetFortuneTellerItemsAsync(args, userId);
 
             //var categoryModels = ObjectMapper.Mapper.Map<List<CategoryModel>>(categoryPagedList.Items);
 

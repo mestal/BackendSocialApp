@@ -126,8 +126,13 @@ namespace BackendSocialApp.Controllers
         [Route("GetFortuneTellerItems")]
         public async Task<ActionResult<IPagedList<CoffeeFortuneTelling>>> GetFortuneTellerItems(SearchPageRequest request)
         {
-            var userId = new Guid(User.Claims.First(a => a.Type == "UserID").Value);
-            return Ok(_service.GetFortuneTellerItems(request.Args, userId));
+            var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
+            var userItems = _service.GetFortuneTellerItems(request.Args, userId).Result;
+
+            var viewModelList = _mapper.Map<List<CoffeeFortuneTelling>, List<CoffeeFortuneTellingViewModel>>(userItems.Items.ToList());
+
+            var result = new PagedList<CoffeeFortuneTellingViewModel>(userItems.PageIndex, userItems.PageSize, userItems.TotalCount, userItems.TotalPages, viewModelList);
+            return Ok(result);
         }
 
         [HttpGet]

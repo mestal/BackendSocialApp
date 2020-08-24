@@ -115,7 +115,7 @@ namespace BackendSocialApp.Persistence.Repositories
 
         public Task<IPagedList<CoffeeFortuneTelling>> GetFortuneTellerItemsAsync(PageSearchArgs args, Guid userId)
         {
-            IQueryable<CoffeeFortuneTelling> query = _context.CoffeeFortuneTellings;
+            IQueryable<CoffeeFortuneTelling> query = _context.CoffeeFortuneTellings.Include(b => b.User); ;
 
             var orderByList = new List<Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>>();
 
