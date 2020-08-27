@@ -103,7 +103,7 @@ namespace BackendSocialApp.Controllers
         public async Task<ActionResult> SubmitByFortuneTeller(SubmitByFortuneTellerRequest request)
         {
             var fortuneTellerId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
-            await _service.SubmitFortuneTellingByFortuneTeller(fortuneTellerId, request.CoffeeFortuneTellingId, request.Comment);
+            await _service.SubmitFortuneTellingByFortuneTeller(fortuneTellerId, request.FortuneTellingId, request.Comment);
             return Ok();
         }
 

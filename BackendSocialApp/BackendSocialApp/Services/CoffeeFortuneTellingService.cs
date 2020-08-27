@@ -26,42 +26,37 @@ namespace BackendSocialApp.Services
 
             if (!coffeeFortuneTelling.User.EmailConfirmed)
             {
-                throw new Exception("EmailNotConfirmed");
+                throw new BusinessException("EmailNotConfirmed", "E-mail onaylanmamış.");
             }
 
             if (coffeeFortuneTelling.FortuneTeller.Status == UserStatus.Deactive)
             {
-                throw new Exception("FortuneTellerIsNotActive");
+                throw new BusinessException("FortuneTellerIsNotActive", "Falcı aktif değildir.");
             }
 
             coffeeFortuneTelling.SubmitDateUtc = DateTime.UtcNow;
 
             if (coffeeFortuneTelling.User.Point < coffeeFortuneTelling.FortuneTeller.CoffeePointPrice)
             {
-                throw new Exception("UserDoesntHaveEnoughPoint");
+                throw new BusinessException("UserDoesntHaveEnoughPoint", "Yeteri kadar puan bulunmamaktadır. Puan satın alınız.");
             }
 
-            try
-            {
-                await _coffeeFortuneTellingRepository.AddCoffeeFortuneTellingAsync(coffeeFortuneTelling);
+            coffeeFortuneTelling.Status = CoffeeFortuneTellingStatus.SubmittedByUser;
 
-                foreach (var item in picturePaths)
+            await _coffeeFortuneTellingRepository.AddCoffeeFortuneTellingAsync(coffeeFortuneTelling);
+
+            foreach (var item in picturePaths)
+            {
+                await _coffeeFortuneTellingRepository.AddCoffeeFortuneTellingPictureAsync(new CoffeeFortuneTellingPicture
                 {
-                    await _coffeeFortuneTellingRepository.AddCoffeeFortuneTellingPictureAsync(new CoffeeFortuneTellingPicture
-                    {
-                        CoffeeFortuneTelling = coffeeFortuneTelling,
-                        Path = item
-                    });
-                }
-
-                await _unitOfWork.CompleteAsync();
-
-                return new CreateCoffeeFortuneTellingResponse(coffeeFortuneTelling);
+                    CoffeeFortuneTelling = coffeeFortuneTelling,
+                    Path = item
+                });
             }
-            catch (Exception ex)
-            {
-                return new CreateCoffeeFortuneTellingResponse($"An error occurred when CreateCoffeeFortuneTellingAsync: {ex.Message}");
-            }
+
+            await _unitOfWork.CompleteAsync();
+
+            return new CreateCoffeeFortuneTellingResponse(coffeeFortuneTelling);
         }
 
         public async Task<SubmitFortuneTellingByFortuneTellerResponse> SubmitFortuneTellingByFortuneTeller(Guid fortuneTellerId, Guid coffeeFortuneTellingId, string comment)
@@ -70,32 +65,25 @@ namespace BackendSocialApp.Services
 
             if(fortuneTelling == null)
             {
-                throw new Exception("Fortune Telling Not Found");
+                throw new BusinessException("FortuneTellingNotFound", "Fal bulunamadı.");
             }
 
             if(fortuneTellerId != fortuneTelling.FortuneTeller.Id)
             {
-                throw new Exception("This Fortune Telling is not sent to you.");
+                throw new BusinessException("FortuneTellingTellerDifferent", "Bu fal size gönderilmemiş.");
             }
 
             if(fortuneTelling.Status != CoffeeFortuneTellingStatus.SubmittedByUser)
             {
-                throw new Exception("Fortune Telling Status Not SubmittedByUser");
+                throw new BusinessException("FortuneTellingStatusWrong", "Falın durumu uygun değil.");
             }
 
             fortuneTelling.FortuneTellerComment = comment;
 
-            try
-            {
-                _coffeeFortuneTellingRepository.UpdateCoffeeFortuneTelling(fortuneTelling);
-                await _unitOfWork.CompleteAsync();
+            _coffeeFortuneTellingRepository.UpdateCoffeeFortuneTelling(fortuneTelling);
+            await _unitOfWork.CompleteAsync();
 
-                return new SubmitFortuneTellingByFortuneTellerResponse();
-            }
-            catch (Exception ex)
-            {
-                return new SubmitFortuneTellingByFortuneTellerResponse($"An error occurred when SubmitFortuneTellingByFortuneTeller: {ex.Message}");
-            }
+            return new SubmitFortuneTellingByFortuneTellerResponse();
         }
 
         public async Task<IPagedList<CoffeeFortuneTelling>> GetUserItems(PageSearchArgs args, Guid userId)
@@ -136,12 +124,12 @@ namespace BackendSocialApp.Services
 
             if(role == "FortuneTeller" && coffeeFortuneTelling.FortuneTeller.Id != userId)
             {
-                throw new Exception("You dont have rights.");
+                throw new BusinessException("NotAllowed", "Yetkiniz bulunmamaktadır.");
             }
 
             if (role == "ConsumerUser" && coffeeFortuneTelling.User.Id != userId)
             {
-                throw new Exception("You dont have rights.");
+                throw new BusinessException("NotAllowed", "Yetkiniz bulunmamaktadır.");
             }
 
             return coffeeFortuneTelling;

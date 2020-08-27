@@ -9,6 +9,6 @@ namespace BackendSocialApp.Requests
     {
         public string Comment { get; set; }
 
-        public Guid CoffeeFortuneTellingId { get; set; }
+        public Guid FortuneTellingId { get; set; }
     }
 }
