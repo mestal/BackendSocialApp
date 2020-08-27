@@ -30,6 +30,7 @@ namespace BackendSocialApp.Persistence.Repositories
             return _context.CoffeeFortuneTellings
                 .Include(a => a.FortuneTeller)
                 .Include(b => b.User)
+                .Include(c => c.Pictures)
                 .FirstOrDefault(a => a.Id == id);
         }
 

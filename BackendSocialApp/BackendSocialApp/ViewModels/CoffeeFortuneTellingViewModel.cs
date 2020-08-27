@@ -26,5 +26,7 @@ namespace BackendSocialApp.ViewModels
         public DateTime? ReadDateUtc { get; set; }
 
         public int Point { get; set; }
+
+        public List<string> Pictures { get; set; }
     }
 }
