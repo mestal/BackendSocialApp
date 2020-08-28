@@ -25,6 +25,6 @@ namespace BackendSocialApp.Domain.Repositories
 
         Task<IPagedList<CoffeeFortuneTelling>> GetFortuneTellerItemsAsync(PageSearchArgs args, Guid userId);
 
-        FortuneTellerUser GetFortuneTeller(Guid id);
+        FortuneTellerUser GetFortuneTeller(string userName, Guid id);
     }
 }

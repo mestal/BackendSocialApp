@@ -25,6 +25,6 @@ namespace BackendSocialApp.Services
 
         List<FortuneTellerUser> GetActiveFortuneTellers();
 
-        FortuneTellerUser GetFortuneTeller(Guid id);
+        FortuneTellerUser GetFortuneTeller(string userName, Guid id);
     }
 }

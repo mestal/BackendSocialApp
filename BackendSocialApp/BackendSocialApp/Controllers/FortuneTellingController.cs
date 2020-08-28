@@ -151,9 +151,9 @@ namespace BackendSocialApp.Controllers
 
         [HttpGet]
         [Route("GetFortuneTeller")]
-        public FortuneTellerDetailViewModel GetFortuneTeller(Guid id)
+        public FortuneTellerDetailViewModel GetFortuneTeller(string userName, Guid id)
         {
-            var result = _service.GetFortuneTeller(id);
+            var result = _service.GetFortuneTeller(userName, id);
 
             if(result == null)
             {

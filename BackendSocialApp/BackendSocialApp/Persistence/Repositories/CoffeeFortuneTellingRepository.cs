@@ -43,9 +43,18 @@ namespace BackendSocialApp.Persistence.Repositories
         {
             return _context.FortuneTellerUsers.Where(a => a.Status == UserStatus.Active).ToList();
         }
-        public FortuneTellerUser GetFortuneTeller(Guid id)
+        public FortuneTellerUser GetFortuneTeller(string userName, Guid id)
         {
-            return _context.FortuneTellerUsers.FirstOrDefault(a => a.Id == id);
+            if (!string.IsNullOrWhiteSpace(userName))
+            {
+                return _context.FortuneTellerUsers.FirstOrDefault(a => a.UserName == userName);
+            }
+            else if(id != Guid.Empty)
+            {
+                return _context.FortuneTellerUsers.FirstOrDefault(a => a.Id == id);
+            }
+
+            throw new BusinessException("MissingValue", "Kullanıcı adı veya Id bilgisi bilgisi gönderiniz.");
         }
 
         public void UpdateCoffeeFortuneTelling(CoffeeFortuneTelling coffeeFortuneTelling)

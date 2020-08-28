@@ -79,6 +79,7 @@ namespace BackendSocialApp.Services
             }
 
             fortuneTelling.FortuneTellerComment = comment;
+            fortuneTelling.Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller;
 
             _coffeeFortuneTellingRepository.UpdateCoffeeFortuneTelling(fortuneTelling);
             await _unitOfWork.CompleteAsync();
@@ -135,9 +136,9 @@ namespace BackendSocialApp.Services
             return coffeeFortuneTelling;
         }
 
-        public FortuneTellerUser GetFortuneTeller(Guid id)
+        public FortuneTellerUser GetFortuneTeller(string userName, Guid id)
         {
-            return _coffeeFortuneTellingRepository.GetFortuneTeller(id);
+            return _coffeeFortuneTellingRepository.GetFortuneTeller(userName, id);
         }
         
         public List<FortuneTellerUser> GetFortuneTellers()
