@@ -228,9 +228,9 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
-            if (await _userManager.CheckPasswordAsync(user, request.CurrentPassword))
+            if (false == await _userManager.CheckPasswordAsync(user, request.CurrentPassword))
             {
-                throw new BusinessException("CurrentPasswordIsWrong", "Şifre yanlış");
+                throw new BusinessException("CurrentPasswordIsWrong", "Mevcut şifre yanlış");
             }
 
             if (request.NewPassword != request.NewPassword2)

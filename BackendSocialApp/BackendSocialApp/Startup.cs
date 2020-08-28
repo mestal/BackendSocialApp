@@ -147,7 +147,7 @@ namespace BackendSocialApp
 
             app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath + "/../", Configuration.GetValue<string>("FileServerRequestPath"))),
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath + "/", Configuration.GetValue<string>("FileServerRequestPath"))),
                 RequestPath = "/Assets",
                 EnableDirectoryBrowsing = false
             });

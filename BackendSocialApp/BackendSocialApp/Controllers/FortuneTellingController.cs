@@ -59,7 +59,7 @@ namespace BackendSocialApp.Controllers
             //    throw new Exception("Pictures must be send.");
             //}
 
-            var folderPath = _environment.ContentRootPath + "\\..\\Assets\\CoffeeFortuneTellingPictures\\";
+            var folderPath = _environment.ContentRootPath + "\\Assets\\CoffeeFortuneTellingPictures\\";
 
             var folderExists = true;
             if (!Directory.Exists(folderPath))
