@@ -147,7 +147,7 @@ namespace BackendSocialApp.Persistence.Repositories
 
             if (orderByList.Count == 0)
             {
-                orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(new SortingOption { Direction = SortingOption.SortingDirection.ASC }, c => c.Id));
+                orderByList.Add(new Tuple<SortingOption, Expression<Func<CoffeeFortuneTelling, object>>>(new SortingOption { Direction = SortingOption.SortingDirection.DESC }, c => c.SubmitDateUtc));
             }
 
             var filterList = new List<Tuple<FilteringOption, Expression<Func<CoffeeFortuneTelling, bool>>>>();
