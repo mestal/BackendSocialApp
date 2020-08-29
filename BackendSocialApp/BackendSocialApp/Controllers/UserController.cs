@@ -349,10 +349,10 @@ namespace BackendSocialApp.Controllers
 
         [HttpPost]
         [Route("UpdateProfilePhoto")]
-        public async Task<ActionResult> UpdateProfilePhoto(UpdateProfilePhotoRequest request)
+        public async Task<ActionResult> UpdateProfilePhoto([FromForm]UpdateProfilePhotoRequest request)
         {
-            var userId = User.Claims.First(a => a.Type == "UserID").Value;
-            var folderPath = _environment.ContentRootPath + "\\ProfilePhotos\\";
+            var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
+            var folderPath = _environment.ContentRootPath + "\\Assets\\ProfilePictures\\";
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
@@ -371,7 +371,7 @@ namespace BackendSocialApp.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(userId);
-            user.PicturePath = fileFullPath;
+            user.PicturePath = fileName;
             await _userManager.UpdateAsync(user);
 
             return Ok();
