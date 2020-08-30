@@ -5,6 +5,7 @@ using BackendSocialApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -138,17 +139,29 @@ namespace BackendSocialApp.Persistence.Repositories
 
         public Task<int> ChangeCommentCountAsync(Guid feedId, int number)
         {
-            return _context.Database.ExecuteSqlCommandAsync(new RawSqlString("Update MainFeeds Set CommentCount = CommentCount + @Number Where Id = @FeedId"), number, feedId);
+            object[] parameters = {
+                new SqlParameter("@Number", number),
+                new SqlParameter("@FeedId", feedId)
+            };
+            return _context.Database.ExecuteSqlCommandAsync(new RawSqlString("Update MainFeeds Set CommentCount = CommentCount + @Number Where Id = @FeedId"), parameters);
         }
 
         public Task<int> ChangeLikeCountAsync(Guid feedId, int number)
         {
-            return _context.Database.ExecuteSqlCommandAsync(new RawSqlString("Update MainFeeds Set LikeCount = LikeCount + @Number Where Id = @FeedId"), number, feedId);
+            object[] parameters = {
+                new SqlParameter("@Number", number),
+                new SqlParameter("@FeedId", feedId)
+            };
+            return _context.Database.ExecuteSqlCommandAsync(new RawSqlString("Update MainFeeds Set LikeCount = LikeCount + @Number Where Id = @FeedId"), parameters);
         }
 
         public Task<int> ChangeDislikeCountAsync(Guid feedId, int number)
         {
-            return _context.Database.ExecuteSqlCommandAsync(new RawSqlString("Update MainFeeds Set DislikeCount = DislikeCount + @Number Where Id = @FeedId"), number, feedId);
+            object[] parameters = {
+                new SqlParameter("@Number", number),
+                new SqlParameter("@FeedId", feedId)
+            };
+            return _context.Database.ExecuteSqlCommandAsync(new RawSqlString("Update MainFeeds Set DislikeCount = DislikeCount + @Number Where Id = @FeedId"), parameters);
         }
     }
 }
