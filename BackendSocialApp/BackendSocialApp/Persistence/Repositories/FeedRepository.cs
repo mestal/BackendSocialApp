@@ -111,13 +111,13 @@ namespace BackendSocialApp.Persistence.Repositories
                     switch (filteringOption.Field)
                     {
                         case "RefId":
-                            filterList.Add(new Tuple<FilteringOption, Expression<Func<Comment, bool>>>(filteringOption, c => c.RefId == (Guid)filteringOption.Value));
+                            filterList.Add(new Tuple<FilteringOption, Expression<Func<Comment, bool>>>(filteringOption, c => c.RefId == Guid.Parse(filteringOption.Value.ToString())));
                             break;
                     }
                 }
             }
 
-            var pagedList = new PagedList<Comment>(query, new PagingArgs { PageIndex = args.PageIndex, PageSize = args.PageSize, PagingStrategy = args.PagingStrategy }, orderByList, null);
+            var pagedList = new PagedList<Comment>(query, new PagingArgs { PageIndex = args.PageIndex, PageSize = args.PageSize, PagingStrategy = args.PagingStrategy }, orderByList, filterList);
 
             return Task.FromResult<IPagedList<Comment>>(pagedList);
         }
