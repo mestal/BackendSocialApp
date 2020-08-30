@@ -38,6 +38,10 @@ namespace BackendSocialApp.Persistence.Contexts
 
         public DbSet<News> NewsList { get; set; }
 
+        public DbSet<Like> Likes { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -13,7 +13,7 @@ namespace BackendSocialApp.Persistence.Contexts
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
-            SeedNews(context);
+            SeedNews(userManager, context);
             SeedFortuneTellings(context);
         }
 
@@ -73,6 +73,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.EmailConfirmed = true;
                 user.CoffeFortuneTellingCount = 5;
                 user.CoffeePointPrice = 100;
+                user.Description = "Çok iyi fal bakarın.";
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -94,6 +95,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.EmailConfirmed = true;
                 user.CoffeFortuneTellingCount = 8;
                 user.CoffeePointPrice = 125;
+                user.Description = "En iyi fal ben bakarın.";
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -114,6 +116,7 @@ namespace BackendSocialApp.Persistence.Contexts
                 user.EmailConfirmed = true;
                 user.CoffeFortuneTellingCount = 16;
                 user.CoffeePointPrice = 140;
+                user.Description = "Gönder bakalim falini.";
 
                 IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
 
@@ -178,8 +181,13 @@ namespace BackendSocialApp.Persistence.Contexts
             }
         }
 
-        public static void SeedNews(AppDbContext context)
+        public static void SeedNews(UserManager<ApplicationUser> userManager, AppDbContext context)
         {
+            var user1 = userManager.FindByNameAsync("user1").Result;
+            var user2 = userManager.FindByNameAsync("user2").Result;
+            var user3 = userManager.FindByNameAsync("user3").Result;
+
+
             var survey = context.Surveys.FirstOrDefault(a => a.Id.ToString() == "49CA55E2-501A-4A8A-8984-ED100C19BFBF");
             if (survey == null)
             {
@@ -809,6 +817,31 @@ namespace BackendSocialApp.Persistence.Contexts
                     Survey = survey,
                     Point = 15,
                     ResultInformation = "Abdülmuttalip"
+                });
+
+                ///////////////////////////////
+                context.Comments.Add(new Comment
+                {
+                    RefId = survey.Id,
+                    UserComment = "Comment 1",
+                    User = user1,
+                    CreateDate = DateTime.UtcNow.AddDays(-5)
+                });
+
+                context.Comments.Add(new Comment
+                {
+                    RefId = survey.Id,
+                    UserComment = "Comment 2",
+                    User = user2,
+                    CreateDate = DateTime.UtcNow.AddDays(-4)
+                });
+
+                context.Comments.Add(new Comment
+                {
+                    RefId = survey.Id,
+                    UserComment = "Comment 3",
+                    User = user3,
+                    CreateDate = DateTime.UtcNow.AddDays(-3)
                 });
             }
 

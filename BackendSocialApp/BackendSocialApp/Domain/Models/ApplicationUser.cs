@@ -18,6 +18,8 @@ namespace BackendSocialApp.Domain.Models
         public GenderType Gender { get; set; }
 
         public DateTime BirthDate { get; set; }
+
+        public string Description { get; set; }
     }
 
     public class AdminUser : ApplicationUser

@@ -4,14 +4,16 @@ using BackendSocialApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200829173641_Like Count")]
+    partial class LikeCount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,8 +58,6 @@ namespace BackendSocialApp.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<int>("ConnectionStatus");
-
-                    b.Property<string>("Description");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
@@ -179,11 +179,9 @@ namespace BackendSocialApp.Migrations
 
                     b.Property<string>("UserComment");
 
-                    b.Property<Guid?>("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -481,13 +479,6 @@ namespace BackendSocialApp.Migrations
                     b.HasOne("BackendSocialApp.Domain.Models.CoffeeFortuneTelling", "CoffeeFortuneTelling")
                         .WithMany("Pictures")
                         .HasForeignKey("CoffeeFortuneTellingId");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.Comment", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.NewsItem", b =>

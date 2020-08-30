@@ -4,6 +4,8 @@ using BackendSocialApp.Paging;
 using BackendSocialApp.Requests;
 using BackendSocialApp.Services;
 using BackendSocialApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,13 @@ namespace BackendSocialApp.Controllers
     {
         private readonly IFeedService _service;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FeedController(IFeedService service, IMapper mapper)
+        public FeedController(IFeedService service, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             _service = service;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -65,6 +69,83 @@ namespace BackendSocialApp.Controllers
             var viewModel = _mapper.Map<News, NewsViewModel>(news);
 
             return Ok(viewModel);
+        }
+
+        [HttpPost]
+        [Route("GetComments")]
+        public async Task<ActionResult<List<CommentViewModel>>> GetComments(SearchPageRequest request)
+        {
+            var items = _service.GetComments(request.Args).Result;
+
+            var viewModelList = _mapper.Map<List<Comment>, List<CommentViewModel>>(items.Items.ToList());
+
+            var result = new PagedList<CommentViewModel>(items.PageIndex, items.PageSize, items.TotalCount, items.TotalPages, viewModelList);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("SubmitComment")]
+        public async Task<ActionResult> SubmitComment(SubmitCommentRequest request)
+        {
+            var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if(user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            await _service.SubmitComment(user, request.FeedId, request.Comment);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("RemoveComment")]
+        public async Task<ActionResult> RemoveComment(RemoveCommentRequest request)
+        {
+            var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
+            var role = User.Claims.First(a => a.Type == Constants.ClaimRole).Value;
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            await _service.RemoveComment(request.CommentId, role, userId);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("LikeFeed")]
+        public async Task<ActionResult> LikeFeed(LikeFeedRequest request)
+        {
+            var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            await _service.LikeFeed(user, request.FeedId, request.LikeType);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("RemoveLikeFeed")]
+        public async Task<ActionResult> RemoveLikeFeed(RemoveLikeRequest request)
+        {
+            var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            await _service.RemoveLikeFeed(user, request.FeedId, request.LikeType);
+            return Ok();
         }
     }
 }

@@ -16,5 +16,15 @@ namespace BackendSocialApp.Services
         Task<Survey> GetSurvey(Guid surveyId);
 
         Task<News> GetNews(Guid newsId);
+
+        Task<IPagedList<Comment>> GetComments(PageSearchArgs args);
+
+        Task SubmitComment(ApplicationUser user, Guid refId, string comment);
+
+        Task RemoveComment(Guid commentId, string role, Guid userId);
+
+        Task LikeFeed(ApplicationUser user, Guid refId, int likeType);
+
+        Task RemoveLikeFeed(ApplicationUser user, Guid refId, int likeType);
     }
 }

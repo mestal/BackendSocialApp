@@ -18,6 +18,10 @@ namespace BackendSocialApp.Domain.Models
         public DateTime PublishedDateUtc { get; set; }
 
         public MainFeedStatus Status { get; set; }
+
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+        public int CommentCount { get; set; }
     }
 
     public enum MainFeedStatus
@@ -106,5 +110,27 @@ namespace BackendSocialApp.Domain.Models
     public class News : MainFeed
     {
         public List<NewsItem> Items { get; set; }
+    }
+
+    public class Like
+    {
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public int RefType { get; set; }
+        public Guid RefId { get; set; }
+        public int LikeType { get; set; }
+        public DateTime Date { get; set; }
+    }
+
+    public class Comment
+    {
+        public Guid Id { get; set; }
+        public ApplicationUser User { get; set; }
+        public int RefType { get; set; }
+        public Guid RefId { get; set; }
+        public string UserComment { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public Guid ParentId { get; set; }
     }
 }

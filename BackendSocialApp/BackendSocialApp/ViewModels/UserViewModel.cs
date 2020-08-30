@@ -13,6 +13,8 @@ namespace BackendSocialApp.ViewModels
         public string UserName { get; set; }
 
         public string FullName { get; set; }
+
+        public string PicturePath { get; set; }
     }
 
     public class UserInfoViewModel

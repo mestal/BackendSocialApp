@@ -87,17 +87,17 @@ namespace BackendSocialApp.Controllers
                 if (role[0] == Constants.RoleAdmin)
                 {
                     //var adminUser = (AdminUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0] });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], user.FullName });
                 }
                 else if (role[0] == "Falci")
                 {
                     var fortuneTellerUser = (FortuneTellerUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount });
+                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount, user.FullName });
                 }
                 else
                 {
                     var consumerUser = (ConsumerUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], consumerUser.Point });
+                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], consumerUser.Point, user.FullName });
                 }
             }
             else

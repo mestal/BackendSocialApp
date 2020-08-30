@@ -14,6 +14,9 @@ namespace BackendSocialApp.ViewModels
         public string SurveyType { get; set; }
         public List<SurveyItemViewModel> Items { get; set; }
         public List<SurveyResultItemViewModel> Results { get; set; }
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+        public int CommentCount { get; set; }
     }
 
     public class SurveyItemViewModel
@@ -76,5 +79,17 @@ namespace BackendSocialApp.ViewModels
         public string Title { get; set; }
 
         public int Order { get; set; }
+    }
+
+    public class CommentViewModel
+    {
+        public Guid Id { get; set; }
+
+        public string Comment { get; set; }
+
+        public UserViewModel User  { get;set; }
+
+        public DateTime CreateDate { get; set; }
+
     }
 }
