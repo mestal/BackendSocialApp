@@ -19,7 +19,7 @@ namespace BackendSocialApp.Services
 
         Task<IPagedList<Comment>> GetComments(PageSearchArgs args);
 
-        Task SubmitComment(ApplicationUser user, Guid refId, string comment);
+        Task<Guid> SubmitComment(ApplicationUser user, Guid refId, string comment);
 
         Task RemoveComment(Guid commentId, string role, Guid userId);
 

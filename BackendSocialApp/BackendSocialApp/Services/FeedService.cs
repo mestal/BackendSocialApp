@@ -61,7 +61,7 @@ namespace BackendSocialApp.Services
             return result;
         }
 
-        public async Task SubmitComment(ApplicationUser user, Guid refId, string comment)
+        public async Task<Guid> SubmitComment(ApplicationUser user, Guid refId, string comment)
         {
             var feed = _feedRepository.GetFeedAsync(refId);
 
@@ -79,6 +79,7 @@ namespace BackendSocialApp.Services
             await _feedRepository.SaveCommentAsync(newComment);
             await _feedRepository.ChangeCommentCountAsync(refId, 1);
             await _unitOfWork.CompleteAsync();
+            return newComment.Id;
         }
 
         public async Task RemoveComment(Guid commentId, string role, Guid userId)

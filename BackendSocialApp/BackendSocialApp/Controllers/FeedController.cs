@@ -96,8 +96,8 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
-            await _service.SubmitComment(user, request.FeedId, request.Comment);
-            return Ok();
+            var id = await _service.SubmitComment(user, request.FeedId, request.Comment);
+            return Ok(id);
         }
 
         [HttpPost]
