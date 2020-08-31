@@ -10,7 +10,7 @@ namespace BackendSocialApp.Domain.Repositories
 {
     public interface IFeedRepository
     {
-        Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args);
+        Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args, Guid? userId);
 
         Task<Survey> GetSurveyAsync(Guid surveyId);
 
@@ -37,6 +37,10 @@ namespace BackendSocialApp.Domain.Repositories
         Task<Comment> GetCommentAsync(Guid commentId);
 
         Task<Like> GetLikeAsync(Guid feedId, Guid userId, int likeType);
+
+        Task<Like> GetFeedLikedDislikedAsync(Guid feedId, Guid userId);
+
+        void UpdateLike(Like like);
 
     }
 }

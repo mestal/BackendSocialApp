@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendSocialApp.Domain.Models
 {
@@ -22,6 +21,9 @@ namespace BackendSocialApp.Domain.Models
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
+
+        [NotMapped]
+        public int LikedType { get; set; }
     }
 
     public enum MainFeedStatus

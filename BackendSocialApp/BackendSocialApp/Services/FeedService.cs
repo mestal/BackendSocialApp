@@ -1,12 +1,7 @@
 ﻿using BackendSocialApp.Domain.Models;
 using BackendSocialApp.Domain.Repositories;
-using BackendSocialApp.Domain.Services.Communication;
 using BackendSocialApp.Paging;
-using BackendSocialApp.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BackendSocialApp.Services
@@ -23,9 +18,9 @@ namespace BackendSocialApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IPagedList<MainFeed>> GetFeeds(PageSearchArgs args)
+        public async Task<IPagedList<MainFeed>> GetFeeds(PageSearchArgs args, Guid? userId)
         {
-            var itemsPagedList = await _feedRepository.GetFeedsAsync(args);
+            var itemsPagedList = await _feedRepository.GetFeedsAsync(args, userId);
 
             var result = new PagedList<MainFeed>(
                 itemsPagedList.PageIndex,
@@ -37,14 +32,35 @@ namespace BackendSocialApp.Services
             return result;
         }
 
-        public async Task<Survey> GetSurvey(Guid surveyId)
+        public async Task<Survey> GetSurvey(Guid surveyId, Guid? userId)
         {
-            return await _feedRepository.GetSurveyAsync(surveyId);
+            var result = await _feedRepository.GetSurveyAsync(surveyId);
+            if (result == null) { return result; }
+            if (userId.HasValue) { 
+                var like = await _feedRepository.GetFeedLikedDislikedAsync(surveyId, userId.Value);
+                if(like != null)
+                {
+                    result.LikedType = like.LikeType;
+                }
+            }
+
+            return result;
         }
 
-        public async Task<News> GetNews(Guid newsId)
+        public async Task<News> GetNews(Guid newsId, Guid? userId)
         {
-            return await _feedRepository.GetNewsAsync(newsId);
+            var result = await _feedRepository.GetNewsAsync(newsId);
+            if(result == null) { return result; }
+            if (userId.HasValue)
+            {
+                var like = await _feedRepository.GetFeedLikedDislikedAsync(newsId, userId.Value);
+                if (like != null)
+                {
+                    result.LikedType = like.LikeType;
+                }
+            }
+
+            return result;
         }
 
         public async Task<IPagedList<Comment>> GetComments(PageSearchArgs args)
@@ -103,6 +119,11 @@ namespace BackendSocialApp.Services
 
         public async Task LikeFeed(ApplicationUser user, Guid refId, int likeType)
         {
+            if(likeType != 1 && likeType != 2)
+            {
+                throw new BusinessException("WrongLikeType", "Yanlış beğenme tipi.");
+            }
+
             var feed = _feedRepository.GetFeedAsync(refId);
 
             if (feed == null)
@@ -110,24 +131,60 @@ namespace BackendSocialApp.Services
                 throw new BusinessException("FeedNotFound", "Kayıt bulunamadı.");
             }
 
-            var newLike = new Like();
-            newLike.RefId = refId;
-            newLike.UserId = user.Id;
-            newLike.LikeType = likeType;
+            var like = await _feedRepository.GetFeedLikedDislikedAsync(refId, user.Id);
 
-            await _feedRepository.SaveLikeAsync(newLike);
-            if(likeType == 0) { 
-                await _feedRepository.ChangeLikeCountAsync(refId, 1);
+            if (like == null) {
+
+                like = new Like();
+                like.RefId = refId;
+                like.UserId = user.Id;
+                like.LikeType = likeType;
+                like.Date = DateTime.UtcNow;
+
+                await _feedRepository.SaveLikeAsync(like);
+
+                if (likeType == 1)
+                {
+                    await _feedRepository.ChangeLikeCountAsync(refId, 1);
+                }
+                else
+                {
+                    await _feedRepository.ChangeDislikeCountAsync(refId, 1);
+                }
             }
             else
             {
-                await _feedRepository.ChangeDislikeCountAsync(refId, 1);
+                if(like.LikeType == likeType)
+                {
+                    return;
+                }
+
+                like.LikeType = likeType;
+
+                if (likeType == 1)
+                {
+                    await _feedRepository.ChangeLikeCountAsync(refId, 1);
+                    await _feedRepository.ChangeDislikeCountAsync(refId, -1);
+                }
+                else
+                {
+                    await _feedRepository.ChangeLikeCountAsync(refId, -1);
+                    await _feedRepository.ChangeDislikeCountAsync(refId, 1);
+                }
+
+                _feedRepository.UpdateLike(like);
             }
+
             await _unitOfWork.CompleteAsync();
         }
 
         public async Task RemoveLikeFeed(ApplicationUser user, Guid refId, int likeType)
         {
+            if (likeType != 1 && likeType != 2)
+            {
+                throw new BusinessException("WrongLikeType", "Yanlış beğenme tipi.");
+            }
+
             var like = await _feedRepository.GetLikeAsync(refId, user.Id, likeType);
 
             if (like == null)
@@ -136,7 +193,7 @@ namespace BackendSocialApp.Services
             }
 
             _feedRepository.RemoveLike(like);
-            if (likeType == 0)
+            if (likeType == 1)
             {
                 await _feedRepository.ChangeLikeCountAsync(refId, -1);
             }
@@ -144,6 +201,7 @@ namespace BackendSocialApp.Services
             {
                 await _feedRepository.ChangeDislikeCountAsync(refId, -1);
             }
+
             await _unitOfWork.CompleteAsync();
         }
     }

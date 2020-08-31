@@ -16,7 +16,7 @@ namespace BackendSocialApp.Persistence.Repositories
     {
         public FeedRepository(AppDbContext context) : base(context) { }
 
-        public Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args)
+        public Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args, Guid? userId)
         {
             IQueryable<MainFeed> query = _context.MainFeeds;
 
@@ -29,7 +29,27 @@ namespace BackendSocialApp.Persistence.Repositories
 
             var pagedList = new PagedList<MainFeed>(query, new PagingArgs { PageIndex = args.PageIndex, PageSize = args.PageSize, PagingStrategy = args.PagingStrategy }, orderByList, null);
 
+            if(userId.HasValue)
+            {
+                FillFeedUserLikedTyes(pagedList.Items, userId.Value);
+            }
+
             return Task.FromResult<IPagedList<MainFeed>>(pagedList);
+        }
+
+        public void FillFeedUserLikedTyes(IEnumerable<MainFeed> feedList, Guid userId)            
+        {
+            var likes = _context.Likes.Where(a => feedList.Select(b => b.Id).Contains(a.RefId) && a.UserId == userId).ToList();
+
+            foreach(var feed in feedList)
+            {
+                var like = likes.FirstOrDefault(a => a.RefId == feed.Id);
+
+                if(like != null)
+                {
+                    feed.LikedType = like.LikeType;
+                }
+            }
         }
 
         public Task<Survey> GetSurveyAsync(Guid surveyId)
@@ -40,6 +60,15 @@ namespace BackendSocialApp.Persistence.Repositories
                     .ThenInclude(x => x.Answers)
                     .Include(b => b.Results)
                     .Where(c => c.Id == surveyId)
+                    .FirstOrDefault()
+            );
+        }
+
+        public Task<Like> GetFeedLikedDislikedAsync(Guid feedId, Guid userId)
+        {
+            return Task.FromResult(
+                _context.Likes
+                    .Where(c => c.RefId == feedId && c.UserId == userId)
                     .FirstOrDefault()
             );
         }
@@ -130,6 +159,11 @@ namespace BackendSocialApp.Persistence.Repositories
         public Task SaveLikeAsync(Like like)
         {
             return _context.Likes.AddAsync(like);
+        }
+
+        public void UpdateLike(Like like)
+        {
+            _context.Likes.Update(like);
         }
 
         public void RemoveLike(Like like)

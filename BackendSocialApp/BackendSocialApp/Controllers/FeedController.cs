@@ -34,7 +34,14 @@ namespace BackendSocialApp.Controllers
         [Route("GetFeeds")]
         public async Task<ActionResult<IPagedList<CoffeeFortuneTellingViewModel>>> GetFeeds(SearchPageRequest request)
         {
-            var items = _service.GetFeeds(request.Args).Result;
+            var userClaim = User.Claims.FirstOrDefault(a => a.Type == Constants.ClaimUserId);
+            Guid? userId = null;
+            if (userClaim != null)
+            {
+                userId = Guid.Parse(userClaim.Value);
+            }
+
+            var items = _service.GetFeeds(request.Args, userId).Result;
 
             var viewModelList = _mapper.Map<List<MainFeed>, List<FeedViewModel>>(items.Items.ToList());
 
@@ -46,7 +53,13 @@ namespace BackendSocialApp.Controllers
         [Route("GetSurvey")]
         public async Task<ActionResult<SurveyViewModel>> GetSurvey(Guid surveyId)
         {
-            var survey = _service.GetSurvey(surveyId).Result;
+            var userClaim = User.Claims.FirstOrDefault(a => a.Type == Constants.ClaimUserId);
+            Guid? userId = null;
+            if(userClaim != null)
+            {
+                userId = Guid.Parse(userClaim.Value);
+            }
+            var survey = _service.GetSurvey(surveyId, userId).Result;
             if(survey == null)
             {
                 throw new BusinessException("SurveyNotFound", "Kayıt bulunamadı.");
@@ -61,7 +74,13 @@ namespace BackendSocialApp.Controllers
         [Route("GetNews")]
         public async Task<ActionResult<NewsViewModel>> GetNews(Guid newsId)
         {
-            var news = _service.GetNews(newsId).Result;
+            var userClaim = User.Claims.FirstOrDefault(a => a.Type == Constants.ClaimUserId);
+            Guid? userId = null;
+            if (userClaim != null)
+            {
+                userId = Guid.Parse(userClaim.Value);
+            }
+            var news = _service.GetNews(newsId, userId).Result;
             if (news == null)
             {
                 throw new BusinessException("NewsNotFound", "Kayıt bulunamadı.");
