@@ -75,7 +75,7 @@ namespace BackendSocialApp.Persistence.Repositories
         public Task<Comment> GetCommentAsync(Guid commentId)
         {
             return Task.FromResult(
-                _context.Comments
+                _context.Comments.Include(a => a.User)
                     .Where(c => c.Id == commentId)
                     .FirstOrDefault()
             );

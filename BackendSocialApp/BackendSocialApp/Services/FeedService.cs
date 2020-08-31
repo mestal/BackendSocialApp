@@ -90,7 +90,7 @@ namespace BackendSocialApp.Services
                 throw new BusinessException("CommentNotFound", "Kayıt bulunamadı.");
             }
 
-            if(comment.User.Id != userId && role != Constants.ClaimRole)
+            if(comment.User.Id != userId && role != Constants.RoleAdmin)
             {
                 throw new BusinessException("NotAllowed", "Yetkiniz bulunmamaktadır.");
             }

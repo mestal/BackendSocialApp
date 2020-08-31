@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BackendSocialApp.Controllers
@@ -105,7 +106,7 @@ namespace BackendSocialApp.Controllers
         public async Task<ActionResult> RemoveComment(RemoveCommentRequest request)
         {
             var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
-            var role = User.Claims.First(a => a.Type == Constants.ClaimRole).Value;
+            var role = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
