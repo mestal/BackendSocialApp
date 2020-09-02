@@ -3,6 +3,7 @@ using BackendSocialApp.Domain.Repositories;
 using BackendSocialApp.Domain.Services.Communication;
 using BackendSocialApp.Paging;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,11 +15,16 @@ namespace BackendSocialApp.Services
 
         public ICoffeeFortuneTellingRepository _coffeeFortuneTellingRepository;
         public IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<CoffeeFortuneTellingService> _logger;
 
-        public CoffeeFortuneTellingService(ICoffeeFortuneTellingRepository coffeeFortuneTellingRepository, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public CoffeeFortuneTellingService(ICoffeeFortuneTellingRepository coffeeFortuneTellingRepository, IUnitOfWork unitOfWork, 
+            UserManager<ApplicationUser> userManager, ILogger<CoffeeFortuneTellingService> logger)
         {
             _coffeeFortuneTellingRepository = coffeeFortuneTellingRepository;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<CreateCoffeeFortuneTellingResponse> CreateCoffeeFortuneTellingAsync(CoffeeFortuneTelling coffeeFortuneTelling, List<string> picturePaths)
@@ -53,7 +59,21 @@ namespace BackendSocialApp.Services
                     Path = item
                 });
             }
+            coffeeFortuneTelling.User.Point = coffeeFortuneTelling.User.Point - coffeeFortuneTelling.FortuneTeller.CoffeePointPrice;
+            var result = await _userManager.UpdateAsync(coffeeFortuneTelling.User);
 
+            if (!result.Succeeded)
+            {
+                var errors = "";
+                foreach (var item in result.Errors)
+                {
+                    errors = errors + item.Code + " - " + item.Description + ",";
+                }
+
+                _logger.LogError("PointDecreaseError: UserName: " + coffeeFortuneTelling.User.UserName + ", Errors: " + errors);
+
+                throw new BusinessException("CanNotConfirm", "Onaylanamadı.");
+            }
             await _unitOfWork.CompleteAsync();
 
             return new CreateCoffeeFortuneTellingResponse(coffeeFortuneTelling);
