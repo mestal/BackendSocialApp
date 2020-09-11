@@ -15,6 +15,7 @@ namespace BackendSocialApp.Tools
         private string _authUserName;
         private string _authUserPassword;
         private string _sendMail;
+        private string _bcc;
         private ILogger<EmailHelper> _logger;
 
         public EmailHelper(IConfiguration configuration, ILogger<EmailHelper> logger)
@@ -26,6 +27,7 @@ namespace BackendSocialApp.Tools
                 _host = smtpSection.GetSection("Host").Value;
                 _port = smtpSection.GetSection("Port").Value;
                 _from = smtpSection.GetSection("From").Value;
+                _bcc = smtpSection.GetSection("Bcc").Value;
                 _alias = smtpSection.GetSection("Alias").Value;
                 _authUserName = smtpSection.GetSection("AuthUserName").Value;
                 _authUserPassword = smtpSection.GetSection("AuthUserPassword").Value;
@@ -48,6 +50,7 @@ namespace BackendSocialApp.Tools
                 mailMessage.From = new MailAddress(_from, _alias);
                 mailMessage.BodyEncoding = Encoding.UTF8;
                 mailMessage.To.Add(emailModel.To);
+                mailMessage.Bcc.Add(_bcc);
                 mailMessage.Body = emailModel.Message;
                 mailMessage.Subject = emailModel.Subject;
                 mailMessage.IsBodyHtml = emailModel.IsBodyHtml;
