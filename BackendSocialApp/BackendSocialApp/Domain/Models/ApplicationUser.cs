@@ -20,6 +20,8 @@ namespace BackendSocialApp.Domain.Models
         public DateTime BirthDate { get; set; }
 
         public string Description { get; set; }
+
+        public bool? IsTestUser { get; set; }
     }
 
     public class AdminUser : ApplicationUser
@@ -39,6 +41,11 @@ namespace BackendSocialApp.Domain.Models
         public int CoffeePointPrice { get; set; }
 
         public int CoffeFortuneTellingCount { get; set; }
+
+    }
+
+    public class ContentCreatorUser : ApplicationUser
+    {
 
     }
 }

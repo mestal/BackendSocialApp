@@ -42,6 +42,14 @@ namespace BackendSocialApp.Persistence.Contexts
                 role.Name = Constants.RoleConsumer;
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
+
+            result = roleManager.RoleExistsAsync(Constants.RoleContentCreator).Result;
+            if (!result)
+            {
+                ApplicationRole role = new ApplicationRole();
+                role.Name = Constants.RoleContentCreator;
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
         }
 
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
@@ -50,7 +58,7 @@ namespace BackendSocialApp.Persistence.Contexts
             {
                 ApplicationUser user = new AdminUser();
                 user.UserName = "admin";
-                user.Email = "admin@falci.com";
+                user.Email = "admin@falcim.xyz";
                 user.FullName = "Admin User";
                 user.Status = UserStatus.Active;
 
@@ -87,7 +95,7 @@ namespace BackendSocialApp.Persistence.Contexts
             {
                 FortuneTellerUser user = new FortuneTellerUser();
                 user.UserName = "falci2";
-                user.Email = "falci2@falci.com";
+                user.Email = "falci2@falcim.xyz";
                 user.FullName = "Falcı User 2";
                 user.PicturePath = "eagle.jpg";
                 user.Status = UserStatus.Active;
@@ -109,7 +117,7 @@ namespace BackendSocialApp.Persistence.Contexts
             {
                 FortuneTellerUser user = new FortuneTellerUser();
                 user.UserName = "falci3";
-                user.Email = "falci3@falci.com";
+                user.Email = "falci3@falcim.xyz";
                 user.FullName = "Falcı User 3";
                 user.PicturePath = "duck.jpg";
                 user.Status = UserStatus.Active;
@@ -123,6 +131,60 @@ namespace BackendSocialApp.Persistence.Contexts
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(user, Constants.RoleFalci).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("contentcreator1").Result == null)
+            {
+                ContentCreatorUser user = new ContentCreatorUser();
+                user.UserName = "contentcreator1";
+                user.Email = "contentcreator1@falcim.xyz";
+                user.FullName = "Content Creator 1";
+                user.PicturePath = "duck.jpg";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleContentCreator).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("contentcreator2").Result == null)
+            {
+                ContentCreatorUser user = new ContentCreatorUser();
+                user.UserName = "contentcreator2";
+                user.Email = "contentcreator2@falcim.xyz";
+                user.FullName = "Content Creator 2";
+                user.PicturePath = "duck.jpg";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleContentCreator).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("contentcreator3").Result == null)
+            {
+                ContentCreatorUser user = new ContentCreatorUser();
+                user.UserName = "contentcreator3";
+                user.Email = "contentcreator3@falcim.xyz";
+                user.FullName = "Content Creator 2";
+                user.PicturePath = "duck.jpg";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleContentCreator).Wait();
                 }
             }
 

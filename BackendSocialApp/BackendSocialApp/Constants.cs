@@ -11,5 +11,6 @@ namespace BackendSocialApp
         public const string RoleAdmin = "Admin";
         public const string RoleFalci = "Falci";
         public const string RoleConsumer = "Consumer";
+        public const string RoleContentCreator = "ContentCreator";
     }
 }
