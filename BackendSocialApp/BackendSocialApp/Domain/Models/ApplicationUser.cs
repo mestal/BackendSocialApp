@@ -22,6 +22,8 @@ namespace BackendSocialApp.Domain.Models
         public string Description { get; set; }
 
         public bool? IsTestUser { get; set; }
+
+        public DateTime CreateDate { get; set; }
     }
 
     public class AdminUser : ApplicationUser

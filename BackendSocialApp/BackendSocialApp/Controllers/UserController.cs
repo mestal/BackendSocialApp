@@ -65,6 +65,11 @@ namespace BackendSocialApp.Controllers
 
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
+                if(!user.EmailConfirmed)
+                {
+                    throw new BusinessException("EmailNotConfirmed", "Lütfen mailinize gönderilen onay linkine tıklayınız.");
+                }
+
                 var role = await _userManager.GetRolesAsync(user);
 
                 // authentication successful so generate jwt token
@@ -158,7 +163,8 @@ namespace BackendSocialApp.Controllers
             {
                 UserName = request.UserName,
                 Email = request.Email,
-                FullName = request.FullName
+                FullName = request.FullName,
+                CreateDate = DateTime.UtcNow
             };
 
             await _userManager.CreateAsync(user, request.Password);
@@ -168,13 +174,19 @@ namespace BackendSocialApp.Controllers
             var entryUrl = _configuration.GetValue<string>("EntryUrl");
             var emailConfirmationLink = entryUrl + "/#/newUserConfirmation?email=" + request.Email + "&token=" + WebUtility.UrlEncode(token);
 
+            var userConfirmationMailTemplatePath = _environment.ContentRootPath + "\\Assets\\Templates\\UserConfirmationMail.html";
+            var template = System.IO.File.ReadAllText(userConfirmationMailTemplatePath);
+            template = template
+                .Replace("[userName]", request.FullName)
+                .Replace("[confirmationLink]", emailConfirmationLink);
+
             _emailHelper.Send(
                 new EmailModel
                 {
                     To = request.Email,
                     Subject = "Falcım - Kullanıcı Onayı",
-                    IsBodyHtml = false,
-                    Message = emailConfirmationLink
+                    IsBodyHtml = true,
+                    Message = template
                 }
             );
 
@@ -294,13 +306,19 @@ namespace BackendSocialApp.Controllers
             var entryUrl = _configuration.GetValue<string>("EntryUrl");
             var passwordResetLink = entryUrl + "/#/resetPassword?email=" + user.Email + "&token=" + WebUtility.UrlEncode(token);
 
+            var templatePath = _environment.ContentRootPath + "\\Assets\\Templates\\PasswordResetMail.html";
+            var template = System.IO.File.ReadAllText(templatePath);
+            template = template
+                .Replace("[userName]", user.FullName)
+                .Replace("[passwordResetLink]", passwordResetLink);
+
             _emailHelper.Send(
                 new EmailModel
                 {
                     To = user.Email,
                     Subject = "Falcım - Şifre yenileme",
-                    IsBodyHtml = false,
-                    Message = passwordResetLink
+                    IsBodyHtml = true,
+                    Message = template
                 }
             );
 
