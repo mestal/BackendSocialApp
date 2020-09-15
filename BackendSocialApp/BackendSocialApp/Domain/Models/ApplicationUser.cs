@@ -13,11 +13,11 @@ namespace BackendSocialApp.Domain.Models
 
         public string PicturePath { get; set; }
 
-        public ConnectionStatus ConnectionStatus { get; set; }
+        public ConnectionStatus? ConnectionStatus { get; set; }
 
-        public GenderType Gender { get; set; }
+        public GenderType? Gender { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string Description { get; set; }
 
@@ -34,8 +34,12 @@ namespace BackendSocialApp.Domain.Models
     {
         public int Point { get; set; }
 
-        public DateTime BirthTime { get; set; }
+        public DateTime? BirthTime { get; set; }
 
+        public RelationshipStatus? RelationshipStatus { get; set; }
+
+        [Column(TypeName = "nvarchar(100)")]
+        public string Job { get; set; }
     }
 
     public class FortuneTellerUser : ApplicationUser

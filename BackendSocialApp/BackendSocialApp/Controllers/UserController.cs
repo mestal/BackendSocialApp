@@ -128,7 +128,9 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("EmptyEmail", "Email boş olamaz.");
             }
 
-            //TODO Regex for email.
+            if(!Validations.IsValidEmail(request.Email)) {
+                throw new BusinessException("NotValidEmail", "Geçerli bir E-Mail adresi girin.");
+            }
 
             if (string.IsNullOrWhiteSpace(request.FullName))
             {
@@ -164,7 +166,12 @@ namespace BackendSocialApp.Controllers
                 UserName = request.UserName,
                 Email = request.Email,
                 FullName = request.FullName,
-                CreateDate = DateTime.UtcNow
+                CreateDate = DateTime.UtcNow,
+                BirthDate = request.BirthDate,
+                Gender = request.Gender,
+                RelationshipStatus = request.RelationshipStatus,
+                Job = request.Job,
+                PicturePath = "defaultProfilePicture.png"
             };
 
             await _userManager.CreateAsync(user, request.Password);
@@ -271,7 +278,6 @@ namespace BackendSocialApp.Controllers
         [Route("ForgatPassword")]
         public async Task<ActionResult> ForgatPassword(ForgatPasswordRequest request)
         {
-            //TODO emaili onaylanmamış bir user forgat password yaparsa ne olur.
             request.Email = request.Email != null ? request.Email.Trim() : request.Email;
             request.UserName = request.UserName != null ? request.UserName.Trim() : request.UserName;
 

@@ -35,7 +35,17 @@ namespace BackendSocialApp.Domain.Models
 
     public enum GenderType
     {
-        Male = 0,
-        Female = 1,
+        Female = 0,
+        Male = 1,
+        Lgbt = 2
+    }
+
+    public enum RelationshipStatus
+    {
+        Married = 0,
+        HaveLover = 1,
+        Platonic = 2,
+        Complicated = 3,
+        HaveNotRelationship = 4
     }
 }
