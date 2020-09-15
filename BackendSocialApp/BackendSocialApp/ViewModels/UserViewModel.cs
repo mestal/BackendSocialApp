@@ -25,9 +25,9 @@ namespace BackendSocialApp.ViewModels
 
         public string FullName { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
-        public DateTime BirthTime { get; set; }
+        public DateTime? BirthTime { get; set; }
 
         public string Gender { get; set; }
 

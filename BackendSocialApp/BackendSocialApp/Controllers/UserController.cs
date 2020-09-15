@@ -210,6 +210,50 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpPost]
+        [Route("UpdateUserInfo")]
+        public async Task<ActionResult> UpdateUserInfo(UpdateUserInfoRequest request)
+        {
+            var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.FullName))
+            {
+                throw new BusinessException("EmptyFullname", "İsim boş olamaz.");
+            }
+
+            user.FullName = request.FullName;
+            user.Gender = request.Gender;
+            
+
+            if (request.BirthDate.HasValue)
+            {
+                user.BirthDate = new DateTime(request.BirthDate.Value.Year, request.BirthDate.Value.Month, request.BirthDate.Value.Day);
+            }
+
+            var consumerUser = user as ConsumerUser;
+
+            if(consumerUser != null)
+            {
+                consumerUser.RelationshipStatus = request.RelationshipStatus;
+                consumerUser.Job = request.Job;
+
+                if (request.BirthTime.HasValue)
+                {
+                    consumerUser.BirthTime = new DateTime(1, 1, 1, request.BirthTime.Value.Hour, request.BirthTime.Value.Minute, 0);
+                }
+            }
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok();
+        }
+
+        [HttpPost]
         [Route("ConfirmNewUser")]
         public async Task<ActionResult> ConfirmNewUser(ConfirmNewUserRequest request)
         {
