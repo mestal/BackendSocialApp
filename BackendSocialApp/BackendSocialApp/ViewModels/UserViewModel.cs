@@ -37,5 +37,11 @@ namespace BackendSocialApp.ViewModels
 
         public string Email { get; set; }
 
+        public string RelationshipStatus { get; set; }
+
+        public string Job { get; set; }
+
+
+
     }
 }

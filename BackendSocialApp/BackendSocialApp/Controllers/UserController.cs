@@ -97,12 +97,12 @@ namespace BackendSocialApp.Controllers
                 else if (role[0] == "Falci")
                 {
                     var fortuneTellerUser = (FortuneTellerUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount, user.FullName, user.IsTestUser });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount, user.FullName, user.IsTestUser });
                 }
                 else
                 {
                     var consumerUser = (ConsumerUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), request.UserName, Token = token, Role = role[0], consumerUser.Point, user.FullName, user.IsTestUser });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], consumerUser.Point, user.FullName, user.IsTestUser });
                 }
             }
             else
@@ -147,9 +147,9 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
             }
 
-            var user = await _userManager.FindByNameAsync(request.UserName);
+            var existingUser = await _userManager.FindByNameAsync(request.UserName);
 
-            if (user != null)
+            if (existingUser != null)
             {
                 throw new BusinessException("UserAlreadyExists", "Kullanıcı zaten mevcut.");
             }
@@ -161,18 +161,27 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("EmailAlreadyExists", "Email zaten mevcut.");
             }
 
-            user = new ConsumerUser
+            var user = new ConsumerUser
             {
                 UserName = request.UserName,
                 Email = request.Email,
                 FullName = request.FullName,
                 CreateDate = DateTime.UtcNow,
-                BirthDate = request.BirthDate,
                 Gender = request.Gender,
                 RelationshipStatus = request.RelationshipStatus,
                 Job = request.Job,
                 PicturePath = "defaultProfilePicture.png"
             };
+
+            if(request.BirthDate.HasValue)
+            {
+                user.BirthDate = new DateTime(request.BirthDate.Value.Year, request.BirthDate.Value.Month, request.BirthDate.Value.Day);
+            }
+
+            if (request.BirthTime.HasValue)
+            {
+                user.BirthTime = new DateTime(1, 1, 1, request.BirthTime.Value.Hour, request.BirthTime.Value.Minute, 0);
+            }
 
             await _userManager.CreateAsync(user, request.Password);
             await _userManager.AddToRoleAsync(user, "Consumer");
