@@ -51,6 +51,12 @@ namespace BackendSocialApp.Controllers
 
             newCoffeeFortuneTelling.User = user ?? throw new Exception("User Not Found");
 
+            newCoffeeFortuneTelling.ConsumerBirthDate = user.BirthDate;
+            newCoffeeFortuneTelling.ConsumerBirthTime = user.BirthTime;
+            newCoffeeFortuneTelling.ConsumerGender = user.Gender;
+            newCoffeeFortuneTelling.ConsumerJob = user.Job;
+            newCoffeeFortuneTelling.ConsumerRelationshipStatus = user.RelationshipStatus;
+
             var fortuneTeller = (FortuneTellerUser)await _userManager.FindByIdAsync(request.FortuneTellerId.ToString());
             newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new Exception("Fortune Teller Not Found");
 

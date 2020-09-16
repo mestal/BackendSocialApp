@@ -456,13 +456,24 @@ namespace BackendSocialApp.Controllers
 
         [HttpGet]
         [Route("GetConsumerUserInfo")]
-        public async Task<ActionResult<UserInfoViewModel>> GetConsumerUserInfo(string userName)
+        public async Task<ActionResult<UserInfoViewModel>> GetConsumerUserInfo(string userName, Guid? consumerUserId)
         {
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
 
+            if(string.IsNullOrEmpty(userName) && !consumerUserId.HasValue)
+            {
+                throw new BusinessException("MissingParameter", "Eksik parametre.");
+            }
+
             ApplicationUser user = null;
-            user = await _userManager.FindByNameAsync(userName);
+            if(!string.IsNullOrEmpty(userName)) { 
+                user = await _userManager.FindByNameAsync(userName);
+            }
+            else
+            {
+                user = await _userManager.FindByIdAsync(consumerUserId.Value.ToString());
+            }
 
             if (user == null)
             {

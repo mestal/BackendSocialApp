@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BackendSocialApp.ViewModels
 {
@@ -28,5 +26,15 @@ namespace BackendSocialApp.ViewModels
         public int Point { get; set; }
 
         public List<string> Pictures { get; set; }
+
+        public string ConsumerGender { get; set; }
+
+        public DateTime? ConsumerBirthDate { get; set; }
+
+        public DateTime? ConsumerBirthTime { get; set; }
+
+        public string ConsumerRelationshipStatus { get; set; }
+
+        public string ConsumerJob { get; set; }
     }
 }

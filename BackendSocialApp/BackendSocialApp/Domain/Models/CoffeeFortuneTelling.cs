@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendSocialApp.Domain.Models
 {
@@ -28,6 +27,18 @@ namespace BackendSocialApp.Domain.Models
         public DateTime? ReadDateUtc { get; set; }
 
         public int Point { get; set; }
+
+        public GenderType? ConsumerGender { get; set; }
+
+        public DateTime? ConsumerBirthDate { get; set; }
+
+        public DateTime? ConsumerBirthTime { get; set; }
+
+        public RelationshipStatus? ConsumerRelationshipStatus { get; set; }
+
+        [Column(TypeName = "nvarchar(100)")]
+        public string ConsumerJob { get; set; }
+
     }
 
     public class CoffeeFortuneTellingPicture

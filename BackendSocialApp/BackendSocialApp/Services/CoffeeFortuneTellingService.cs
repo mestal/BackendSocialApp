@@ -100,6 +100,7 @@ namespace BackendSocialApp.Services
 
             fortuneTelling.FortuneTellerComment = comment;
             fortuneTelling.Status = CoffeeFortuneTellingStatus.SubmittedByFortuneTeller;
+            fortuneTelling.SubmitByFortuneTellerDateUtc = DateTime.UtcNow;
 
             _coffeeFortuneTellingRepository.UpdateCoffeeFortuneTelling(fortuneTelling);
             await _unitOfWork.CompleteAsync();

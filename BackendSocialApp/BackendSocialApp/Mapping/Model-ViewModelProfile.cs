@@ -14,13 +14,15 @@ namespace BackendSocialApp.Mapping
         {
             CreateMap<ConnectionStatus, string>()
                 .ConvertUsing(src => Enum.GetName(typeof(ConnectionStatus), src));
+            CreateMap<GenderType, string>()
+                .ConvertUsing(src => Enum.GetName(typeof(GenderType), src));
             CreateMap<FortuneTellerViewModel, FortuneTellerUser>();
             CreateMap<FortuneTellerUser, FortuneTellerViewModel>();
             CreateMap<FortuneTellerUser, FortuneTellerDetailViewModel>();
             CreateMap<CoffeeFortuneTellingStatus, string>()
                 .ConvertUsing(src => Enum.GetName(typeof(CoffeeFortuneTellingStatus), src));
-            CreateMap<GenderType, string>()
-                .ConvertUsing(src => Enum.GetName(typeof(GenderType), src));
+            CreateMap<RelationshipStatus, string>()
+                .ConvertUsing(src => Enum.GetName(typeof(RelationshipStatus), src));
             CreateMap<CoffeeFortuneTelling, CoffeeFortuneTellingViewModel>()
                 .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(a => a.Path).ToList()));
             CreateMap<CoffeeFortuneTellingViewModel, CoffeeFortuneTelling>();
