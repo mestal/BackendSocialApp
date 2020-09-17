@@ -4,14 +4,16 @@ using BackendSocialApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200917082941_Point")]
+    partial class Point
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,34 +118,6 @@ namespace BackendSocialApp.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.BuyPointTransaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("PointId");
-
-                    b.Property<int>("PointValue");
-
-                    b.Property<string>("ProductId");
-
-                    b.Property<DateTime>("SubmitDateUtc");
-
-                    b.Property<string>("TransactionId");
-
-                    b.Property<string>("TransactionJson");
-
-                    b.Property<Guid?>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PointId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BuyPointTransactions");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.CoffeeFortuneTelling", b =>
@@ -306,29 +280,6 @@ namespace BackendSocialApp.Migrations
                     b.HasIndex("NewsId");
 
                     b.ToTable("NewsItems");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.Point", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("PointType");
-
-                    b.Property<int>("PointValue");
-
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Points");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.SurveyItem", b =>
@@ -534,17 +485,6 @@ namespace BackendSocialApp.Migrations
                     b.Property<int>("SurveyType");
 
                     b.HasDiscriminator().HasValue("Survey");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.BuyPointTransaction", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.Point", "Point")
-                        .WithMany()
-                        .HasForeignKey("PointId");
-
-                    b.HasOne("BackendSocialApp.Domain.Models.ConsumerUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.CoffeeFortuneTelling", b =>

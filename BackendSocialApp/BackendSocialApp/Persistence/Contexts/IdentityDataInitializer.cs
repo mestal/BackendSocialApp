@@ -15,6 +15,7 @@ namespace BackendSocialApp.Persistence.Contexts
             SeedUsers(userManager);
             SeedNews(userManager, context);
             SeedFortuneTellings(context);
+            SeedPoints(context);
         }
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
@@ -2115,6 +2116,36 @@ namespace BackendSocialApp.Persistence.Contexts
                 SubmitByFortuneTellerDateUtc = DateTime.UtcNow.AddDays(-3),
                 Type = CoffeeFortuneTellingType.General,
                 User = context.ConsumerUsers.First()
+            });
+
+            context.SaveChanges();
+        }
+
+        public static void SeedPoints(AppDbContext context)
+        {
+            if (context.Points.Count() > 0)
+            {
+                return;
+            }
+
+            context.Points.Add(new Point
+            {
+                Id = Guid.NewGuid(),
+                ProductId = "point_20",
+                PointType = PointType.Android,
+                Name = "20 Puan",
+                Description = "20 Puan",
+                PointValue = 20
+            });
+
+            context.Points.Add(new Point
+            {
+                Id = Guid.NewGuid(),
+                ProductId = "point_40",
+                PointType = PointType.Android,
+                Name = "40 Puan",
+                Description = "40 Puan",
+                PointValue = 40
             });
 
             context.SaveChanges();

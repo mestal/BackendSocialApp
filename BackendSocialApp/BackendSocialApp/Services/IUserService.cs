@@ -8,6 +8,9 @@ namespace BackendSocialApp.Services
 {
     public interface IUserService
     {
-        Task CreateUserAsync(ApplicationUser user, string password, string roleName);
+
+        Task BuyPoint(ConsumerUser user, string transactionJson, string transactionId, string productId, PointType pointType);
+
+        Task<List<Point>> GetPoints(PointType pointType);
     }
 }

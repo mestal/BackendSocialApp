@@ -39,6 +39,7 @@ namespace BackendSocialApp.Mapping
             CreateMap<NewsItem, NewsItemViewModel>();
             CreateMap<Comment, CommentViewModel>()
                 .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.UserComment));
+            CreateMap<Point, PointViewModel>();
         }
     }
 }

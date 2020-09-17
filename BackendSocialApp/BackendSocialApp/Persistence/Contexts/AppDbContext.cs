@@ -42,6 +42,10 @@ namespace BackendSocialApp.Persistence.Contexts
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Point> Points { get; set; }
+
+        public DbSet<BuyPointTransaction> BuyPointTransactions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

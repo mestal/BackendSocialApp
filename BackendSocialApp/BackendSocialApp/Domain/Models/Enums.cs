@@ -48,4 +48,10 @@ namespace BackendSocialApp.Domain.Models
         Complicated = 3,
         HaveNotRelationship = 4
     }
+
+    public enum PointType
+    {
+        Android = 0,
+        Ios = 1
+    }
 }

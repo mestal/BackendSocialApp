@@ -9,10 +9,18 @@ namespace BackendSocialApp.Domain.Models
     {
         public Guid Id { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public ConsumerUser User { get; set; }
 
-        public DateTime? SubmitDateUtc { get; set; }
+        public DateTime SubmitDateUtc { get; set; }
 
-        public int BoughtPoint { get; set; }
+        public Point Point { get; set; }
+
+        public int PointValue { get; set; }
+
+        public string ProductId { get; set; }
+
+        public string TransactionId { get; set; }
+
+        public string TransactionJson { get; set; }
     }
 }

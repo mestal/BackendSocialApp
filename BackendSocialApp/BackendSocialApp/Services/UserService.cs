@@ -4,37 +4,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackendSocialApp.Domain.Models;
+using BackendSocialApp.Domain.Repositories;
 
 namespace BackendSocialApp.Services
 {
     public class UserService : IUserService
     {
         private UserManager<ApplicationUser> _userManager;
+        private readonly IUserRepository _userRepository;
+        public IUnitOfWork _unitOfWork;
 
-        public UserService(UserManager<ApplicationUser> userManager)
+        public UserService(UserManager<ApplicationUser> userManager, IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
+            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateUserAsync(ApplicationUser user, string password, string roleName)
+        public async Task BuyPoint(ConsumerUser user, string transactionJson, string transactionId, string productId, PointType pointType)
         {
-            try
+            var point = await _userRepository.GetPointAsync(productId, pointType);
+            if(point == null)
             {
-                user.SecurityStamp = Guid.NewGuid().ToString();
-                var result = await _userManager.CreateAsync(user, password);
-                if(result.Succeeded)
-                { 
-                    await _userManager.AddToRoleAsync(user, roleName);
-                }
-                else
-                {
-                    throw new Exception("User cant created");//TODO
-                }
+                throw new BusinessException("PointNotFound", "Puan bulunamadı.");
             }
-            catch (Exception ex)
+
+            var newTransaction = new BuyPointTransaction()
             {
-                throw ex;
-            }
+                Point = point,
+                PointValue = point.PointValue,
+                ProductId = productId,
+                SubmitDateUtc = DateTime.UtcNow,
+                TransactionId = transactionId,
+                TransactionJson = transactionJson,
+                User = user
+            };
+
+            await _userRepository.SaveBuyPointTransaction(newTransaction);
+
+            user.Point = user.Point + point.PointValue;
+
+            _userRepository.UpdateUser(user);
+
+            await _unitOfWork.CompleteAsync();
+
+        }
+
+        public async Task<List<Point>> GetPoints(PointType pointType)
+        {
+            return await _userRepository.GetPoints(pointType);
         }
     }
 }

@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using BackendSocialApp.ViewModels;
 using AutoMapper;
+using BackendSocialApp.Services;
+using System.Collections.Generic;
 
 namespace BackendSocialApp.Controllers
 {
@@ -33,12 +35,13 @@ namespace BackendSocialApp.Controllers
         private readonly IHostingEnvironment _environment;
         private readonly ILogger<UserController> _logger;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
         public IConfiguration _configuration { get; }
 
         public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IOptions<ApplicationSettings> appSettings,
                 IEmailHelper emailHelper, IHostingEnvironment environment, IConfiguration configuration, ILogger<UserController> logger,
-                IMapper mapper)
+                IMapper mapper, IUserService userService)
         {
             _userManager = userManager;
             _appSettings = appSettings.Value;
@@ -48,6 +51,7 @@ namespace BackendSocialApp.Controllers
             _configuration = configuration;
             _logger = logger;
             _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -492,6 +496,33 @@ namespace BackendSocialApp.Controllers
             }
 
             var viewModel = _mapper.Map<ConsumerUser, UserInfoViewModel>(consumerUser);
+
+            return Ok(viewModel);
+        }
+
+        [HttpPost]
+        [Route("BuyPoint")]
+        public async Task<ActionResult> BuyPoint(BuyPointRequest request)
+        {
+            var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            var consumerUser = user as ConsumerUser;
+            if(consumerUser == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
+            await _userService.BuyPoint(consumerUser, request.TransactionJson, request.TransactionId, request.ProductId, request.PointType);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetPoints")]
+        public ActionResult<List<PointViewModel>> GetPoints(PointType pointType)
+        {
+            var items = _userService.GetPoints(pointType).Result;
+            var viewModel = _mapper.Map<List<Point>, List<PointViewModel>>(items);
 
             return Ok(viewModel);
         }

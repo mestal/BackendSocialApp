@@ -94,6 +94,7 @@ namespace BackendSocialApp
             services.AddScoped<IFeedService, FeedService>();
             services.AddScoped<IFeedRepository, FeedRepository>();
             services.AddSingleton<IEmailHelper, EmailHelper>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddAutoMapper(typeof(Startup));
         }
