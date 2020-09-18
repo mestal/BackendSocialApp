@@ -21,7 +21,7 @@ namespace BackendSocialApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task BuyPoint(ConsumerUser user, string transactionJson, string transactionId, string productId, PointType pointType)
+        public async Task<int> BuyPoint(ConsumerUser user, string transactionJson, string transactionId, string productId, PointType pointType)
         {
             var point = await _userRepository.GetPointAsync(productId, pointType);
             if(point == null)
@@ -47,6 +47,8 @@ namespace BackendSocialApp.Services
             _userRepository.UpdateUser(user);
 
             await _unitOfWork.CompleteAsync();
+
+            return user.Point;
 
         }
 

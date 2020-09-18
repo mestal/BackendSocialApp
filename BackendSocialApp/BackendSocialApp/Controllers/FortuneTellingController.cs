@@ -47,9 +47,9 @@ namespace BackendSocialApp.Controllers
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var userRole = User.Claims.First(a => a.Type == ClaimTypes.Role).Value;
 
-            var user = (ConsumerUser)await _userManager.FindByIdAsync(userId.ToString());
+            var user = (await _userManager.FindByIdAsync(userId.ToString())) as ConsumerUser;
 
-            newCoffeeFortuneTelling.User = user ?? throw new Exception("User Not Found");
+            newCoffeeFortuneTelling.User = user ?? throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
 
             newCoffeeFortuneTelling.ConsumerBirthDate = user.BirthDate;
             newCoffeeFortuneTelling.ConsumerBirthTime = user.BirthTime;
@@ -57,13 +57,13 @@ namespace BackendSocialApp.Controllers
             newCoffeeFortuneTelling.ConsumerJob = user.Job;
             newCoffeeFortuneTelling.ConsumerRelationshipStatus = user.RelationshipStatus;
 
-            var fortuneTeller = (FortuneTellerUser)await _userManager.FindByIdAsync(request.FortuneTellerId.ToString());
-            newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new Exception("Fortune Teller Not Found");
+            var fortuneTeller = (await _userManager.FindByIdAsync(request.FortuneTellerId.ToString())) as FortuneTellerUser;
+            newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new BusinessException("FortuneTellerNotFound", "Falcı bulunamadı. ");
 
-            //if (request.Pictures == null || request.Pictures.Count == 0)
-            //{
-            //    throw new Exception("Pictures must be send.");
-            //}
+            if (request.Pictures == null || request.Pictures.Count == 0)
+            {
+                throw new Exception("Pictures must be send.");
+            }
 
             var folderPath = _environment.ContentRootPath + "\\Assets\\CoffeeFortuneTellingPictures\\";
 

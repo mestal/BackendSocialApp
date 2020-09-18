@@ -18,7 +18,7 @@ namespace BackendSocialApp.Persistence.Repositories
 
         public Task<IPagedList<MainFeed>> GetFeedsAsync(PageSearchArgs args, Guid? userId)
         {
-            IQueryable<MainFeed> query = _context.MainFeeds;
+            IQueryable<MainFeed> query = _context.MainFeeds.Where(a => a.Status == MainFeedStatus.Active);
 
             var orderByList = new List<Tuple<SortingOption, Expression<Func<MainFeed, object>>>>();
 

@@ -112,11 +112,13 @@ namespace BackendSocialApp
               "https://falcim.xyz",
               "http://falcim.xyz",
               "https://www.falcim.xyz",
-              "http://www.falcim.xyz")
+              "http://www.falcim.xyz"
+              )
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials());
+            .AllowCredentials()
+            .SetIsOriginAllowed(hostName => true));
 
             //For 204 errors
             //app.Use(async (ctx, next) =>

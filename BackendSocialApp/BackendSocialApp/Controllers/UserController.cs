@@ -21,6 +21,7 @@ using BackendSocialApp.ViewModels;
 using AutoMapper;
 using BackendSocialApp.Services;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackendSocialApp.Controllers
 {
@@ -429,10 +430,18 @@ namespace BackendSocialApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("UpdateProfilePhoto")]
         public async Task<ActionResult> UpdateProfilePhoto([FromForm]UpdateProfilePhotoRequest request)
         {
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if(user == null)
+            {
+                throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
+            }
+
             var folderPath = _environment.ContentRootPath + "\\Assets\\ProfilePictures\\";
             if (!Directory.Exists(folderPath))
             {
@@ -445,13 +454,11 @@ namespace BackendSocialApp.Controllers
             }
             var fileName = Guid.NewGuid() + "." + request.Photo.ContentType.Replace('/', '.');
             var fileFullPath = folderPath + fileName;
-            using (FileStream fileStream = System.IO.File.Create(fileFullPath))
+            using (FileStream fileStream = new FileStream(fileFullPath, FileMode.Create))
             {
-                request.Photo.CopyTo(fileStream);
-                fileStream.Flush();
+                await request.Photo.CopyToAsync(fileStream);
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
             user.PicturePath = fileName;
             await _userManager.UpdateAsync(user);
 
@@ -512,9 +519,9 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
-            await _userService.BuyPoint(consumerUser, request.TransactionJson, request.TransactionId, request.ProductId, request.PointType);
+            var newPoint = await _userService.BuyPoint(consumerUser, request.TransactionJson, request.TransactionId, request.ProductId, request.PointType);
 
-            return Ok();
+            return Ok(newPoint);
         }
 
         [HttpGet]
