@@ -19,5 +19,7 @@ namespace BackendSocialApp.Requests
         public DateTime? BirthTime { get; set; }
 
         public string Job { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -233,7 +233,8 @@ namespace BackendSocialApp.Controllers
 
             user.FullName = request.FullName;
             user.Gender = request.Gender;
-            
+            user.Description = request.Description;
+
 
             if (request.BirthDate.HasValue)
             {

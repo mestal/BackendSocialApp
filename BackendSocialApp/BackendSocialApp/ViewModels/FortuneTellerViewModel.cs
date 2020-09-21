@@ -15,5 +15,7 @@ namespace BackendSocialApp.ViewModels
         public string ConnectionStatus { get; set; }
 
         public string PicturePath { get; set; }
+
+        public string Description { get; set; }
     }
 }
