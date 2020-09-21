@@ -97,17 +97,17 @@ namespace BackendSocialApp.Controllers
                 if (role[0] == Constants.RoleAdmin)
                 {
                     //var adminUser = (AdminUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], user.FullName, user.IsTestUser });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], user.FullName, user.IsTestUser, user.PicturePath });
                 }
                 else if (role[0] == "Falci")
                 {
                     var fortuneTellerUser = (FortuneTellerUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount, user.FullName, user.IsTestUser });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], fortuneTellerUser.CoffeePointPrice, fortuneTellerUser.CoffeFortuneTellingCount, user.FullName, user.IsTestUser, user.PicturePath });
                 }
                 else
                 {
                     var consumerUser = (ConsumerUser)user;
-                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], consumerUser.Point, user.FullName, user.IsTestUser });
+                    return Ok(new { UserId = user.Id.ToString(), user.UserName, Token = token, Role = role[0], consumerUser.Point, user.FullName, user.IsTestUser, user.PicturePath });
                 }
             }
             else
@@ -463,7 +463,7 @@ namespace BackendSocialApp.Controllers
             user.PicturePath = fileName;
             await _userManager.UpdateAsync(user);
 
-            return Ok();
+            return Ok(new { user.PicturePath });
         }
 
         [HttpGet]
