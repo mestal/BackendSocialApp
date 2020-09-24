@@ -119,7 +119,7 @@ namespace BackendSocialApp
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials()
+            //.AllowCredentials()
             .SetIsOriginAllowed(hostName => true));
 
             //For 204 errors
