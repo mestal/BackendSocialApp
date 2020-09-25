@@ -23,5 +23,7 @@ namespace BackendSocialApp.Domain.Models
 
         public int PointValue { get; set; }
 
+        public int Order { get; set; }
+
     }
 }

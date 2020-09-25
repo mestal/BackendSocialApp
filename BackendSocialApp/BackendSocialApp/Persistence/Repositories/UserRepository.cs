@@ -40,7 +40,7 @@ namespace BackendSocialApp.Persistence.Repositories
         {
             return Task.FromResult(
                 _context.Points
-                    .Where(c => c.PointType == pointType).ToList()
+                    .Where(c => c.PointType == pointType).OrderBy(a => a.Order).ToList()
             );
         }
     }
