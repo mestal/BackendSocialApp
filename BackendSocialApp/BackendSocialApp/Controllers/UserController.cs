@@ -122,6 +122,8 @@ namespace BackendSocialApp.Controllers
         {
             request.UserName = request.UserName != null ? request.UserName.Trim() : request.UserName;
             request.Email = request.Email != null ? request.Email.Trim() : request.Email;
+            request.Password = request.Password.Trim();
+            request.Password2 = request.Password2.Trim();
 
             if (string.IsNullOrWhiteSpace(request.UserName))
             {
@@ -150,6 +152,11 @@ namespace BackendSocialApp.Controllers
             if (request.Password != request.Password2)
             {
                 throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");
+            }
+
+            if (request.Password.Length < 6)
+            {
+                throw new BusinessException("PasswordLengthError", "Şifre 6 karakterden az olamaz.");
             }
 
             var existingUser = await _userManager.FindByNameAsync(request.UserName);
@@ -300,6 +307,8 @@ namespace BackendSocialApp.Controllers
         {
             var userId = User.Claims.First(a => a.Type == Constants.ClaimUserId).Value;
             var user = await _userManager.FindByIdAsync(userId);
+            request.NewPassword = request.NewPassword.Trim();
+            request.NewPassword2 = request.NewPassword2.Trim();
 
             if (user == null)
             {
@@ -309,6 +318,16 @@ namespace BackendSocialApp.Controllers
             if (false == await _userManager.CheckPasswordAsync(user, request.CurrentPassword))
             {
                 throw new BusinessException("CurrentPasswordIsWrong", "Mevcut şifre yanlış");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                throw new BusinessException("EmptyPassword", "Şifre boş olamaz.");
+            }
+
+            if (request.NewPassword.Length < 6)
+            {
+                throw new BusinessException("PasswordLengthError", "Şifre 6 karakterden az olamaz.");
             }
 
             if (request.NewPassword != request.NewPassword2)
