@@ -192,7 +192,17 @@ namespace BackendSocialApp.Services
                 throw new BusinessException("FortuneTellingAlreadyRated", "Zaten puan verilmiş.");
             }
 
-            if(star < 1 || star > 5)
+            if (fortuneTelling.Status != CoffeeFortuneTellingStatus.SubmittedByFortuneTeller)
+            {
+                throw new BusinessException("NotValidStatus", "Henüz yorumlanmamış.");
+            }
+
+            if (fortuneTelling.User.Id != userId)
+            {
+                throw new BusinessException("NotAllowedAction", "Bu fal a puan veremezsiniz.");
+            }
+
+            if (star < 1 || star > 5)
             {
                 throw new BusinessException("RateStarNotValid", "Verilen puan uygun değil.");
             }

@@ -36,5 +36,7 @@ namespace BackendSocialApp.ViewModels
         public string ConsumerRelationshipStatus { get; set; }
 
         public string ConsumerJob { get; set; }
+
+        public int UserStarPoint { get; set; }
     }
 }
