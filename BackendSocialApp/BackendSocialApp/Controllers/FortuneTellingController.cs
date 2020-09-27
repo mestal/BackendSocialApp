@@ -184,5 +184,17 @@ namespace BackendSocialApp.Controllers
         {
             return _mapper.Map<List<FortuneTellerUser>, List<FortuneTellerViewModel>>(_service.GetActiveFortuneTellers());
         }
+
+        [HttpPost]
+        [Authorize(Roles = Constants.RoleConsumer)]
+        [Route("RateFortuneTeller")]
+        public async Task<ActionResult> RateFortuneTeller(RateFortuneTellerRequest request)
+        {
+            var userId = new Guid(User.Claims.First(a => a.Type == Constants.ClaimUserId).Value);
+
+            var result = await _service.RateFortuneTeller(userId, request.FortuneTellingId, request.Star);
+
+            return Ok(result);
+        }
     }
 }

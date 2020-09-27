@@ -17,8 +17,10 @@ namespace BackendSocialApp.Mapping
             CreateMap<GenderType, string>()
                 .ConvertUsing(src => Enum.GetName(typeof(GenderType), src));
             CreateMap<FortuneTellerViewModel, FortuneTellerUser>();
-            CreateMap<FortuneTellerUser, FortuneTellerViewModel>();
-            CreateMap<FortuneTellerUser, FortuneTellerDetailViewModel>();
+            CreateMap<FortuneTellerUser, FortuneTellerViewModel>()
+                .ForMember(dest => dest.UserStarPointAvg, opt => opt.MapFrom(src => src.UserStarPointCount != 0 ? Math.Round((double)src.UserStarPointTotal / (double)src.UserStarPointCount, 2) : 0));
+            CreateMap<FortuneTellerUser, FortuneTellerDetailViewModel>()
+                .ForMember(dest => dest.UserStarPointAvg, opt => opt.MapFrom(src => src.UserStarPointCount != 0 ? Math.Round((double)src.UserStarPointTotal / (double)src.UserStarPointCount, 2) : 0));
             CreateMap<CoffeeFortuneTellingStatus, string>()
                 .ConvertUsing(src => Enum.GetName(typeof(CoffeeFortuneTellingStatus), src));
             CreateMap<RelationshipStatus, string>()
@@ -27,6 +29,7 @@ namespace BackendSocialApp.Mapping
                 .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(a => a.Path).ToList()));
             CreateMap<CoffeeFortuneTellingViewModel, CoffeeFortuneTelling>();
             CreateMap<ConsumerUser, UserViewModel>();
+            CreateMap<ApplicationUser, UserViewModel>();
             CreateMap<ConsumerUser, UserInfoViewModel>();
             CreateMap<AdminUser, UserViewModel>();
             CreateMap<MainFeed, FeedViewModel>()

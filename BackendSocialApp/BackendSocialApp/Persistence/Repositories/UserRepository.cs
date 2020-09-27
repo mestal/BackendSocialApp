@@ -31,9 +31,9 @@ namespace BackendSocialApp.Persistence.Repositories
             return _context.BuyPointTransactions.AddAsync(transaction);
         }
 
-        public void UpdateUser(ConsumerUser user)
+        public void UpdateUser(ApplicationUser user)
         {
-            _context.ConsumerUsers.Update(user);
+            _context.ApplicationUsers.Update(user);
         }
 
         public Task<List<Point>> GetPoints(PointType pointType)

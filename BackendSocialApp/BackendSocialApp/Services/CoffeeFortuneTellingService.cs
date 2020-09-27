@@ -17,19 +17,20 @@ namespace BackendSocialApp.Services
         public IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CoffeeFortuneTellingService> _logger;
+        private readonly IUserRepository _userRepository;
 
         public CoffeeFortuneTellingService(ICoffeeFortuneTellingRepository coffeeFortuneTellingRepository, IUnitOfWork unitOfWork, 
-            UserManager<ApplicationUser> userManager, ILogger<CoffeeFortuneTellingService> logger)
+            UserManager<ApplicationUser> userManager, ILogger<CoffeeFortuneTellingService> logger, IUserRepository userRepository)
         {
             _coffeeFortuneTellingRepository = coffeeFortuneTellingRepository;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         public async Task<CreateCoffeeFortuneTellingResponse> CreateCoffeeFortuneTellingAsync(CoffeeFortuneTelling coffeeFortuneTelling, List<string> picturePaths)
         {
-
             if (!coffeeFortuneTelling.User.EmailConfirmed)
             {
                 throw new BusinessException("EmailNotConfirmed", "E-mail onaylanmamış.");
@@ -103,6 +104,11 @@ namespace BackendSocialApp.Services
             fortuneTelling.SubmitByFortuneTellerDateUtc = DateTime.UtcNow;
 
             _coffeeFortuneTellingRepository.UpdateCoffeeFortuneTelling(fortuneTelling);
+
+            fortuneTelling.FortuneTeller.CoffeFortuneTellingCount++;
+
+            _userRepository.UpdateUser(fortuneTelling.FortuneTeller);
+
             await _unitOfWork.CompleteAsync();
 
             return new SubmitFortuneTellingByFortuneTellerResponse();
@@ -170,6 +176,38 @@ namespace BackendSocialApp.Services
         public List<FortuneTellerUser> GetActiveFortuneTellers()
         {
             return _coffeeFortuneTellingRepository.GetActiveFortuneTellers();
+        }
+
+        public async Task<double> RateFortuneTeller(Guid userId, Guid fortuneTellingId, int star)
+        {
+            var fortuneTelling = _coffeeFortuneTellingRepository.GetCoffeeFortuneTelling(fortuneTellingId);
+
+            if (fortuneTelling == null)
+            {
+                throw new BusinessException("FortuneTellingNotFound", "Fal bulunamadı.");
+            }
+
+            if(fortuneTelling.UserStarPoint != 0)
+            {
+                throw new BusinessException("FortuneTellingAlreadyRated", "Zaten puan verilmiş.");
+            }
+
+            if(star < 1 || star > 5)
+            {
+                throw new BusinessException("RateStarNotValid", "Verilen puan uygun değil.");
+            }
+
+            fortuneTelling.UserStarPoint = star;
+
+            _coffeeFortuneTellingRepository.UpdateCoffeeFortuneTelling(fortuneTelling);
+
+            fortuneTelling.FortuneTeller.UserStarPointCount++;
+            fortuneTelling.FortuneTeller.UserStarPointTotal = fortuneTelling.FortuneTeller.UserStarPointTotal + star;
+            _userRepository.UpdateUser(fortuneTelling.FortuneTeller);
+
+            await _unitOfWork.CompleteAsync();
+
+            return Math.Round((double)fortuneTelling.FortuneTeller.UserStarPointTotal / (double)fortuneTelling.FortuneTeller.UserStarPointCount, 2);
         }
     }
 }

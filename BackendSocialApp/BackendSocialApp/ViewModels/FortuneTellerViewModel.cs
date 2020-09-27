@@ -17,5 +17,11 @@ namespace BackendSocialApp.ViewModels
         public string PicturePath { get; set; }
 
         public string Description { get; set; }
+
+        public double UserStarPointAvg { get; set; }
+
+        public double UserStarPointTotal { get; set; }
+
+        public double UserStarPointCount { get; set; }
     }
 }

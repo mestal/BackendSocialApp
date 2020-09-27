@@ -427,6 +427,11 @@ namespace BackendSocialApp.Controllers
                 throw new BusinessException("UserNotFound", "Kullanıcı bulunamadı.");
             }
 
+            if (request.NewPassword.Length < 6)
+            {
+                throw new BusinessException("PasswordLengthError", "Şifre 6 karakterden az olamaz.");
+            }
+
             if (request.NewPassword != request.NewPassword2)
             {
                 throw new BusinessException("PasswordsMustBeSame", "Şifreler eşit olmalı.");

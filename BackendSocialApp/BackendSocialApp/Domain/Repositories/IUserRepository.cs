@@ -14,7 +14,7 @@ namespace BackendSocialApp.Domain.Repositories
 
         Task SaveBuyPointTransaction(BuyPointTransaction transaction);
 
-        void UpdateUser(ConsumerUser user);
+        void UpdateUser(ApplicationUser user);
 
         Task<List<Point>> GetPoints(PointType pointType);
     }

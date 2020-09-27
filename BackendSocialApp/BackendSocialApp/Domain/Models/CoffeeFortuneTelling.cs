@@ -39,6 +39,8 @@ namespace BackendSocialApp.Domain.Models
         [Column(TypeName = "nvarchar(100)")]
         public string ConsumerJob { get; set; }
 
+        public int UserStarPoint { get; set; }
+
     }
 
     public class CoffeeFortuneTellingPicture

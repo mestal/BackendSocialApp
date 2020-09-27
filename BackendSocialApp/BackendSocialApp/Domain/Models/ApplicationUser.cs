@@ -48,6 +48,10 @@ namespace BackendSocialApp.Domain.Models
 
         public int CoffeFortuneTellingCount { get; set; }
 
+        public int UserStarPointCount { get; set; }
+
+        public int UserStarPointTotal { get; set; }
+
     }
 
     public class ContentCreatorUser : ApplicationUser

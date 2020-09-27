@@ -26,5 +26,7 @@ namespace BackendSocialApp.Services
         List<FortuneTellerUser> GetActiveFortuneTellers();
 
         FortuneTellerUser GetFortuneTeller(string userName, Guid id);
+
+        Task<double> RateFortuneTeller(Guid userId, Guid fortuneTellingId, int star);
     }
 }
