@@ -18,9 +18,9 @@ namespace BackendSocialApp.Mapping
                 .ConvertUsing(src => Enum.GetName(typeof(GenderType), src));
             CreateMap<FortuneTellerViewModel, FortuneTellerUser>();
             CreateMap<FortuneTellerUser, FortuneTellerViewModel>()
-                .ForMember(dest => dest.UserStarPointAvg, opt => opt.MapFrom(src => src.UserStarPointCount != 0 ? Math.Round((double)src.UserStarPointTotal / (double)src.UserStarPointCount, 2) : 0));
+                .ForMember(dest => dest.UserStarPointAvg, opt => opt.MapFrom(src => src.UserStarPointCount != 0 ? Math.Round((double)src.UserStarPointTotal / (double)src.UserStarPointCount, 1) : 0));
             CreateMap<FortuneTellerUser, FortuneTellerDetailViewModel>()
-                .ForMember(dest => dest.UserStarPointAvg, opt => opt.MapFrom(src => src.UserStarPointCount != 0 ? Math.Round((double)src.UserStarPointTotal / (double)src.UserStarPointCount, 2) : 0));
+                .ForMember(dest => dest.UserStarPointAvg, opt => opt.MapFrom(src => src.UserStarPointCount != 0 ? Math.Round((double)src.UserStarPointTotal / (double)src.UserStarPointCount, 1) : 0));
             CreateMap<CoffeeFortuneTellingStatus, string>()
                 .ConvertUsing(src => Enum.GetName(typeof(CoffeeFortuneTellingStatus), src));
             CreateMap<RelationshipStatus, string>()

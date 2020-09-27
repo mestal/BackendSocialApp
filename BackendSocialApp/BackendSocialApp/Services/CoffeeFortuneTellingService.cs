@@ -217,7 +217,7 @@ namespace BackendSocialApp.Services
 
             await _unitOfWork.CompleteAsync();
 
-            return Math.Round((double)fortuneTelling.FortuneTeller.UserStarPointTotal / (double)fortuneTelling.FortuneTeller.UserStarPointCount, 2);
+            return Math.Round((double)fortuneTelling.FortuneTeller.UserStarPointTotal / (double)fortuneTelling.FortuneTeller.UserStarPointCount, 1);
         }
     }
 }
