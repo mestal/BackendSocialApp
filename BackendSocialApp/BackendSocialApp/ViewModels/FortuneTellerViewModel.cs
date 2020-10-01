@@ -23,5 +23,8 @@ namespace BackendSocialApp.ViewModels
         public double UserStarPointTotal { get; set; }
 
         public double UserStarPointCount { get; set; }
+
+        public int CoffeePointPrice { get; set; }
+
     }
 }
