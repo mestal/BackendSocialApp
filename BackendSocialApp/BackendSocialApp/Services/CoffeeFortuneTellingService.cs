@@ -2,6 +2,8 @@
 using BackendSocialApp.Domain.Repositories;
 using BackendSocialApp.Domain.Services.Communication;
 using BackendSocialApp.Paging;
+using BackendSocialApp.Tools;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,15 +20,20 @@ namespace BackendSocialApp.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CoffeeFortuneTellingService> _logger;
         private readonly IUserRepository _userRepository;
+        private readonly IHostingEnvironment _environment;
+        private readonly IEmailHelper _emailHelper;
 
         public CoffeeFortuneTellingService(ICoffeeFortuneTellingRepository coffeeFortuneTellingRepository, IUnitOfWork unitOfWork, 
-            UserManager<ApplicationUser> userManager, ILogger<CoffeeFortuneTellingService> logger, IUserRepository userRepository)
+            UserManager<ApplicationUser> userManager, ILogger<CoffeeFortuneTellingService> logger, IUserRepository userRepository,
+            IHostingEnvironment environment, IEmailHelper emailHelper)
         {
             _coffeeFortuneTellingRepository = coffeeFortuneTellingRepository;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _logger = logger;
             _userRepository = userRepository;
+            _environment = environment;
+            _emailHelper = emailHelper;
         }
 
         public async Task<CreateCoffeeFortuneTellingResponse> CreateCoffeeFortuneTellingAsync(CoffeeFortuneTelling coffeeFortuneTelling, List<string> picturePaths)
@@ -77,7 +84,72 @@ namespace BackendSocialApp.Services
             }
             await _unitOfWork.CompleteAsync();
 
+            SendNewFalMailToFalci(coffeeFortuneTelling.FortuneTeller);
+
             return new CreateCoffeeFortuneTellingResponse(coffeeFortuneTelling);
+        }
+
+        private void SendNewFalMailToFalci(FortuneTellerUser falci)
+        {
+            try { 
+                var userConfirmationMailTemplatePath = _environment.ContentRootPath + "\\Assets\\Templates\\NewFalToFalci.html";
+                var template = System.IO.File.ReadAllText(userConfirmationMailTemplatePath);
+                template = template
+                    .Replace("[fullName]", falci.FullName);
+
+                _emailHelper.Send(
+                    new EmailModel
+                    {
+                        To = falci.Email,
+                        Subject = "Falcım - Yeni Fal",
+                        IsBodyHtml = true,
+                        Message = template
+                    }
+                );
+            }
+            catch(Exception e)
+            {
+                try
+                {
+                    _logger.LogError("NewFalMailSendError:  " + falci?.Email + ", Errors: " + e.Message + " - " + e.InnerException?.Message);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void FalCommentedMailToConsumer(ConsumerUser user)
+        {
+            try
+            {
+                var userConfirmationMailTemplatePath = _environment.ContentRootPath + "\\Assets\\Templates\\FalCommented.html";
+                var template = System.IO.File.ReadAllText(userConfirmationMailTemplatePath);
+                template = template
+                    .Replace("[fullName]", user.FullName);
+
+                _emailHelper.Send(
+                    new EmailModel
+                    {
+                        To = user.Email,
+                        Subject = "Falcım - Falına bakıldı",
+                        IsBodyHtml = true,
+                        Message = template
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    _logger.LogError("FalCommentedMailSendError:  " + user?.Email + ", Errors: " + e.Message + " - " + e.InnerException?.Message);
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         public async Task<SubmitFortuneTellingByFortuneTellerResponse> SubmitFortuneTellingByFortuneTeller(Guid fortuneTellerId, Guid coffeeFortuneTellingId, string comment)
@@ -110,6 +182,8 @@ namespace BackendSocialApp.Services
             _userRepository.UpdateUser(fortuneTelling.FortuneTeller);
 
             await _unitOfWork.CompleteAsync();
+
+            FalCommentedMailToConsumer(fortuneTelling.User);
 
             return new SubmitFortuneTellingByFortuneTellerResponse();
         }
