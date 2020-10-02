@@ -28,14 +28,16 @@ namespace BackendSocialApp.Controllers
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _environment;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
 
         public FortuneTellingController(ICoffeeFortuneTellingService service, IMapper mapper, 
-            IHostingEnvironment environment, UserManager<ApplicationUser> userManager)
+            IHostingEnvironment environment, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _service = service;
             _mapper = mapper;
             _environment = environment;
             _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -56,13 +58,39 @@ namespace BackendSocialApp.Controllers
             newCoffeeFortuneTelling.ConsumerGender = user.Gender;
             newCoffeeFortuneTelling.ConsumerJob = user.Job;
             newCoffeeFortuneTelling.ConsumerRelationshipStatus = user.RelationshipStatus;
+            newCoffeeFortuneTelling.FortuneTellingType = request.FortuneTellingType;
+            newCoffeeFortuneTelling.UserInput = request.UserInput;
 
-            var fortuneTeller = (await _userManager.FindByIdAsync(request.FortuneTellerId.ToString())) as FortuneTellerUser;
+            var fortuneTeller = (await _userService.GetFortuneTellerUser(request.FortuneTellerId));
             newCoffeeFortuneTelling.FortuneTeller = fortuneTeller ?? throw new BusinessException("FortuneTellerNotFound", "Falcı bulunamadı. ");
 
-            if (request.Pictures == null || request.Pictures.Count == 0)
+            if(!fortuneTeller.FalTypes.Exists(a => a.FortunrTellingType == (int)request.FortuneTellingType))
             {
-                throw new Exception("Pictures must be send.");
+                throw new BusinessException("NotDefinedFalTypeForThisFortuneTeller", "Bu falcımız bu tip fala bakmamaktadır.");
+            }
+
+            if (request.FortuneTellingType != FortuneTellingType.DreamInterpretation)
+            {
+                if(request.Pictures == null || request.Pictures.Count == 0) { 
+                    throw new BusinessException("PicturesMustBeSend", "Fotoğraf gönderilmeli.");
+                }
+
+                if (!string.IsNullOrEmpty(request.UserInput) && !string.IsNullOrWhiteSpace(request.UserInput))
+                {
+                    throw new BusinessException("UserInputMustNotBeFilled", "Kullanıcı açıklama girmemeli.");
+                }
+            }
+            else
+            {
+                if (request.Pictures != null)
+                {
+                    throw new BusinessException("PicturesMustNotBeSend", "Fotoğraf gönderilmemeli.");
+                }
+
+                if(string.IsNullOrEmpty(request.UserInput) || string.IsNullOrWhiteSpace(request.UserInput))
+                {
+                    throw new BusinessException("UserInputMustBeFilled", "Kullanıcı rüyası girilmeli.");
+                }
             }
 
             var folderPath = _environment.ContentRootPath + "\\Assets\\CoffeeFortuneTellingPictures\\";
@@ -97,10 +125,7 @@ namespace BackendSocialApp.Controllers
             }
 
             await _service.CreateCoffeeFortuneTellingAsync(newCoffeeFortuneTelling, pictureUrls);
-            return Ok(new {
-                folderExists,
-                fileFullPaths
-            });
+            return Ok();
         }
 
         [HttpPost]
@@ -183,6 +208,13 @@ namespace BackendSocialApp.Controllers
         public object GetActiveFortuneTellers()
         {
             return _mapper.Map<List<FortuneTellerUser>, List<FortuneTellerViewModel>>(_service.GetActiveFortuneTellers());
+        }
+
+        [HttpPost]
+        [Route("GetActiveFortuneTellers")]
+        public object GetActiveFortuneTellers(GetActiveFortuneTellersRequest request)
+        {
+            return _mapper.Map<List<FortuneTellerUser>, List<FortuneTellerViewModel>>(_service.GetActiveFortuneTellers(request.FortuneTellingType));
         }
 
         [HttpPost]

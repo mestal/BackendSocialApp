@@ -38,11 +38,6 @@ namespace BackendSocialApp.Services
 
         public async Task<CreateCoffeeFortuneTellingResponse> CreateCoffeeFortuneTellingAsync(CoffeeFortuneTelling coffeeFortuneTelling, List<string> picturePaths)
         {
-            if (!coffeeFortuneTelling.User.EmailConfirmed)
-            {
-                throw new BusinessException("EmailNotConfirmed", "E-mail onaylanmamış.");
-            }
-
             if (coffeeFortuneTelling.FortuneTeller.Status == UserStatus.Deactive)
             {
                 throw new BusinessException("FortuneTellerIsNotActive", "Falcı aktif değildir.");
@@ -250,6 +245,11 @@ namespace BackendSocialApp.Services
         public List<FortuneTellerUser> GetActiveFortuneTellers()
         {
             return _coffeeFortuneTellingRepository.GetActiveFortuneTellers();
+        }
+
+        public List<FortuneTellerUser> GetActiveFortuneTellers(FortuneTellingType fortuneTellingType)
+        {
+            return _coffeeFortuneTellingRepository.GetActiveFortuneTellers(fortuneTellingType);
         }
 
         public async Task<double> RateFortuneTeller(Guid userId, Guid fortuneTellingId, int star)

@@ -4,14 +4,16 @@ using BackendSocialApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendSocialApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201001120124_FalTypes")]
+    partial class FalTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,22 +237,6 @@ namespace BackendSocialApp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.FortuneTellerUserFalType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("FortuneTellerId");
-
-                    b.Property<int>("FortunrTellingType");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FortuneTellerId");
-
-                    b.ToTable("FortuneTellerFalTypes");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.Like", b =>
@@ -598,13 +584,6 @@ namespace BackendSocialApp.Migrations
                     b.HasOne("BackendSocialApp.Domain.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("BackendSocialApp.Domain.Models.FortuneTellerUserFalType", b =>
-                {
-                    b.HasOne("BackendSocialApp.Domain.Models.FortuneTellerUser", "FortuneTeller")
-                        .WithMany("FalTypes")
-                        .HasForeignKey("FortuneTellerId");
                 });
 
             modelBuilder.Entity("BackendSocialApp.Domain.Models.NewsItem", b =>

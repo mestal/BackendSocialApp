@@ -14,5 +14,9 @@ namespace BackendSocialApp.Requests
         public Guid FortuneTellerId { get; set; }
 
         public CoffeeFortuneTellingType Type { get; set; }
+
+        public FortuneTellingType FortuneTellingType { get; set; }
+
+        public string UserInput { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendSocialApp.Domain.Models
@@ -51,6 +52,18 @@ namespace BackendSocialApp.Domain.Models
         public int UserStarPointCount { get; set; }
 
         public int UserStarPointTotal { get; set; }
+
+        public List<FortuneTellerUserFalType> FalTypes { get; set; }
+
+    }
+
+    public class FortuneTellerUserFalType
+    {
+        public Guid Id { get; set; }
+
+        public FortuneTellerUser FortuneTeller { get; set; }
+
+        public int FortunrTellingType { get; set; }
 
     }
 

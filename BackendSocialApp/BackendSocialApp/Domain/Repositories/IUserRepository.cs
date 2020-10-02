@@ -17,5 +17,7 @@ namespace BackendSocialApp.Domain.Repositories
         void UpdateUser(ApplicationUser user);
 
         Task<List<Point>> GetPoints(PointType pointType);
+
+        Task<FortuneTellerUser> GetFortuneTellerUser(Guid userId);
     }
 }

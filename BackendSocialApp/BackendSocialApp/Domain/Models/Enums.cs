@@ -54,4 +54,13 @@ namespace BackendSocialApp.Domain.Models
         Android = 0,
         Ios = 1
     }
+
+    public enum FortuneTellingType
+    {
+        Coffee = 0,
+        Hand = 1,
+        DreamInterpretation = 2
+    }
+
+    
 }

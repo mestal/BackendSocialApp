@@ -41,17 +41,29 @@ namespace BackendSocialApp.Persistence.Repositories
 
         public List<FortuneTellerUser> GetActiveFortuneTellers()
         {
-            return _context.FortuneTellerUsers.Where(a => a.Status == UserStatus.Active).ToList();
+            return _context.FortuneTellerUsers
+                .Include(b => b.FalTypes)
+                .Where(a => a.Status == UserStatus.Active)
+                .ToList();
         }
+
+        public List<FortuneTellerUser> GetActiveFortuneTellers(FortuneTellingType fortuneTellingType)
+        {
+            return _context.FortuneTellerUsers
+                .Include(b => b.FalTypes)
+                .Where(a => a.Status == UserStatus.Active && a.FalTypes.Exists(b => b.FortunrTellingType == (int)fortuneTellingType))
+                .ToList();
+        }
+
         public FortuneTellerUser GetFortuneTeller(string userName, Guid id)
         {
             if (!string.IsNullOrWhiteSpace(userName))
             {
-                return _context.FortuneTellerUsers.FirstOrDefault(a => a.UserName == userName);
+                return _context.FortuneTellerUsers.Include(b => b.FalTypes).FirstOrDefault(a => a.UserName == userName);
             }
             else if(id != Guid.Empty)
             {
-                return _context.FortuneTellerUsers.FirstOrDefault(a => a.Id == id);
+                return _context.FortuneTellerUsers.Include(b => b.FalTypes).FirstOrDefault(a => a.Id == id);
             }
 
             throw new BusinessException("MissingValue", "Kullanıcı adı veya Id bilgisi bilgisi gönderiniz.");

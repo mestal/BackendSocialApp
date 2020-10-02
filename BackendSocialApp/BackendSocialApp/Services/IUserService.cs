@@ -12,5 +12,7 @@ namespace BackendSocialApp.Services
         Task<int> BuyPoint(ConsumerUser user, string transactionJson, string transactionId, string productId, PointType pointType);
 
         Task<List<Point>> GetPoints(PointType pointType);
+
+        Task<FortuneTellerUser> GetFortuneTellerUser(Guid userId);
     }
 }

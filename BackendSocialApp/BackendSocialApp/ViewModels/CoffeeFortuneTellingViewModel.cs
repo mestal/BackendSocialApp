@@ -38,5 +38,9 @@ namespace BackendSocialApp.ViewModels
         public string ConsumerJob { get; set; }
 
         public int UserStarPoint { get; set; }
+
+        public string FortuneTellingType { get; set; }
+
+        public string UserInput { get; set; }
     }
 }

@@ -46,6 +46,8 @@ namespace BackendSocialApp.Persistence.Contexts
 
         public DbSet<BuyPointTransaction> BuyPointTransactions { get; set; }
 
+        public DbSet<FortuneTellerUserFalType> FortuneTellerFalTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

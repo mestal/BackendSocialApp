@@ -26,5 +26,7 @@ namespace BackendSocialApp.ViewModels
 
         public int CoffeePointPrice { get; set; }
 
+        public List<string> FortuneTellingTypes { get; set; }
+
     }
 }

@@ -41,6 +41,10 @@ namespace BackendSocialApp.Domain.Models
 
         public int UserStarPoint { get; set; }
 
+        public FortuneTellingType FortuneTellingType { get; set; }
+
+        public string UserInput { get; set; }
+
     }
 
     public class CoffeeFortuneTellingPicture

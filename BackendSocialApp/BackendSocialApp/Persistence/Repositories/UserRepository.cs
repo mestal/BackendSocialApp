@@ -43,5 +43,13 @@ namespace BackendSocialApp.Persistence.Repositories
                     .Where(c => c.PointType == pointType).OrderBy(a => a.Order).ToList()
             );
         }
+
+        public Task<FortuneTellerUser> GetFortuneTellerUser(Guid userId)
+        {
+            return Task.FromResult(
+                _context.FortuneTellerUsers.Include(a => a.FalTypes)
+                    .Where(c => c.Id == userId).FirstOrDefault()
+            );
+        }
     }
 }

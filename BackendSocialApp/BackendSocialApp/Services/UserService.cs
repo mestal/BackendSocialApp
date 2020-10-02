@@ -56,5 +56,10 @@ namespace BackendSocialApp.Services
         {
             return await _userRepository.GetPoints(pointType);
         }
+
+        public async Task<FortuneTellerUser> GetFortuneTellerUser(Guid userId)
+        {
+            return await _userRepository.GetFortuneTellerUser(userId);
+        }
     }
 }
