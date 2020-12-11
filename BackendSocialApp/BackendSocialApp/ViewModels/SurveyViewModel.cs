@@ -58,6 +58,7 @@ namespace BackendSocialApp.ViewModels
         public int Point { get; set; }
 
         public string PicturePath { get; set; }
+        public string Title { get; set; }
 
         public string ResultInformation { get; set; }
     }

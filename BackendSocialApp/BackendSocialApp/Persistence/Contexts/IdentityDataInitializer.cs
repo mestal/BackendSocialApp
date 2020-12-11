@@ -242,6 +242,204 @@ namespace BackendSocialApp.Persistence.Contexts
                     userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
                 }
             }
+
+            if (userManager.FindByNameAsync("aysee").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "aysee";
+                user.Email = "ayse19029@yahoo.com";
+                user.FullName = "Ayşe Demir";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("nihall").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "nihall";
+                user.Email = "nihall667@yahoo.com";
+                user.FullName = "Nihall";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("zeyno").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "zeyno";
+                user.Email = "zeynepk89@gmail.com";
+                user.FullName = "Zeynep L";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("nil").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "nil";
+                user.Email = "surrender9@gmail.com";
+                user.FullName = "Nil Atmaca";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("elif").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "elif";
+                user.Email = "eliff999@gmail.com";
+                user.FullName = "Elif Dönmez";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("melike").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "melike";
+                user.Email = "melli777@gmail.com";
+                user.FullName = "Melikee";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("merve").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "merve";
+                user.Email = "mervve@gmail.com";
+                user.FullName = "Merve Bal";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("isil").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "isil";
+                user.Email = "isil@gmail.com";
+                user.FullName = "Işıl Arıca";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("naz").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "naz";
+                user.Email = "nazz@gmail.com";
+                user.FullName = "Naz Kara";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("su").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "su";
+                user.Email = "su@gmail.com";
+                user.FullName = "Su Turan";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "ABcd12%").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("su2").Result == null)
+            {
+                ConsumerUser user = new ConsumerUser();
+                user.UserName = "su2";
+                user.Email = "su2@gmail.com";
+                user.FullName = "Su2 Turan";
+                user.Status = UserStatus.Active;
+                user.EmailConfirmed = true;
+                user.Point = 0;
+
+                IdentityResult result = userManager.CreateAsync(user, "123456").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user, Constants.RoleConsumer).Wait();
+                }
+            }
         }
 
         public static void SeedNews(UserManager<ApplicationUser> userManager, AppDbContext context)
@@ -865,21 +1063,21 @@ namespace BackendSocialApp.Persistence.Contexts
                 {
                     Survey = survey,
                     Point = 8,
-                    ResultInformation = "Abdülrezzak"
+                    Title = "Abdülrezzak"
                 });
 
                 context.SurveyResultItems.Add(new SurveyResultItem
                 {
                     Survey = survey,
                     Point = 10,
-                    ResultInformation = "Zübeyde"
+                    Title = "Zübeyde"
                 });
 
                 context.SurveyResultItems.Add(new SurveyResultItem
                 {
                     Survey = survey,
                     Point = 15,
-                    ResultInformation = "Abdülmuttalip"
+                    Title = "Abdülmuttalip"
                 });
 
                 ///////////////////////////////
